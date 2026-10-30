@@ -1,0 +1,1486 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>II CMMEB 2027</title>
+<meta name="description" content="II Congresso de Ciências do Mar na Margem Equatorial Brasileira — Integração Indústria e Meio Ambiente. Setembro de 2027, São Luís – MA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@200;300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script>
+document.documentElement.classList.add('js','is-loading');
+try{var _t=localStorage.getItem('cmmeb-theme');if(_t==='light'||_t==='dark')document.documentElement.setAttribute('data-theme',_t);}catch(e){}
+</script>
+<style>
+/* Layout: palco 3D em tela cheia (mar em pontos, plataforma, eólicas, guarás; pôr do sol no claro, luar no escuro),
+   depois capítulos editoriais: manifesto + régua de dados, perfil batimétrico, índice de eixos, line-up,
+   régua do dia, rota de cronograma com cartões de embarque, maré, realização, dúvidas e rodapé. */
+:root{
+  --paper:#f2f9fb; --paper-2:#e0f1f6; --card:#ffffff;
+  --ink:#0b2440; --ink-2:#3d5873; --ink-3:#6a8299; --line:rgba(11,36,64,.11); --line-2:rgba(11,36,64,.22);
+  --sea:#1b6ba3; --surf:#2a9fbd; --sky:#8fd3e8; --foam:#cdeef5;
+  --sun:#f5a524; --sun-ink:#9a5a00; --dusk:#e0622a; --guara:#d33a2c;
+  --amb:#1f8fb4; --ind:#d5741c; --soc:#d33a2c;
+  --hero-fg:#0a2747; --hero-fg-2:#2c5070; --hero-accent:#d2581c; --hero-line:rgba(10,39,71,.22); --hero-glass:rgba(255,255,255,.42);
+  --band-bg:linear-gradient(160deg,#0c4d79 0%,#14699c 52%,#2389b8 100%); --band-fg:#f2fbfe; --band-fg-2:#cde8f2; --band-line:rgba(242,251,254,.22); --band-accent:#ffd27a; --band-card:rgba(255,255,255,.08);
+  --foot-bg:#0a3253;
+  --f-display:"Lexend","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Lexend","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-serif:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:16px; --ease:cubic-bezier(.22,1,.36,1);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#06142a; --paper-2:#091d38; --card:#0c2442;
+    --ink:#e6eef6; --ink-2:#a8bbcf; --ink-3:#7c92aa; --line:rgba(230,238,246,.11); --line-2:rgba(230,238,246,.24);
+    --sea:#5aaedf; --surf:#5ccbe0; --sky:#2a5b8a; --foam:#183f63;
+    --sun-ink:#ffc768; --dusk:#ff9a5c; --guara:#ef5b4b;
+    --amb:#5ccbe0; --ind:#ffb04a; --soc:#ff7a68;
+    --hero-fg:#eaf3fa; --hero-fg-2:#a9c0d6; --hero-accent:#f5a524; --hero-line:rgba(234,243,250,.2); --hero-glass:rgba(4,16,36,.42);
+    --band-bg:linear-gradient(165deg,#030f22 0%,#071d3c 60%,#0a2950 100%); --band-fg:#eaf3fa; --band-fg-2:#a9c0d6; --band-line:rgba(234,243,250,.14); --band-accent:#f5a524; --band-card:rgba(255,255,255,.04);
+    --foot-bg:#020b18;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#06142a; --paper-2:#091d38; --card:#0c2442;
+  --ink:#e6eef6; --ink-2:#a8bbcf; --ink-3:#7c92aa; --line:rgba(230,238,246,.11); --line-2:rgba(230,238,246,.24);
+  --sea:#5aaedf; --surf:#5ccbe0; --sky:#2a5b8a; --foam:#183f63;
+  --sun-ink:#ffc768; --dusk:#ff9a5c; --guara:#ef5b4b;
+  --amb:#5ccbe0; --ind:#ffb04a; --soc:#ff7a68;
+  --hero-fg:#eaf3fa; --hero-fg-2:#a9c0d6; --hero-accent:#f5a524; --hero-line:rgba(234,243,250,.2); --hero-glass:rgba(4,16,36,.42);
+  --band-bg:linear-gradient(165deg,#030f22 0%,#071d3c 60%,#0a2950 100%); --band-fg:#eaf3fa; --band-fg-2:#a9c0d6; --band-line:rgba(234,243,250,.14); --band-accent:#f5a524; --band-card:rgba(255,255,255,.04);
+  --foot-bg:#020b18;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-weight:300;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;transition:background-color .7s,color .7s}
+.js.is-loading body{overflow:hidden}
+main,footer{overflow-x:clip}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;max-width:1240px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.kicker{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sea);display:flex;align-items:center;gap:12px}
+.kicker b{font-weight:500;color:var(--ink-3)}
+.kicker::after{content:"";flex:0 0 46px;height:1px;background:currentColor;opacity:.6}
+.h2{font-size:clamp(2.1rem,4.8vw,3.7rem);font-weight:600;line-height:1.02;letter-spacing:-.035em}
+.h2 em{font-family:var(--f-serif);font-weight:400;font-style:italic;letter-spacing:-.01em;color:var(--sea)}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:58ch}
+.section{padding-block:clamp(84px,11vw,150px);position:relative;transition:background-color .7s}
+.band{background:var(--band-bg);color:var(--band-fg)}
+.band .kicker{color:var(--band-accent)}
+.band .kicker b{color:var(--band-fg-2)}
+.band .h2 em{color:var(--band-accent)}
+.band .lede{color:var(--band-fg-2)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:500;font-size:.98rem;padding:14px 24px;border-radius:999px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .4s var(--ease),background .3s,color .3s,border-color .3s,box-shadow .4s}
+.btn svg{width:18px;height:18px;transition:transform .4s var(--ease)}
+.btn:hover svg{transform:translateX(4px)}
+.btn-sun{background:var(--sun);color:#1c1200;box-shadow:0 12px 30px -14px rgba(224,98,42,.8)}
+.btn-sun:hover{transform:translateY(-2px);box-shadow:0 18px 36px -14px rgba(224,98,42,.9)}
+.btn-ghost{color:var(--hero-fg);border-color:var(--hero-line);background:var(--hero-glass);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.btn-ghost:hover{border-color:var(--hero-fg)}
+.btn-line{color:inherit;border-color:currentColor;background:transparent}
+.btn-line:hover{background:color-mix(in srgb,currentColor 10%,transparent)}
+
+/* ================= LOADER ================= */
+.loader{display:none}
+.js .loader{display:grid;position:fixed;inset:0;z-index:100;place-items:center;color:var(--hero-fg);transition:opacity 1.1s var(--ease),visibility 1.1s}
+.loader::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 48%,transparent,var(--loader-veil,rgba(242,249,251,.82)) 80%)}
+:root[data-theme="dark"] .loader::before{--loader-veil:rgba(3,12,28,.78)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .loader::before{--loader-veil:rgba(3,12,28,.78)}}
+.loader.done{opacity:0;visibility:hidden}
+.loader-core{position:relative;display:grid;justify-items:center;gap:18px;text-align:center;transition:transform 1s var(--ease),opacity .7s}
+.loader.done .loader-core{transform:translateY(-30px) scale(.97);opacity:0}
+.loader-mark{width:88px;height:88px}
+.loader-mark .draw{stroke-dasharray:400;stroke-dashoffset:400;animation:draw 2.2s var(--ease) forwards}
+.loader-mark .fill{opacity:0;animation:fadein .8s 1.2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+.loader-title{font-family:var(--f-display);font-weight:500;letter-spacing:.34em;font-size:.8rem;text-transform:uppercase;color:var(--hero-fg-2)}
+.loader-pct{font-family:var(--f-display);font-weight:200;font-size:clamp(3.4rem,10vw,6.4rem);line-height:1;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.loader-pct small{font-family:var(--f-mono);font-size:.3em;color:var(--hero-fg-2);margin-left:6px;letter-spacing:0}
+.loader-bar{width:min(300px,66vw);height:1px;background:var(--hero-line);position:relative;overflow:hidden}
+.loader-bar i{position:absolute;inset:0;background:linear-gradient(90deg,var(--surf),var(--sun),var(--guara));transform-origin:left;transform:scaleX(0)}
+.loader-stage{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.1em;color:var(--hero-fg-2);min-height:1.4em}
+.loader-foot{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+  padding:0 max(20px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;color:var(--hero-fg-2)}
+.loader-skip{font:inherit;color:var(--hero-fg);background:none;border:1px solid var(--hero-line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.loader-skip:hover{border-color:var(--hero-fg)}
+
+/* ================= NAV ================= */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;padding-top:env(safe-area-inset-top,0px);color:var(--hero-fg);transition:background .45s,color .45s,transform .9s var(--ease),box-shadow .45s}
+.js.is-loading .nav{transform:translateY(-110%)}
+.nav.solid{background:color-mix(in srgb,var(--paper) 84%,transparent);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:18px;height:72px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand svg{width:40px;height:40px;flex:none}
+.brand b{font-family:var(--f-display);font-weight:600;letter-spacing:.04em;font-size:1rem;display:block;line-height:1.1}
+.brand small{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;opacity:.72;display:block}
+.nav-links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.nav-links a{display:block;text-decoration:none;font-size:.88rem;font-weight:400;padding:8px 12px;border-radius:999px;opacity:.8;transition:opacity .25s,background .25s}
+.nav-links a:hover,.nav-links a.active{opacity:1;background:color-mix(in srgb,currentColor 11%,transparent)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-cta{padding:10px 18px;font-size:.88rem}
+.theme-btn,.menu-btn{background:none;border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:999px;width:42px;height:42px;cursor:pointer;display:grid;place-items:center;transition:border-color .3s,background .3s}
+.theme-btn:hover,.menu-btn:hover{border-color:currentColor}
+.theme-btn svg{width:19px;height:19px;grid-area:1/1;transition:transform .7s var(--ease),opacity .45s}
+.theme-btn .i-sun{transform:rotate(-90deg) scale(.4);opacity:0}
+:root[data-theme="dark"] .theme-btn .i-sun{transform:none;opacity:1}
+:root[data-theme="dark"] .theme-btn .i-moon{transform:rotate(90deg) scale(.4);opacity:0}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .theme-btn .i-sun{transform:none;opacity:1}
+  :root:not([data-theme="light"]) .theme-btn .i-moon{transform:rotate(90deg) scale(.4);opacity:0}
+}
+.menu-btn{display:none}
+.menu-btn span{display:block;width:16px;height:1.5px;background:currentColor;margin:2.5px auto;transition:transform .3s}
+.menu-btn[aria-expanded="true"] span:first-child{transform:translateY(2px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] span:last-child{transform:translateY(-2px) rotate(-45deg)}
+.mobile-panel{position:fixed;inset:0;z-index:49;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;justify-content:center;gap:4px;
+  padding:96px max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px));clip-path:circle(0 at calc(100% - 44px) 36px);transition:clip-path .75s var(--ease)}
+.mobile-panel.open{clip-path:circle(150% at calc(100% - 44px) 36px)}
+.mobile-panel a{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--f-display);font-size:1.9rem;font-weight:500;text-decoration:none;padding:8px 0;border-bottom:1px solid var(--line);letter-spacing:-.02em}
+.mobile-panel a span{font-family:var(--f-mono);font-size:.7rem;color:var(--ink-3);letter-spacing:.1em}
+@media (max-width:1060px){.nav-links,.nav-cta{display:none}.menu-btn{display:grid}}
+
+/* ================= HERO ================= */
+.hero{position:relative;min-height:100svh;color:var(--hero-fg);display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;
+  background:linear-gradient(180deg,#7cc9e2 0%,#b8e3ef 32%,#ffe0b2 50%,#ffb27a 55%,#8fcde0 57%,#4ea7c9 100%)}
+:root[data-theme="dark"] .hero{background:linear-gradient(180deg,#020a1a,#061a36 45%,#0e2c52 55%,#06152b 57%,#04101f)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero{background:linear-gradient(180deg,#020a1a,#061a36 45%,#0e2c52 55%,#06152b 57%,#04101f)}}
+#ocean{position:absolute;inset:0;width:100%;height:100%;z-index:-2;display:block}
+.veil{position:absolute;inset:0;z-index:-1;pointer-events:none;transition:opacity 1.2s var(--ease)}
+.veil-l{background:linear-gradient(90deg,rgba(240,249,252,.86) 0%,rgba(240,249,252,.5) 38%,rgba(240,249,252,0) 64%),linear-gradient(0deg,rgba(240,249,252,.75),rgba(240,249,252,0) 36%)}
+.veil-d{opacity:0;background:linear-gradient(90deg,rgba(3,12,28,.8) 0%,rgba(3,12,28,.36) 44%,rgba(3,12,28,0) 68%),linear-gradient(0deg,rgba(3,12,28,.72),rgba(3,12,28,0) 40%)}
+:root[data-theme="dark"] .veil-l{opacity:0} :root[data-theme="dark"] .veil-d{opacity:1}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .veil-l{opacity:0}:root:not([data-theme="light"]) .veil-d{opacity:1}}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:end;padding-block:150px 156px}
+.hero-copy{display:grid;gap:22px;max-width:800px;min-width:0}
+.hero .kicker{color:var(--hero-fg-2)}
+.hero .kicker::after{display:none}
+.hero .kicker::before{content:"";flex:0 0 28px;height:1px;background:currentColor}
+.hero h1{font-size:clamp(2.6rem,6.8vw,5.8rem);font-weight:600;line-height:.96;letter-spacing:-.045em}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.07em}
+.hero h1 .ln>span{display:inline-block}
+.hero h1 .accent{color:var(--hero-accent);transition:color .9s}
+.theme-line{font-family:var(--f-serif);font-style:italic;font-size:clamp(1.55rem,3vw,2.3rem);line-height:1.15}
+.theme-line b{font-family:var(--f-mono);font-style:normal;font-weight:400;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-fg-2);display:block;margin-bottom:8px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:12px 28px;font-size:.95rem;color:var(--hero-fg-2)}
+.hero-meta div{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px}
+.hero-meta svg{width:18px;height:18px;color:var(--hero-accent)}
+.hero-meta strong{color:var(--hero-fg);font-weight:500}
+.tag{white-space:nowrap;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px dashed currentColor;color:var(--hero-accent)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.countdown{border:1px solid var(--hero-line);background:var(--hero-glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:var(--r);padding:18px 22px;min-width:0}
+.countdown p{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--hero-fg-2);margin-bottom:10px}
+.cd{display:grid;grid-template-columns:repeat(4,auto);gap:4px 18px}
+.cd b{font-family:var(--f-display);font-weight:200;font-size:clamp(1.8rem,3.2vw,2.5rem);line-height:1;font-variant-numeric:tabular-nums;display:block;letter-spacing:-.03em}
+.cd span{font-size:.7rem;color:var(--hero-fg-2);letter-spacing:.06em}
+.scroll-cue{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);font-family:var(--f-mono);font-size:.64rem;letter-spacing:.22em;color:var(--hero-fg-2);display:grid;justify-items:center;gap:8px;text-decoration:none}
+.scroll-cue i{width:1px;height:34px;background:linear-gradient(currentColor,transparent);animation:cue 2.2s var(--ease) infinite;transform-origin:top}
+@keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.wave-div{position:absolute;left:0;right:0;bottom:-1px;height:84px;pointer-events:none;overflow:hidden}
+.wave-div svg{position:absolute;bottom:0;width:200%;height:100%;animation:wave 18s linear infinite}
+.wave-div svg.b{animation-duration:27s;opacity:.35}
+@keyframes wave{to{transform:translateX(-50%)}}
+.h-anim{transition:opacity 1.1s var(--ease),transform 1.1s var(--ease);transition-delay:calc(var(--d,0) * 110ms + 150ms)}
+.js.is-loading .h-anim{opacity:0;transform:translateY(34px)}
+.hero h1 .ln>span{transition:transform 1.25s var(--ease);transition-delay:calc(var(--d,0) * 110ms + 100ms)}
+.js.is-loading .hero h1 .ln>span{transform:translateY(110%)}
+@media (max-width:820px){
+  .hero-grid{grid-template-columns:1fr;padding-block:118px 132px;gap:26px}
+  .veil-l{background:linear-gradient(0deg,rgba(240,249,252,.92) 14%,rgba(240,249,252,.35) 70%,rgba(240,249,252,.55))}
+  .veil-d{background:linear-gradient(0deg,rgba(3,12,28,.9) 14%,rgba(3,12,28,.25) 70%,rgba(3,12,28,.45))}
+  .scroll-cue{display:none}
+}
+
+/* ================= TICKER ================= */
+.ticker{border-bottom:1px solid var(--line);overflow:hidden;padding-block:18px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.tk-track{display:flex;width:max-content;animation:tk 60s linear infinite}
+.ticker:hover .tk-track{animation-play-state:paused}
+.tk-set{display:flex;align-items:center;gap:28px;padding-right:28px;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+.tk-set svg{width:22px;height:10px;color:var(--surf);flex:none}
+.tk-set em{font-style:normal;color:var(--ink-3)}
+@keyframes tk{to{transform:translateX(-50%)}}
+
+.rv-pre{opacity:0;transform:translateY(28px)}
+.rv-in{opacity:1;transform:none;transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:calc(var(--i,0) * 80ms)}
+
+/* ================= SOBRE ================= */
+.about-head{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px 48px;align-items:start}
+.manifesto{font-size:clamp(1.55rem,3.3vw,2.75rem);font-weight:300;line-height:1.22;letter-spacing:-.025em;max-width:28ch;color:var(--ink)}
+.manifesto em{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:-.005em}
+.manifesto .w{color:var(--ink-3);transition:color .5s}
+.manifesto .w.lit{color:var(--ink)}
+.manifesto em .w.lit{color:var(--sea)}
+.about-side{display:grid;gap:14px;align-content:start;padding-top:14px;font-size:.9rem;color:var(--ink-2)}
+.about-side .mono{font-size:.72rem;letter-spacing:.1em;color:var(--ink-3)}
+.ruler{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(56px,8vw,96px);padding-top:30px}
+.ruler::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;
+  background:repeating-linear-gradient(90deg,var(--line-2) 0 1px,transparent 1px 14px),linear-gradient(var(--line-2),var(--line-2)) top/100% 1px no-repeat}
+.ruler::after{content:"";position:absolute;left:0;right:0;top:0;height:18px;background:repeating-linear-gradient(90deg,var(--ink-3) 0 1px,transparent 1px 140px);opacity:.7}
+.read{display:grid;gap:4px;padding-right:20px}
+.read b{font-family:var(--f-display);font-weight:200;font-size:clamp(3.2rem,7.5vw,6rem);line-height:.95;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.read span{font-size:.92rem;color:var(--ink-2)}
+.read small{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase}
+@media (max-width:820px){.about-head{grid-template-columns:1fr}.ruler{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:34px}}
+
+.fig{margin-top:clamp(64px,9vw,110px);display:grid;gap:18px}
+.fig-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 30px}
+.fig-head h3{font-size:clamp(1.5rem,2.8vw,2.1rem);font-weight:500;line-height:1.1;max-width:24ch}
+.fig-head h3 em{font-family:var(--f-serif);font-style:italic;font-weight:400;color:var(--sea)}
+.seg{display:inline-flex;padding:4px;border-radius:999px;border:1px solid var(--line-2);gap:2px}
+.seg button{border:0;background:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-size:.86rem;transition:background .35s,color .35s}
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.band .seg{border-color:var(--band-line)}
+.band .seg button[aria-selected="true"]{background:var(--band-fg);color:#0b2440}
+.fig-stage{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.fig-scroll{overflow-x:auto}
+.fig-stage svg{display:block;width:100%;min-width:720px;height:auto}
+.xs .air{fill:color-mix(in srgb,var(--sky) 22%,var(--card))}
+.xs .water{fill:url(#waterGrad)}
+.xs .ground{fill:var(--paper-2)}
+.xs .floor{fill:none;stroke:var(--ink);stroke-width:1.4}
+.xs .surf{fill:none;stroke:var(--sea);stroke-width:1.4}
+.xs .guide{stroke:var(--sea);stroke-dasharray:2 5;opacity:.55}
+.xs .gl{font-family:var(--f-mono);font-size:10.5px;fill:var(--sea)}
+.xs .zone{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;fill:var(--ink-3)}
+.xs .glyph{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.xs .glyph.ind{stroke:var(--ind)}
+.xs .glyph.amb{stroke:var(--amb)}
+.xs .glyph.soc{stroke:var(--soc)}
+.xs .flow{fill:none;stroke:var(--amb);stroke-width:1.6;stroke-dasharray:10 8;animation:flow 2.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-36}}
+.hs{cursor:pointer;outline:none}
+.hs circle.ring{fill:var(--card);stroke-width:1.6;transition:r .3s var(--ease)}
+.hs circle.core{transition:r .3s var(--ease)}
+.hs.amb circle.ring{stroke:var(--amb)} .hs.amb circle.core{fill:var(--amb)}
+.hs.ind circle.ring{stroke:var(--ind)} .hs.ind circle.core{fill:var(--ind)}
+.hs.soc circle.ring{stroke:var(--soc)} .hs.soc circle.core{fill:var(--soc)}
+.hs .halo{fill:none;stroke-width:1.2;transform-box:fill-box;transform-origin:center;animation:halo 2.6s var(--ease) infinite}
+.hs.amb .halo{stroke:var(--amb)} .hs.ind .halo{stroke:var(--ind)} .hs.soc .halo{stroke:var(--soc)}
+@keyframes halo{from{transform:scale(1);opacity:.8}to{transform:scale(2.6);opacity:0}}
+.hs:hover circle.ring,.hs:focus circle.ring,.hs.on circle.ring{r:13}
+.hs.on circle.core{r:5}
+.map-svg .sea-bg{fill:color-mix(in srgb,var(--sky) 20%,var(--card))}
+.map-svg .land{fill:var(--paper-2)}
+.map-svg .coast{fill:none;stroke:var(--ink);stroke-width:1.4}
+.map-svg .iso{fill:none;stroke:var(--sea);stroke-width:1;stroke-dasharray:3 5;opacity:.6}
+.map-svg .iso-l{font-family:var(--f-mono);font-size:10px;fill:var(--sea)}
+.map-svg .st{font-family:var(--f-mono);font-size:12px;fill:var(--ink-3);letter-spacing:.1em}
+.map-svg .basin{cursor:pointer;outline:none}
+.map-svg .basin ellipse{fill:color-mix(in srgb,var(--sun) 14%,transparent);stroke:var(--sun);stroke-width:1.2;transition:fill .3s,stroke-width .3s}
+.map-svg .basin text{font-family:var(--f-display);font-size:12.5px;font-weight:500;fill:var(--ink);text-anchor:middle;pointer-events:none}
+.map-svg .basin:hover ellipse,.map-svg .basin:focus ellipse,.map-svg .basin.on ellipse{fill:color-mix(in srgb,var(--sun) 42%,transparent);stroke-width:2}
+.map-svg .city circle{fill:var(--guara)}
+.map-svg .city .pulse{fill:none;stroke:var(--guara);transform-origin:center;transform-box:fill-box;animation:halo 2.4s var(--ease) infinite}
+.map-svg .city text{font-family:var(--f-display);font-size:12px;font-weight:600;fill:var(--guara)}
+.fig-note{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 30px;align-items:start;padding:22px 26px;border-top:1px solid var(--line);background:var(--card)}
+.fig-note h4{font-size:1.15rem;font-weight:500;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.fig-note p{color:var(--ink-2);margin-top:6px;max-width:70ch}
+.fig-note .eixo{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink-3);white-space:nowrap;padding-top:4px}
+.chip{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid currentColor;font-weight:400}
+.c-amb{color:var(--amb)} .c-ind{color:var(--ind)} .c-soc{color:var(--soc)}
+.fig-legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.84rem;color:var(--ink-2)}
+.fig-legend span{display:inline-flex;align-items:center;gap:8px}
+.fig-legend i{width:10px;height:10px;border-radius:50%}
+@media (max-width:640px){.fig-note{grid-template-columns:1fr}}
+
+.years{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:clamp(64px,9vw,110px);border-top:1px solid var(--line-2)}
+.yr{padding:26px 28px 0 0;display:grid;gap:10px;align-content:start;position:relative}
+.yr+.yr{padding-left:28px;border-left:1px solid var(--line)}
+.yr b{font-family:var(--f-display);font-weight:600;font-size:clamp(3rem,6vw,4.8rem);line-height:.9;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.2px var(--ink-3)}
+.yr.now b{color:var(--sun);-webkit-text-stroke:0}
+.yr h4{font-size:1.06rem;font-weight:500}
+.yr p{font-size:.92rem;color:var(--ink-2)}
+@media (max-width:820px){.years{grid-template-columns:1fr}.yr,.yr+.yr{padding:24px 0;border-left:0;border-bottom:1px solid var(--line)}}
+
+/* ================= EIXOS ================= */
+.contour{background-color:var(--paper-2)}
+.contour::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:repeating-radial-gradient(ellipse at 90% 6%,transparent 0 30px,var(--line) 30px 31px);
+  -webkit-mask-image:radial-gradient(ellipse at 90% 6%,#000 0%,transparent 60%);mask-image:radial-gradient(ellipse at 90% 6%,#000 0%,transparent 60%)}
+.contour>.wrap{position:relative}
+.sec-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:24px 60px;align-items:end;margin-bottom:clamp(44px,6vw,72px)}
+.sec-top>div{display:grid;gap:18px}
+@media (max-width:820px){.sec-top{grid-template-columns:1fr}}
+.ax{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.ax-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-2)}
+.ax-row{width:100%;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:16px;align-items:center;text-align:left;background:none;border:0;border-bottom:1px solid var(--line-2);padding:20px 4px;cursor:pointer;position:relative;overflow:hidden}
+.ax-row::before{content:"";position:absolute;inset:0;background:var(--card);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease);z-index:0}
+.ax-row>*{position:relative;z-index:1}
+.ax-row:hover::before{transform:scaleY(.35)}
+.ax-row[aria-selected="true"]::before{transform:scaleY(1)}
+.ax-n{font-family:var(--f-mono);font-size:.8rem;color:var(--ink-3);letter-spacing:.06em}
+.ax-t{font-family:var(--f-display);font-size:clamp(1.12rem,1.9vw,1.42rem);font-weight:400;letter-spacing:-.02em;line-height:1.2;transition:transform .5s var(--ease)}
+.ax-row[aria-selected="true"] .ax-t{font-weight:500;transform:translateX(6px)}
+.ax-dots{display:flex;gap:5px}
+.ax-dots i{width:8px;height:8px;border-radius:50%}
+.ax-panel{position:sticky;top:96px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3vw,34px);display:grid;gap:18px;overflow:hidden}
+.ax-panel .art{height:150px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.ax-panel .art svg{width:150px;height:150px;color:var(--sea);flex:none}
+.ax-panel .art svg path,.ax-panel .art svg circle,.ax-panel .art svg rect{stroke-dasharray:300;stroke-dashoffset:300;animation:draw 1.4s var(--ease) forwards}
+.ax-big{font-family:var(--f-display);font-weight:200;font-size:6rem;line-height:.8;letter-spacing:-.06em;color:var(--ink-3);opacity:.5}
+.ax-panel h3{font-size:clamp(1.4rem,2.4vw,1.8rem);font-weight:500;line-height:1.15}
+.ax-panel>p{color:var(--ink-2)}
+.meter{display:grid;gap:8px}
+.meter-track{position:relative;height:6px;border-radius:999px;background:linear-gradient(90deg,var(--amb),color-mix(in srgb,var(--amb) 30%,var(--ind)) 50%,var(--ind))}
+.meter-track i{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:var(--card);border:2px solid var(--ink);transform:translate(-50%,-50%);transition:left .9s var(--ease)}
+.meter-lbl{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.past h4{font-family:var(--f-mono);font-weight:400;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.past ul{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.past li{display:grid;gap:2px;padding:10px 0;border-top:1px dashed var(--line-2)}
+.past li b{font-weight:500;font-size:.92rem}
+.past li span{font-size:.86rem;color:var(--ink-2)}
+.ax-panel.swap{animation:swap .6s var(--ease)}
+@keyframes swap{from{opacity:.2;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (max-width:900px){.ax{grid-template-columns:1fr}.ax-panel{position:static;margin:4px 0 14px}}
+
+/* ================= PALESTRANTES ================= */
+.lineup-wrap{position:relative}
+.seg-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px 24px;align-items:center;margin-bottom:34px}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filters button{font-size:.8rem;color:var(--band-fg-2);background:none;border:1px solid var(--band-line);border-radius:999px;padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .3s}
+.filters button i{width:8px;height:8px;border-radius:50%}
+.filters button:hover{color:var(--band-fg)}
+.filters button[aria-pressed="true"]{color:#0b2440;background:var(--band-fg);border-color:var(--band-fg)}
+.lineup{font-family:var(--f-display);font-size:clamp(1.25rem,2.7vw,2.35rem);line-height:1.38;letter-spacing:-.03em;font-weight:500}
+.ln-name{background:none;border:0;padding:0;cursor:pointer;color:var(--band-fg);font:inherit;letter-spacing:inherit;text-align:left;transition:color .35s,opacity .45s;position:relative}
+.ln-name.it{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+.ln-name sup{font-family:var(--f-mono);font-style:normal;font-size:.36em;letter-spacing:.06em;margin-left:4px;vertical-align:.95em;font-weight:400}
+.ln-name:hover,.ln-name.on{color:var(--band-accent)}
+.ln-name.dim{opacity:.22}
+.ln-sep{color:var(--band-fg-2);opacity:.5;margin:0 .32em;font-weight:200}
+.ln-card{position:absolute;z-index:5;width:min(340px,calc(100% - 8px));background:var(--paper);color:var(--ink);border-radius:16px;padding:18px 18px 16px;box-shadow:0 30px 60px -24px rgba(0,0,0,.55);pointer-events:none;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .4s var(--ease)}
+.ln-card.show{opacity:1;transform:none}
+.ln-card small{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;color:var(--ink-3)}
+.ln-card small i{width:8px;height:8px;border-radius:50%}
+.ln-card b{display:block;font-weight:500;margin:6px 0 4px;line-height:1.25}
+.ln-card p{font-size:.9rem;color:var(--ink-2);line-height:1.45}
+.ln-hint{margin-top:26px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;color:var(--band-fg-2)}
+.soon{display:grid;gap:0;border-top:1px solid var(--band-line)}
+.soon-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px 30px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--band-line)}
+.soon-row b{font-family:var(--f-display);font-weight:600;font-size:clamp(1.4rem,3.2vw,2.6rem);letter-spacing:-.04em;line-height:1;color:transparent;-webkit-text-stroke:1px var(--band-fg)}
+.soon-row span{color:var(--band-fg-2);font-size:.95rem}
+.soon-row em{font-family:var(--f-serif);font-size:1.1rem;color:var(--band-accent);white-space:nowrap}
+@media (max-width:700px){.soon-row{grid-template-columns:1fr auto}.soon-row span{grid-column:1/-1;order:3}}
+
+/* ================= PROGRAMAÇÃO ================= */
+.days{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:34px}
+.day-btn{display:grid;gap:4px;text-align:left;padding:18px 20px;border-radius:18px;border:1px solid var(--line-2);background:transparent;cursor:pointer;transition:background .4s,border-color .4s,color .4s,transform .4s var(--ease)}
+.day-btn:hover{transform:translateY(-2px);border-color:var(--ink-3)}
+.day-btn small{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;color:var(--ink-3)}
+.day-btn b{font-family:var(--f-display);font-weight:500;font-size:clamp(1.2rem,2.2vw,1.6rem);letter-spacing:-.02em;line-height:1.1}
+.day-btn span{font-family:var(--f-serif);font-style:italic;font-size:1.08rem;color:var(--sea)}
+.day-btn[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.day-btn[aria-selected="true"] small{color:color-mix(in srgb,var(--paper) 60%,transparent)}
+.day-btn[aria-selected="true"] span{color:var(--sun)}
+@media (max-width:640px){.days{grid-template-columns:1fr}.day-btn{grid-template-columns:auto 1fr;align-items:baseline;gap:4px 14px}.day-btn span{grid-column:2}}
+.daybar{margin-bottom:28px}
+.db-track{position:relative;height:46px;border-radius:12px;overflow:hidden;background:var(--paper-2);display:flex}
+.db-seg{position:absolute;top:0;bottom:0;border-right:2px solid var(--paper);cursor:pointer;transition:filter .3s;transform-origin:bottom}
+.db-seg:hover,.db-seg.on{filter:brightness(1.12) saturate(1.2)}
+.db-seg.on{box-shadow:inset 0 -4px 0 var(--ink)}
+.db-ticks{position:relative;height:22px;margin-top:6px;font-family:var(--f-mono);font-size:.68rem;color:var(--ink-3)}
+.db-ticks span{position:absolute;transform:translateX(-50%)}
+.db-ticks span:first-child{transform:none}
+.t-plen{background:var(--ink)} .t-sess{background:var(--sea)} .t-mesa{background:var(--guara)} .t-post{background:var(--sun)} .t-curso{background:var(--surf)} .t-brk{background:repeating-linear-gradient(135deg,var(--line-2) 0 2px,transparent 2px 7px)}
+.sched{list-style:none;margin:0;padding:0}
+.sched li{display:grid;grid-template-columns:92px 26px minmax(0,1fr) auto;gap:0 18px;align-items:start;position:relative;transition:background .3s}
+.sched li::after{content:"";position:absolute;left:92px;right:0;bottom:0;height:1px;background:var(--line)}
+.sched time{font-family:var(--f-mono);font-size:.9rem;color:var(--ink-2);padding:20px 0;font-variant-numeric:tabular-nums}
+.sched .rail{position:relative;align-self:stretch}
+.sched .rail::before{content:"";position:absolute;left:12px;top:0;bottom:0;width:1px;background:var(--line-2)}
+.sched .rail i{position:absolute;left:6px;top:24px;width:13px;height:13px;border-radius:50%;border:2px solid var(--paper);transition:transform .4s var(--ease)}
+.sched .body{padding:18px 0}
+.sched h4{font-size:1.06rem;font-weight:500;line-height:1.35}
+.sched p{font-size:.88rem;color:var(--ink-2);margin-top:3px}
+.sched .kind{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;padding-top:22px;white-space:nowrap;color:var(--ink-3)}
+.sched li.brk h4{font-weight:300;color:var(--ink-3)}
+.sched li.brk .rail i{width:9px;height:9px;left:8px;top:27px;background:var(--paper)!important;border:1px solid var(--ink-3)}
+.sched li:hover,.sched li.on{background:color-mix(in srgb,var(--surf) 7%,transparent)}
+.sched li:hover .rail i,.sched li.on .rail i{transform:scale(1.35)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:.84rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:16px;height:8px;border-radius:3px}
+.notice{display:flex;align-items:center;gap:10px;font-size:.86rem;color:var(--ink-2)}
+.notice i{width:8px;height:8px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 4px color-mix(in srgb,var(--sun) 25%,transparent)}
+@media (max-width:640px){.sched li{grid-template-columns:22px minmax(0,1fr);gap:0 12px}.sched li::after{left:34px}.sched time{grid-column:2;padding:16px 0 0}.sched .rail{grid-row:1/span 2;grid-column:1}.sched .rail::before{left:10px}.sched .rail i{left:4px}.sched .body{grid-column:2;padding:2px 0 16px}.sched .kind{display:none}}
+
+/* ================= INSCRIÇÕES ================= */
+.route{position:relative;aspect-ratio:1000/190;max-width:100%;margin-bottom:clamp(40px,6vw,70px)}
+.route svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.route .path-bg{fill:none;stroke:var(--line-2);stroke-width:1.5;stroke-dasharray:3 7}
+.route .path-fg{fill:none;stroke:url(#routeGrad);stroke-width:2.5;stroke-linecap:round}
+.buoy{position:absolute;transform:translate(-50%,-50%);display:grid;justify-items:center}
+.buoy i{width:18px;height:18px;border-radius:50%;background:var(--paper-2);border:2px solid var(--sea);box-shadow:0 0 0 6px color-mix(in srgb,var(--sea) 12%,transparent)}
+.buoy.end i{background:var(--sun);border-color:var(--sun);box-shadow:0 0 0 8px color-mix(in srgb,var(--sun) 25%,transparent)}
+.buoy .lbl{position:absolute;width:170px;text-align:center;display:grid;gap:2px}
+.buoy.up .lbl{bottom:30px} .buoy.down .lbl{top:30px}
+.buoy.first .lbl{left:-9px;text-align:left} .buoy.end .lbl{right:-9px;text-align:right}
+.buoy time{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;color:var(--sea)}
+.buoy b{font-weight:500;font-size:.95rem;line-height:1.25}
+.buoy span{font-size:.78rem;color:var(--ink-3)}
+.route-list{display:none;list-style:none;margin:0 0 44px;padding:0 0 0 26px;border-left:2px dashed var(--line-2)}
+.route-list li{position:relative;padding:0 0 22px}
+.route-list li::before{content:"";position:absolute;left:-35px;top:3px;width:16px;height:16px;border-radius:50%;background:var(--paper-2);border:2px solid var(--sea)}
+.route-list li:last-child::before{background:var(--sun);border-color:var(--sun)}
+.route-list time{font-family:var(--f-mono);font-size:.74rem;color:var(--sea);letter-spacing:.08em;display:block}
+.route-list b{font-weight:500}
+@media (max-width:860px){.route{display:none}.route-list{display:block}}
+.passes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.pass{display:grid;grid-template-columns:minmax(0,1fr) 150px;background:var(--card);border-radius:18px;border:1px solid var(--line);overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s;min-width:0}
+.pass:hover{transform:translateY(-4px) rotate(-.3deg);box-shadow:0 30px 50px -34px rgba(11,36,64,.55)}
+.pass-main{padding:22px 24px;display:grid;gap:12px;min-width:0}
+.pass-top{display:flex;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.14em;color:var(--ink-3)}
+.pass h3{font-size:1.45rem;font-weight:500;letter-spacing:-.025em}
+.pass p{font-size:.88rem;color:var(--ink-2)}
+.pass dl{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:4px 26px;margin:4px 0 0}
+.pass dt{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase}
+.pass dd{margin:0;font-family:var(--f-mono);font-size:1rem;font-weight:500}
+.pass-stub{position:relative;border-left:2px dashed var(--line-2);padding:22px 18px;display:grid;align-content:space-between;gap:12px;background:linear-gradient(180deg,color-mix(in srgb,var(--surf) 10%,var(--card)),var(--card))}
+.pass-stub::before,.pass-stub::after{content:"";position:absolute;left:-11px;width:20px;height:20px;border-radius:50%;background:var(--paper-2)}
+.pass-stub::before{top:-11px} .pass-stub::after{bottom:-11px}
+.pass-stub small{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;color:var(--ink-3)}
+.pass-stub b{font-family:var(--f-serif);font-style:italic;font-weight:400;font-size:1.35rem;line-height:1.05}
+.barcode{display:block;height:34px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 8px,var(--ink) 8px 11px,transparent 11px 13px);opacity:.75;border-radius:2px}
+.pass.feat{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pass.feat p,.pass.feat .pass-top,.pass.feat dt{color:color-mix(in srgb,var(--paper) 62%,transparent)}
+.pass.feat .pass-stub{background:linear-gradient(170deg,var(--sun),var(--dusk));color:#1c1200;border-left-color:color-mix(in srgb,var(--paper) 40%,transparent)}
+.pass.feat .pass-stub small{color:rgba(28,18,0,.65)}
+.pass.feat .barcode{background:repeating-linear-gradient(90deg,#1c1200 0 2px,transparent 2px 4px,#1c1200 4px 5px,transparent 5px 8px,#1c1200 8px 11px,transparent 11px 13px)}
+@media (max-width:900px){.passes{grid-template-columns:1fr}}
+@media (max-width:460px){.pass{grid-template-columns:1fr}.pass-stub{border-left:0;border-top:2px dashed var(--line-2);grid-template-columns:1fr auto;align-items:end}.pass-stub::before{top:-11px;left:-11px}.pass-stub::after{top:-11px;bottom:auto;left:auto;right:-11px}.barcode{grid-column:1/-1}}
+.formats{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,5vw,70px);margin-top:clamp(56px,8vw,90px);padding-top:clamp(34px,5vw,50px);border-top:1px solid var(--line-2)}
+.formats h3{font-size:clamp(1.5rem,2.8vw,2.1rem);font-weight:500;margin-bottom:12px;letter-spacing:-.03em}
+.formats>div>p{color:var(--ink-2)}
+.fmt{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 22px;padding:20px 0;border-bottom:1px solid var(--line)}
+.fmt:first-child{padding-top:0}
+.fmt em{grid-row:span 2;font-family:var(--f-serif);font-size:2.6rem;line-height:.9;color:var(--sea);width:56px}
+.fmt b{font-weight:500;font-size:1.05rem}
+.fmt span{font-size:.92rem;color:var(--ink-2)}
+@media (max-width:820px){.formats{grid-template-columns:1fr}}
+
+/* ================= LOCAL ================= */
+.local-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(36px,6vw,90px);align-items:center}
+.place{font-family:var(--f-display);font-weight:600;font-size:clamp(3rem,8vw,6.4rem);line-height:.9;letter-spacing:-.055em;margin:18px 0 6px}
+.place em{display:block;font-family:var(--f-serif);font-weight:400;font-style:italic;font-size:.55em;letter-spacing:-.01em;color:var(--band-accent);margin-top:10px}
+.coords{font-family:var(--f-mono);font-size:1rem;color:var(--band-fg-2);letter-spacing:.06em}
+.local-list{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--band-line)}
+.local-list li{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--band-line);font-size:.95rem}
+.local-list span{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--band-fg-2);padding-top:4px}
+.tide{border:1px solid var(--band-line);border-radius:22px;padding:24px 22px 18px;background:var(--band-card);backdrop-filter:blur(6px)}
+.tide-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.tide-head b{font-weight:500}
+.tide-head span{font-family:var(--f-mono);font-size:.74rem;color:var(--band-fg-2)}
+.tide svg{display:block;width:100%;height:auto}
+.tide .ax{stroke:var(--band-line)}
+.tide .lbl{font-family:var(--f-mono);font-size:10px;fill:var(--band-fg-2)}
+.tide-line{stroke:var(--band-fg)}
+.tide-dot{fill:var(--band-accent)}
+.tide-cur{stroke:var(--band-accent)}
+.tide-read{font-family:var(--f-mono);font-size:.82rem;color:var(--band-fg-2);margin-top:8px}
+.tide-read b{color:var(--band-accent);font-weight:500}
+@media (max-width:820px){.local-grid{grid-template-columns:1fr}.local-list li{grid-template-columns:1fr;gap:2px}}
+
+/* ================= REALIZAÇÃO ================= */
+.orgs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+.org{padding:34px 22px 30px;display:grid;gap:8px;align-content:start;position:relative;transition:color .4s}
+.org+.org{border-left:1px solid var(--line)}
+.org b{font-family:var(--f-display);font-weight:600;font-size:clamp(1.3rem,2.4vw,1.85rem);letter-spacing:-.03em;line-height:1.05}
+.org span{font-size:.84rem;color:var(--ink-2)}
+.org::after{content:"";position:absolute;left:22px;right:22px;bottom:-1px;height:2px;background:var(--sun);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.org:hover{color:var(--sea)}
+.org:hover::after{transform:scaleX(1)}
+@media (max-width:820px){.orgs{grid-template-columns:repeat(2,minmax(0,1fr))}.org:nth-child(3){border-left:0}.org:nth-child(n+3){border-top:1px solid var(--line)}}
+.sponsor{margin-top:28px;position:relative;overflow:hidden;border-radius:24px;background:var(--band-bg);color:var(--band-fg);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:clamp(28px,4vw,44px)}
+.sponsor h3{font-size:clamp(1.5rem,2.8vw,2.1rem);font-weight:500;letter-spacing:-.03em;margin-bottom:8px}
+.sponsor p{color:var(--band-fg-2);max-width:56ch;position:relative}
+.sponsor .btn{position:relative;color:var(--band-fg)}
+.sponsor svg.art{position:absolute;right:16%;bottom:-6px;width:260px;height:170px;color:var(--band-fg);opacity:.2;pointer-events:none}
+@media (max-width:820px){.sponsor{grid-template-columns:1fr}.sponsor svg.art{right:-30px}}
+
+/* ================= FAQ ================= */
+.faq-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,6vw,90px);align-items:start}
+.faq-grid>div:first-child{display:grid;gap:18px;position:sticky;top:110px}
+.faq details{border-bottom:1px solid var(--line-2)}
+.faq details:first-child{border-top:1px solid var(--line-2)}
+.faq summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;padding:24px 0;font-family:var(--f-display);font-weight:400;font-size:clamp(1.05rem,1.8vw,1.25rem);letter-spacing:-.015em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary small{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-3)}
+.faq summary i{width:32px;height:32px;border-radius:50%;border:1px solid var(--line-2);position:relative;transition:transform .5s var(--ease),background .3s}
+.faq summary i::before,.faq summary i::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:1.5px;background:currentColor;transform:translate(-50%,-50%)}
+.faq summary i::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq details[open] summary i{transform:rotate(135deg);background:var(--sun);border-color:var(--sun);color:#1c1200}
+.faq .ans{padding:0 56px 26px 56px;color:var(--ink-2);max-width:66ch}
+@media (max-width:820px){.faq-grid{grid-template-columns:1fr}.faq-grid>div:first-child{position:static}.faq .ans{padding:0 0 24px 56px}}
+
+/* ================= FOOTER ================= */
+footer{background:var(--foot-bg);color:#eaf3fa;position:relative;transition:background-color .7s}
+.foot-cta{padding-block:clamp(80px,10vw,130px) 50px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:end}
+.foot-cta h2{font-size:clamp(2.2rem,5.4vw,4.2rem);font-weight:600;line-height:1;letter-spacing:-.04em}
+.foot-cta h2 em{font-family:var(--f-serif);font-weight:400;color:#f5a524;letter-spacing:-.01em}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:30px;padding-block:44px 30px;border-top:1px solid rgba(234,243,250,.14)}
+.foot-grid h4{font-family:var(--f-mono);font-weight:400;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#a9c0d6;margin-bottom:12px}
+.foot-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.foot-grid a{text-decoration:none;opacity:.86}
+.foot-grid a:hover{opacity:1;text-decoration:underline}
+.foot-grid p{color:#a9c0d6;font-size:.92rem}
+.giant{font-family:var(--f-display);font-weight:700;font-size:clamp(4.5rem,24vw,22rem);line-height:.76;letter-spacing:-.07em;color:transparent;-webkit-text-stroke:1px rgba(234,243,250,.22);text-align:center;white-space:nowrap;user-select:none;padding-top:10px;
+  background:linear-gradient(180deg,rgba(63,176,201,.28),rgba(63,176,201,0) 80%);-webkit-background-clip:text;background-clip:text}
+.foot-bottom{border-top:1px solid rgba(234,243,250,.14);padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:.72rem;color:#a9c0d6}
+@media (max-width:820px){.foot-cta,.foot-grid{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important}
+  html{scroll-behavior:auto}
+}
+</style>
+<style>[hidden]{display:none!important} img{max-width:100%} body{margin:0}</style>
+</head>
+<body>
+
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <div class="loader-core">
+    <svg class="loader-mark" viewBox="0 0 84 84" fill="none" aria-hidden="true">
+      <circle class="fill" cx="56" cy="30" r="7" fill="#f5a524"/>
+      <path class="draw" d="M8 44 A34 34 0 0 0 76 44" stroke="currentColor" stroke-width="1.6"/>
+      <path class="draw" d="M8 44 Q25 38 42 44 T76 44" stroke="#3fb0c9" stroke-width="1.6"/>
+      <path class="draw" d="M12 56 Q27 51 42 56 T72 56" stroke="#1b6ba3" stroke-width="1.6"/>
+      <path class="draw" d="M14 22 C24 10 36 12 44 24" stroke="#d33a2c" stroke-width="2" stroke-linecap="round"/>
+      <path class="draw" d="M30 44 V28 M26 28 H36 M33 28 L33 20" stroke="currentColor" stroke-width="1.4"/>
+    </svg>
+    <div class="loader-title">II CMMEB · 2027</div>
+    <div class="loader-pct"><span id="ldPct">0</span><small>%</small></div>
+    <div class="loader-bar"><i id="ldBar"></i></div>
+    <div class="loader-stage" id="ldStage">Lendo a batimetria</div>
+  </div>
+  <div class="loader-foot">
+    <span id="ldCoord">LAT 00°00′S · LON 000°00′W</span>
+    <button class="loader-skip" id="ldSkip" type="button">Pular introdução</button>
+  </div>
+</div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#inicio" aria-label="II CMMEB, início">
+      <svg viewBox="0 0 84 84" fill="none" aria-hidden="true">
+        <circle cx="56" cy="30" r="7" fill="#f5a524"/>
+        <path d="M8 44 A34 34 0 0 0 76 44 Z" fill="#0e2d57"/>
+        <path d="M8 44 Q25 38 42 44 T76 44 L76 47 A34 34 0 0 1 75.3 50 Q58 46 42 50 T9 50 A34 34 0 0 1 8 47Z" fill="#3fb0c9"/>
+        <path d="M11 56 Q27 51 42 56 T73 56 A34 34 0 0 1 70 62 Q56 58 42 62 T14 62 A34 34 0 0 1 11 56Z" fill="#1b6ba3"/>
+        <path d="M14 22 C24 10 36 12 44 24" stroke="#d33a2c" stroke-width="3" stroke-linecap="round"/>
+        <path d="M30 43 V28 M26 28 H36 M33 28 V20" stroke="currentColor" stroke-width="2"/>
+      </svg>
+      <span><b>II CMMEB</b><small>MARGEM EQUATORIAL · 2027</small></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#eixos">Eixos</a></li>
+      <li><a href="#palestrantes">Palestrantes</a></li>
+      <li><a href="#programacao">Programação</a></li>
+      <li><a href="#inscricoes">Inscrições</a></li>
+      <li><a href="#local">Local</a></li>
+      <li><a href="#faq">Dúvidas</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Alternar tema claro e escuro">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn-sun nav-cta" href="#inscricoes">Quero participar</a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobilePanel" aria-label="Abrir menu"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<nav class="mobile-panel" id="mobilePanel" aria-label="Menu" hidden>
+  <a href="#sobre">Sobre <span>01</span></a><a href="#eixos">Eixos temáticos <span>02</span></a><a href="#palestrantes">Palestrantes <span>03</span></a><a href="#programacao">Programação <span>04</span></a><a href="#inscricoes">Inscrições <span>05</span></a><a href="#local">Local <span>06</span></a><a href="#faq">Dúvidas <span>07</span></a>
+</nav>
+
+<main>
+<section class="hero" id="inicio">
+  <canvas id="ocean" aria-hidden="true"></canvas>
+  <div class="veil veil-l" aria-hidden="true"></div>
+  <div class="veil veil-d" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="kicker h-anim" style="--d:0">II Congresso · edição 2027</p>
+      <h1>
+        <span class="ln"><span style="--d:1">Ciências do Mar</span></span>
+        <span class="ln"><span style="--d:2">na Margem <span class="accent">Equatorial</span></span></span>
+        <span class="ln"><span style="--d:3">Brasileira</span></span>
+      </h1>
+      <p class="theme-line h-anim" style="--d:4"><b>Tema central</b>Integração Indústria e Meio Ambiente</p>
+      <div class="hero-meta h-anim" style="--d:5">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><strong id="heroDate">22 a 24 de setembro de 2027</strong><span class="tag">datas a confirmar</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><strong>São Luís – MA</strong></div>
+      </div>
+      <div class="hero-cta h-anim" style="--d:6">
+        <a class="btn btn-sun" href="#inscricoes">Inscrições e submissões <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="#programacao">Ver programação</a>
+      </div>
+    </div>
+    <aside class="countdown h-anim" style="--d:7" aria-label="Contagem regressiva">
+      <p>Faltam para a abertura</p>
+      <div class="cd"><div><b id="cdD">—</b><span>dias</span></div><div><b id="cdH">—</b><span>horas</span></div><div><b id="cdM">—</b><span>min</span></div><div><b id="cdS">—</b><span>seg</span></div></div>
+    </aside>
+  </div>
+  <a class="scroll-cue h-anim" style="--d:8" href="#sobre">ROLE<i></i></a>
+  <div class="wave-div" aria-hidden="true">
+    <svg class="b" viewBox="0 0 2880 84" preserveAspectRatio="none"><path fill="var(--paper)" d="M0 42 C240 12 480 72 720 42 S1200 12 1440 42 S1920 72 2160 42 S2640 12 2880 42 V84 H0Z"/></svg>
+    <svg viewBox="0 0 2880 84" preserveAspectRatio="none"><path fill="var(--paper)" d="M0 58 C240 34 480 82 720 58 S1200 34 1440 58 S1920 82 2160 58 S2640 34 2880 58 V84 H0Z"/></svg>
+  </div>
+</section>
+
+<div class="ticker" aria-label="Instituições na programação de 2024">
+  <div class="tk-track" id="tkTrack"></div>
+</div>
+
+<section class="section" id="sobre">
+  <div class="wrap">
+    <div class="about-head">
+      <div class="about-side rv">
+        <p class="kicker"><b>01</b>Sobre</p>
+        <p class="mono">02°31′S · 44°18′W</p>
+      </div>
+      <p class="manifesto" id="manifesto">A Margem Equatorial vai do Amapá ao Rio Grande do Norte. É a nova fronteira de energia do país e uma das costas menos estudadas do Atlântico, com <em>recifes sob a pluma do Amazonas</em>, a maior faixa contínua de manguezais do mundo e comunidades que vivem do mar. O congresso reúne <em>quem estuda esse oceano e quem opera nele.</em></p>
+    </div>
+
+    <div class="ruler" aria-label="Edição 2024 em números">
+      <div class="read rv"><small>2024</small><b data-count="31">31</b><span>palestras em três dias</span></div>
+      <div class="read rv" style="--i:1"><small>2024</small><b data-count="3">3</b><span>mesas-redondas</span></div>
+      <div class="read rv" style="--i:2"><small>2024</small><b data-count="3">3</b><span>sessões de pôsteres</span></div>
+      <div class="read rv" style="--i:3"><small>2024</small><b data-count="22">22</b><span>instituições na programação</span></div>
+    </div>
+
+    <div class="fig rv" id="fig">
+      <div class="fig-head">
+        <h3>O mesmo mar, <em>visto de dois ângulos</em></h3>
+        <div class="seg" role="tablist" aria-label="Vista">
+          <button role="tab" id="t-perfil" aria-controls="v-perfil" aria-selected="true" type="button">Perfil</button>
+          <button role="tab" id="t-planta" aria-controls="v-planta" aria-selected="false" type="button">Planta</button>
+        </div>
+      </div>
+      <div class="fig-stage">
+        <div class="fig-scroll" id="v-perfil" role="tabpanel" aria-labelledby="t-perfil">
+          <svg class="xs" viewBox="0 0 1000 410" role="img" aria-label="Perfil esquemático da costa à bacia oceânica, com pontos de interesse ambientais, industriais e sociais">
+            <defs>
+              <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="var(--surf)" stop-opacity=".32"/>
+                <stop offset="1" stop-color="var(--sea)" stop-opacity=".62"/>
+              </linearGradient>
+            </defs>
+            <rect class="air" x="0" y="0" width="1000" height="410"/>
+            <path class="water" d="M150,96 C200,104 240,110 300,118 S480,138 540,146 C560,152 575,170 600,200 L622,222 L640,262 L656,238 C680,270 720,320 780,348 C840,362 900,368 1000,372 L1000,96 Z"/>
+            <path class="ground" d="M0,84 C60,84 110,88 150,96 C200,104 240,110 300,118 S480,138 540,146 C560,152 575,170 600,200 L622,222 L640,262 L656,238 C680,270 720,320 780,348 C840,362 900,368 1000,372 L1000,410 L0,410 Z"/>
+            <path class="floor" d="M0,84 C60,84 110,88 150,96 C200,104 240,110 300,118 S480,138 540,146 C560,152 575,170 600,200 L622,222 L640,262 L656,238 C680,270 720,320 780,348 C840,362 900,368 1000,372"/>
+            <path class="surf" id="xsSurf" d=""/>
+            <line class="guide" x1="150" x2="990" y1="146" y2="146"/><text class="gl" x="992" y="140" text-anchor="end">~100 m</text>
+            <line class="guide" x1="600" x2="990" y1="300" y2="300"/><text class="gl" x="992" y="294" text-anchor="end">~2000 m</text>
+            <text class="gl" x="992" y="90" text-anchor="end">0 m</text>
+            <text class="zone" x="20" y="400">COSTA</text>
+            <text class="zone" x="250" y="400">PLATAFORMA CONTINENTAL</text>
+            <text class="zone" x="600" y="400">TALUDE</text>
+            <text class="zone" x="800" y="400">BACIA OCEÂNICA</text>
+            <g class="glyph amb"><path d="M40 84v-14m0 5-7-6m7 2 6-6M40 84l-5 6M40 84l5 6"/><path d="M70 86v-16m0 6-8-7m8 3 7-7M70 86l-5 6M70 86l5 6"/><path d="M100 89v-12m0 4-6-5m6 2 6-5M100 89l-4 5M100 89l4 5"/></g>
+            <g class="glyph soc"><path d="M202 93h30l-5 6h-20z"/><path d="M217 93V78l9 9"/></g>
+            <g class="glyph ind"><path d="M340 121V40"/><path d="M340 40l-1-26M340 40l23 12M340 40l-22 13"/><circle cx="340" cy="40" r="2"/></g>
+            <g class="glyph amb"><path d="M452 134c0-8 6-10 6-16M458 134c0-6-6-7-6-13M470 137c0-9 7-11 7-18M477 137c0-7-5-9-5-14M488 139c0-7 5-8 5-13"/></g>
+            <path class="flow" d="M610 118 C680 112 760 116 860 110"/><path class="glyph amb" d="M852 104l10 6-10 6"/>
+            <g class="glyph amb"><path d="M630 232c4 6 8 14 10 26"/></g>
+            <g class="glyph ind"><path d="M836 96h48M842 96v-12h36v12M850 84V64h6v20M866 84V70h4v14M860 64l-3-10"/><path d="M860 96v270" stroke-dasharray="4 4"/><path d="M852 366h16M856 366v-6h8v6"/></g>
+            <g class="hs amb soc" data-h="0" tabindex="0" role="button" aria-label="Manguezais"><circle class="halo" cx="70" cy="56" r="9"/><circle class="ring" cx="70" cy="56" r="9"/><circle class="core" cx="70" cy="56" r="3.5"/></g>
+            <g class="hs soc" data-h="1" tabindex="0" role="button" aria-label="Pesca artesanal"><circle class="halo" cx="217" cy="62" r="9"/><circle class="ring" cx="217" cy="62" r="9"/><circle class="core" cx="217" cy="62" r="3.5"/></g>
+            <g class="hs ind" data-h="2" tabindex="0" role="button" aria-label="Eólica offshore"><circle class="halo" cx="378" cy="30" r="9"/><circle class="ring" cx="378" cy="30" r="9"/><circle class="core" cx="378" cy="30" r="3.5"/></g>
+            <g class="hs amb" data-h="3" tabindex="0" role="button" aria-label="Recifes mesofóticos"><circle class="halo" cx="470" cy="104" r="9"/><circle class="ring" cx="470" cy="104" r="9"/><circle class="core" cx="470" cy="104" r="3.5"/></g>
+            <g class="hs amb" data-h="4" tabindex="0" role="button" aria-label="Corrente Norte do Brasil"><circle class="halo" cx="735" cy="140" r="9"/><circle class="ring" cx="735" cy="140" r="9"/><circle class="core" cx="735" cy="140" r="3.5"/></g>
+            <g class="hs amb" data-h="5" tabindex="0" role="button" aria-label="Cânions submarinos"><circle class="halo" cx="600" cy="268" r="9"/><circle class="ring" cx="600" cy="268" r="9"/><circle class="core" cx="600" cy="268" r="3.5"/></g>
+            <g class="hs ind" data-h="6" tabindex="0" role="button" aria-label="Poços em águas profundas"><circle class="halo" cx="905" cy="62" r="9"/><circle class="ring" cx="905" cy="62" r="9"/><circle class="core" cx="905" cy="62" r="3.5"/></g>
+          </svg>
+        </div>
+        <div class="fig-scroll" id="v-planta" role="tabpanel" aria-labelledby="t-planta" hidden>
+          <svg class="map-svg" viewBox="0 0 1000 300" role="img" aria-label="Esquema das cinco bacias sedimentares da Margem Equatorial, do Amapá ao Rio Grande do Norte, com São Luís como sede">
+            <rect class="sea-bg" x="0" y="0" width="1000" height="300"/>
+            <path class="iso" transform="translate(0,-92)" d="M0,118 C40,122 70,128 100,140 C125,150 140,175 165,178 C190,181 205,186 235,192 C290,203 340,208 380,214 C392,216 398,232 410,230 C425,228 430,218 450,219 C510,224 560,230 610,230 C660,230 700,224 750,222 C810,220 870,214 920,212 C950,211 975,222 1000,250"/>
+            <path class="iso" transform="translate(0,-38)" d="M0,118 C40,122 70,128 100,140 C125,150 140,175 165,178 C190,181 205,186 235,192 C290,203 340,208 380,214 C392,216 398,232 410,230 C425,228 430,218 450,219 C510,224 560,230 610,230 C660,230 700,224 750,222 C810,220 870,214 920,212 C950,211 975,222 1000,250"/>
+            <text class="iso-l" x="990" y="126" text-anchor="end">2000 m</text>
+            <text class="iso-l" x="990" y="180" text-anchor="end">200 m</text>
+            <path class="land" d="M0,118 C40,122 70,128 100,140 C125,150 140,175 165,178 C190,181 205,186 235,192 C290,203 340,208 380,214 C392,216 398,232 410,230 C425,228 430,218 450,219 C510,224 560,230 610,230 C660,230 700,224 750,222 C810,220 870,214 920,212 C950,211 975,222 1000,250 L1000,300 L0,300 Z"/>
+            <path class="coast" d="M0,118 C40,122 70,128 100,140 C125,150 140,175 165,178 C190,181 205,186 235,192 C290,203 340,208 380,214 C392,216 398,232 410,230 C425,228 430,218 450,219 C510,224 560,230 610,230 C660,230 700,224 750,222 C810,220 870,214 920,212 C950,211 975,222 1000,250"/>
+            <text class="st" x="44" y="168">AP</text><text class="st" x="214" y="236">PA</text><text class="st" x="352" y="262">MA</text>
+            <text class="st" x="560" y="268">PI</text><text class="st" x="706" y="262">CE</text><text class="st" x="902" y="256">RN</text>
+            <g class="basin" data-b="0" tabindex="0" role="button" aria-label="Foz do Amazonas"><ellipse cx="120" cy="88" rx="78" ry="30"/><text x="120" y="92">Foz do Amazonas</text></g>
+            <g class="basin" data-b="1" tabindex="0" role="button" aria-label="Pará-Maranhão"><ellipse cx="300" cy="140" rx="74" ry="27"/><text x="300" y="144">Pará-Maranhão</text></g>
+            <g class="basin" data-b="2" tabindex="0" role="button" aria-label="Barreirinhas"><ellipse cx="490" cy="168" rx="66" ry="24"/><text x="490" y="172">Barreirinhas</text></g>
+            <g class="basin" data-b="3" tabindex="0" role="button" aria-label="Ceará"><ellipse cx="680" cy="160" rx="58" ry="24"/><text x="680" y="164">Ceará</text></g>
+            <g class="basin" data-b="4" tabindex="0" role="button" aria-label="Potiguar"><ellipse cx="868" cy="150" rx="62" ry="24"/><text x="868" y="154">Potiguar</text></g>
+            <g class="city"><circle class="pulse" cx="410" cy="230" r="4"/><circle cx="410" cy="230" r="4"/><text x="420" y="250">São Luís · sede</text></g>
+          </svg>
+        </div>
+        <div class="fig-note" aria-live="polite">
+          <div><h4 id="noteTitle">Manguezais</h4><p id="noteText"></p></div>
+          <span class="eixo" id="noteEixo"></span>
+        </div>
+      </div>
+      <div class="fig-legend"><span><i style="background:var(--amb)"></i>Ambiente</span><span><i style="background:var(--ind)"></i>Indústria</span><span><i style="background:var(--soc)"></i>Sociedade</span><span class="mono" style="font-size:.72rem;color:var(--ink-3)">esquema sem escala · escala vertical exagerada</span></div>
+    </div>
+
+    <div class="years">
+      <div class="yr rv"><b>2023</b><h4>Oficinas de trabalho</h4><p>Em São Luís, 71 pesquisadores e 10 representantes da Petrobras mapearam as lacunas de conhecimento oceanográfico da região.</p></div>
+      <div class="yr rv" style="--i:1"><b>2024</b><h4>I Congresso</h4><p>Três dias de palestras, mesas e pôsteres sobre oceanografia, fauna, energia e sociedade na Margem Equatorial.</p></div>
+      <div class="yr now rv" style="--i:2"><b>2027</b><h4>II Congresso</h4><p>Segunda edição, com o tema Integração Indústria e Meio Ambiente.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section contour" id="eixos">
+  <div class="wrap">
+    <div class="sec-top">
+      <div class="rv"><p class="kicker"><b>02</b>Eixos temáticos</p><h2 class="h2">Oito frentes, <em>um mesmo mar</em></h2></div>
+      <p class="lede rv" style="--i:1">Os eixos orientam a submissão de trabalhos e a montagem das sessões. Cada um mostra onde fica entre ambiente e indústria, e o que já foi apresentado sobre o tema em 2024.</p>
+    </div>
+    <div class="ax">
+      <ol class="ax-list" id="axList" role="tablist" aria-label="Eixos temáticos"></ol>
+      <article class="ax-panel" id="axPanel" role="tabpanel"></article>
+    </div>
+  </div>
+</section>
+
+<section class="section band" id="palestrantes">
+  <div class="wrap">
+    <div class="sec-top">
+      <div class="rv"><p class="kicker"><b>03</b>Palestrantes</p><h2 class="h2">Vozes da academia, <em>da operação</em> e da regulação</h2></div>
+      <p class="lede rv" style="--i:1">A grade de 2027 está em montagem. Enquanto isso, veja o line-up da primeira edição: passe o cursor ou toque em um nome para ver o tema da palestra.</p>
+    </div>
+    <div class="seg-row">
+      <div class="seg" role="tablist" aria-label="Edição">
+        <button role="tab" id="t-sp24" aria-controls="p-sp24" aria-selected="true" type="button">Line-up 2024</button>
+        <button role="tab" id="t-sp27" aria-controls="p-sp27" aria-selected="false" type="button">2027 · em confirmação</button>
+      </div>
+      <div class="filters" id="spFilters"></div>
+    </div>
+    <div role="tabpanel" id="p-sp24" aria-labelledby="t-sp24">
+      <div class="lineup-wrap" id="lineupWrap">
+        <p class="lineup" id="lineup"></p>
+        <div class="ln-card" id="lnCard" aria-hidden="true"></div>
+      </div>
+      <p class="ln-hint" id="lnHint">30 PALESTRANTES · 22 INSTITUIÇÕES · SÃO LUÍS, OUTUBRO DE 2024</p>
+    </div>
+    <div role="tabpanel" id="p-sp27" aria-labelledby="t-sp27" hidden>
+      <div class="soon" id="soon"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="programacao">
+  <div class="wrap">
+    <div class="sec-top">
+      <div class="rv"><p class="kicker"><b>04</b>Programação</p><h2 class="h2">Três dias, <em>do oceano ao território</em></h2></div>
+      <div class="rv" style="--i:1;display:grid;gap:14px"><p class="lede">Grade preliminar no ritmo da primeira edição: plenárias pela manhã, sessões temáticas, pôsteres nos intervalos e uma mesa-redonda fechando cada dia.</p><p class="notice"><i></i>Programação preliminar, sujeita a alterações</p></div>
+    </div>
+    <div class="days" role="tablist" aria-label="Dia" id="dayTabs"></div>
+    <div class="daybar" aria-hidden="true"><div class="db-track" id="dbTrack"></div><div class="db-ticks" id="dbTicks"></div></div>
+    <div id="dayPanel" role="tabpanel"></div>
+    <div class="legend"><span><i class="t-plen"></i>Plenária</span><span><i class="t-sess"></i>Sessão temática</span><span><i class="t-mesa"></i>Mesa-redonda</span><span><i class="t-post"></i>Pôsteres</span><span><i class="t-curso"></i>Minicurso</span><span><i class="t-brk"></i>Intervalo</span></div>
+  </div>
+</section>
+
+<section class="section contour" id="inscricoes">
+  <div class="wrap">
+    <div class="sec-top">
+      <div class="rv"><p class="kicker"><b>05</b>Inscrições e submissões</p><h2 class="h2">Escolha seu <em>cartão de embarque</em></h2></div>
+      <p class="lede rv" style="--i:1">Datas e valores serão publicados com a abertura das inscrições. A rota abaixo é a previsão da comissão organizadora.</p>
+    </div>
+    <div class="route rv" id="route">
+      <svg viewBox="0 0 1000 190" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="routeGrad" x1="0" x2="1"><stop offset="0" stop-color="#3fb0c9"/><stop offset=".7" stop-color="#f5a524"/><stop offset="1" stop-color="#e0622a"/></linearGradient></defs>
+        <path class="path-bg" id="routePath" d="M30,120 C140,40 250,160 380,100 S620,30 740,110 S900,150 970,70"/>
+        <path class="path-fg" id="routeFg" d="M30,120 C140,40 250,160 380,100 S620,30 740,110 S900,150 970,70"/>
+      </svg>
+    </div>
+    <ol class="route-list" id="routeList"></ol>
+    <div class="passes" id="passes"></div>
+    <div class="formats">
+      <div class="rv"><h3>Submissão de trabalhos</h3><p>Os trabalhos são enviados dentro de um dos oito eixos temáticos. As normas completas, com modelo de resumo e critérios de avaliação, serão publicadas na abertura das submissões.</p></div>
+      <div class="rv" style="--i:1">
+        <div class="fmt"><em>a</em><b>Resumo expandido</b><span>Formato principal, apresentado nas sessões de pôsteres.</span></div>
+        <div class="fmt"><em>b</em><b>Apresentação oral</b><span>Para trabalhos selecionados pela comissão científica, nas sessões temáticas.</span></div>
+        <div class="fmt"><em>c</em><b>Prêmio de melhores trabalhos</b><span>Reconhecimento por categoria, anunciado no encerramento.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section band" id="local">
+  <div class="wrap local-grid">
+    <div class="rv">
+      <p class="kicker"><b>06</b>Local</p>
+      <h2 class="place">São Luís<em>na ilha de Upaon-Açu</em></h2>
+      <p class="coords">02°31′S · 44°18′W · GOLFÃO MARANHENSE</p>
+      <ul class="local-list">
+        <li><span>Espaço</span><div>A confirmar pela comissão organizadora</div></li>
+        <li><span>Organização</span><div>Departamento de Oceanografia e Limnologia, UFMA</div></li>
+        <li><span>Por que aqui</span><div>Uma das maiores amplitudes de maré do país, manguezais contínuos e a porta de entrada para as bacias Pará-Maranhão e Barreirinhas.</div></li>
+      </ul>
+    </div>
+    <figure class="tide rv" style="--i:1;margin:0">
+      <div class="tide-head"><b>Maré semidiurna em São Luís</b><span>curva ilustrativa · sizígia</span></div>
+      <svg viewBox="0 0 520 260" role="img" aria-label="Curva ilustrativa de maré semidiurna com amplitude próxima de 7 metros em 24 horas">
+        <defs><linearGradient id="tideFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".22"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs>
+        <g id="tideGrid"></g>
+        <path id="tideArea" fill="url(#tideFill)"/>
+        <path id="tideLine" class="tide-line" fill="none" stroke-width="2"/>
+        <line id="tideCursor" class="tide-cur" stroke-dasharray="3 4"/>
+        <circle id="tideDot" class="tide-dot" r="5.5"/>
+      </svg>
+      <figcaption class="tide-read">hora <b id="tideH">00:00</b> · nível <b id="tideV">0,0 m</b></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="realizacao">
+  <div class="wrap">
+    <div class="sec-top">
+      <div class="rv"><p class="kicker"><b>07</b>Realização</p><h2 class="h2">Quem fez a <em>primeira edição</em></h2></div>
+    </div>
+    <div class="orgs">
+      <div class="org rv"><b>UFMA</b><span>Universidade Federal do Maranhão · Departamento de Oceanografia e Limnologia</span></div>
+      <div class="org rv" style="--i:1"><b>Fundação Sousândrade</b><span>Apoio ao desenvolvimento da UFMA</span></div>
+      <div class="org rv" style="--i:2"><b>AOCEANO Norte</b><span>Associação Brasileira de Oceanografia, Regional Norte</span></div>
+      <div class="org rv" style="--i:3"><b>Petrobras</b><span>Projetos ambientais na Margem Equatorial</span></div>
+    </div>
+    <div class="sponsor rv">
+      <svg class="art" viewBox="0 0 260 170" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M60 170V96h110v74M52 96h126M70 96V80h60v16M150 80V20l-10 60M150 20l10 60M140 48h20M170 90l40-50M60 130h110M60 112l110 36M170 112L60 148"/><path d="M0 168c20-6 40 6 60 0s40 6 60 0 40 6 60 0 40 6 80 0"/></svg>
+      <div><h3>Sua empresa no congresso</h3><p>Cotas de patrocínio, estandes e espaço em sessões técnicas para empresas que operam ou prestam serviços na Margem Equatorial. Os detalhes saem junto com as inscrições.</p></div>
+      <a class="btn btn-line" href="#faq">Saiba mais</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq" style="padding-top:0">
+  <div class="wrap faq-grid">
+    <div class="rv">
+      <p class="kicker"><b>08</b>Dúvidas</p>
+      <h2 class="h2">Antes de <em>embarcar</em></h2>
+      <p class="lede">Não achou sua resposta? As informações oficiais serão publicadas em cmmeb.com.br.</p>
+    </div>
+    <div class="faq rv" style="--i:1">
+      <details><summary><small>01</small>Preciso ser da oceanografia para participar?<i></i></summary><p class="ans">Não. O congresso é aberto a engenharias, geociências, biologia, direito, economia, ciências sociais e a profissionais do setor produtivo. O tema de 2027 foi escolhido para atrair quem trabalha na interface entre operação e ambiente.</p></details>
+      <details><summary><small>02</small>Posso participar sem apresentar trabalho?<i></i></summary><p class="ans">Sim. A inscrição como ouvinte dá acesso às palestras, mesas-redondas e sessões de pôsteres.</p></details>
+      <details><summary><small>03</small>Em qual eixo devo submeter meu resumo?<i></i></summary><p class="ans">Escolha o eixo mais próximo da pergunta central do seu trabalho. Trabalhos que unem dados ambientais e operação industrial se encaixam bem em “Monitoramento, dados e tecnologia” ou “Energia offshore”.</p></details>
+      <details><summary><small>04</small>Haverá certificado?<i></i></summary><p class="ans">Sim. Participantes e autores de trabalhos apresentados recebem certificado emitido pela organização.</p></details>
+      <details><summary><small>05</small>Como uma empresa pode apoiar o evento?<i></i></summary><p class="ans">As cotas de patrocínio e exposição serão publicadas junto com a abertura das inscrições. Até lá, o contato é feito pela comissão organizadora no Departamento de Oceanografia e Limnologia da UFMA.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot-cta">
+    <h2>Setembro de 2027.<br><em>Vemos você no mar.</em></h2>
+    <a class="btn btn-sun" href="#inscricoes">Quero participar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+  <div class="wrap foot-grid">
+    <div><h4>II CMMEB</h4><p>II Congresso de Ciências do Mar na Margem Equatorial Brasileira · Integração Indústria e Meio Ambiente.<br>Departamento de Oceanografia e Limnologia, UFMA · São Luís – MA</p></div>
+    <div><h4>Navegue</h4><ul><li><a href="#sobre">Sobre</a></li><li><a href="#eixos">Eixos temáticos</a></li><li><a href="#palestrantes">Palestrantes</a></li><li><a href="#programacao">Programação</a></li></ul></div>
+    <div><h4>Participe</h4><ul><li><a href="#inscricoes">Inscrições</a></li><li><a href="#local">Local</a></li><li><a href="#faq">Dúvidas</a></li><li><span class="mono" style="opacity:.86">cmmeb.com.br</span></li></ul></div>
+  </div>
+  <div class="giant" aria-hidden="true">CMMEB</div>
+  <div class="wrap foot-bottom"><span>© 2027 · II CMMEB</span><span>02°31′S 44°18′W</span></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+const EVENT_START = new Date('2027-09-22T08:00:00-03:00'); // data provisória: ajuste aqui
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s,c=document)=>c.querySelector(s);
+const $$ = (s,c=document)=>[...c.querySelectorAll(s)];
+const root = document.documentElement;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const easeOut=t=>1-Math.pow(1-t,3);
+const darkMQ = matchMedia('(prefers-color-scheme: dark)');
+const isLight=()=>{const a=root.getAttribute('data-theme'); if(a==='light') return true; if(a==='dark') return false; return !darkMQ.matches;};
+
+/* ================= CENA 3D ================= */
+const Scene = (function(){
+  const hero=$('#inicio'), canvas=$('#ocean');
+  let ok=false, renderer, scene, camera, sky, skyMat, sea, seaMat, ocean, oceanMat, plat, platMat, tMat, flare, beacon, deckLights=[], turbines=[], birds=[], sunS, sunHalo, moonS, moonHalo, stars;
+  let progress=0, ready=false, visible=true, mx=0, my=0, scrollK=0, last=performance.now(); const t0=performance.now();
+  let mix=isLight()?1:0, mixFrom=mix, mixTo=mix, mixT0=0, mixAnim=false;
+  const W=()=>hero.clientWidth, H=()=>hero.clientHeight;
+  const C=h=>new THREE.Color(h);
+  let PAL;
+  const tmp={};
+  function glowTex(stops){
+    const c=document.createElement('canvas'); c.width=c.height=128; const g=c.getContext('2d');
+    const gr=g.createRadialGradient(64,64,0,64,64,64); stops.forEach(s=>gr.addColorStop(s[0],s[1]));
+    g.fillStyle=gr; g.fillRect(0,0,128,128); return new THREE.CanvasTexture(c);
+  }
+  function init(){
+    if(typeof THREE==='undefined') return false;
+    try{ renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'}); }catch(e){ return false; }
+    PAL={
+      dark:{zen:C(0x020a18),mid:C(0x071d3a),hor:C(0x1c3b64),haze:C(0x05162e),glow:C(0x9dbcf2),fog:C(0x0a2346),plane:C(0x041327),deep:C(0x174f88),surf:C(0x93dff0),glint:C(0xdbe8ff),line:C(0xd8e7f4),glowK:26,glowI:.32,bandI:.18,fogD:.011,alpha:.95},
+      light:{zen:C(0x56b4dc),mid:C(0x9fdbef),hor:C(0xffcf93),haze:C(0x8fd0e2),glow:C(0xffa04a),fog:C(0xf7d2a4),plane:C(0x63bcd8),deep:C(0x0c5689),surf:C(0xffffff),glint:C(0xff8a2e),line:C(0x0d3a63),glowK:5,glowI:.5,bandI:.6,fogD:.0085,alpha:.92}
+    };
+    const pr=Math.min(window.devicePixelRatio||1,1.75);
+    renderer.setPixelRatio(pr); renderer.setClearColor(0x000000,0);
+    scene=new THREE.Scene();
+    scene.fog=new THREE.FogExp2(0x0a2346,0.011);
+    camera=new THREE.PerspectiveCamera(55,W()/H(),0.1,900);
+
+    skyMat=new THREE.ShaderMaterial({
+      side:THREE.BackSide, depthWrite:false, fog:false,
+      uniforms:{zen:{value:C(0)},mid:{value:C(0)},hor:{value:C(0)},haze:{value:C(0)},glow:{value:C(0)},sunDir:{value:new THREE.Vector3(0,.05,-1)},glowK:{value:20},glowI:{value:.3},bandI:{value:.2}},
+      vertexShader:`varying vec3 vDir; void main(){ vDir = position; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+      fragmentShader:`
+        uniform vec3 zen; uniform vec3 mid; uniform vec3 hor; uniform vec3 haze; uniform vec3 glow; uniform vec3 sunDir;
+        uniform float glowK; uniform float glowI; uniform float bandI; varying vec3 vDir;
+        void main(){
+          vec3 d = normalize(vDir); float h = d.y;
+          vec3 col = mix(hor, mid, smoothstep(0.0, 0.16, h));
+          col = mix(col, zen, smoothstep(0.16, 0.7, h));
+          col = mix(col, haze, 1.0 - smoothstep(-0.1, 0.0, h));
+          vec3 sd = normalize(sunDir);
+          float s = max(dot(d, sd), 0.0);
+          col += glow * (pow(s, glowK) * glowI);
+          vec2 hz = normalize(d.xz + vec2(1e-5)); vec2 sz = normalize(sd.xz + vec2(1e-5));
+          float az = max(dot(hz, sz), 0.0);
+          col += glow * bandI * exp(-abs(h) * 12.0) * pow(az, 5.0);
+          gl_FragColor = vec4(col, 1.0);
+        }`
+    });
+    sky=new THREE.Mesh(new THREE.SphereGeometry(500,32,16),skyMat); sky.renderOrder=-2; scene.add(sky);
+
+    const sp=[]; for(let i=0;i<700;i++){const th=Math.random()*Math.PI*2, ph=Math.acos(1-Math.random()*.9); const r=420; const y=r*Math.cos(ph); if(y<25) continue; sp.push(r*Math.sin(ph)*Math.cos(th),y,r*Math.sin(ph)*Math.sin(th));}
+    const sg=new THREE.BufferGeometry(); sg.setAttribute('position',new THREE.Float32BufferAttribute(sp,3));
+    stars=new THREE.Points(sg,new THREE.PointsMaterial({color:0xdfeaff,size:1.5*pr,sizeAttenuation:false,transparent:true,opacity:0,fog:false,depthWrite:false}));
+    stars.renderOrder=-1; scene.add(stars);
+
+    seaMat=new THREE.MeshBasicMaterial({color:0x041327});
+    sea=new THREE.Mesh(new THREE.PlaneGeometry(1400,1400),seaMat); sea.rotation.x=-Math.PI/2; sea.position.y=-4.2; scene.add(sea);
+
+    const small=W()<700, seg=small?150:220;
+    const geo=new THREE.PlaneGeometry(240,240,seg,seg); geo.rotateX(-Math.PI/2);
+    oceanMat=new THREE.ShaderMaterial({
+      transparent:true, depthWrite:false,
+      uniforms:{uTime:{value:0},uSize:{value:2.4*pr},uReveal:{value:0},uSunX:{value:14},uGlintW:{value:6},uAlpha:{value:.95},
+        cDeep:{value:C(0)},cSurf:{value:C(0)},cSun:{value:C(0)}},
+      vertexShader:`
+        uniform float uTime; uniform float uSize; uniform float uReveal;
+        varying float vH; varying float vD; varying vec3 vW; varying float vRev;
+        void main(){
+          vec3 p = position;
+          float w = sin(p.x*0.11 + uTime*0.8)*0.85 + sin(p.z*0.17 + uTime*1.15)*0.55
+                  + sin((p.x+p.z)*0.06 + uTime*0.5)*1.25 + sin((p.x-p.z)*0.23 + uTime*1.7)*0.18;
+          float r = length(p.xz);
+          float rev = 1.0 - smoothstep(uReveal*150.0 - 30.0, uReveal*150.0, r);
+          p.y = w * rev - (1.0-rev)*3.0;
+          vH = w; vRev = rev; vW = p;
+          vec4 mv = modelViewMatrix * vec4(p,1.0);
+          vD = -mv.z;
+          gl_PointSize = uSize * (0.35 + 0.65*rev) * (62.0 / max(vD,1.0));
+          gl_Position = projectionMatrix * mv;
+        }`,
+      fragmentShader:`
+        uniform vec3 cDeep; uniform vec3 cSurf; uniform vec3 cSun; uniform float uSunX; uniform float uGlintW; uniform float uAlpha;
+        varying float vH; varying float vD; varying vec3 vW; varying float vRev;
+        void main(){
+          vec2 c = gl_PointCoord - 0.5; float d = length(c);
+          if(d > 0.5) discard;
+          float a = 1.0 - smoothstep(0.1, 0.5, d);
+          float t = clamp((vH + 2.4)/5.0, 0.0, 1.0);
+          vec3 col = mix(cDeep, cSurf, t*t);
+          float glint = exp(-pow((vW.x - uSunX)/(uGlintW + max(0.0,-vW.z)*0.12), 2.0)) * smoothstep(40.0, -110.0, vW.z);
+          col = mix(col, cSun, clamp(glint * (0.35 + t*0.95), 0.0, 1.0));
+          float fade = 1.0 - smoothstep(25.0, 150.0, vD);
+          gl_FragColor = vec4(col, a * fade * (0.25 + 0.75*vRev) * uAlpha);
+        }`
+    });
+    ocean=new THREE.Points(geo,oceanMat); scene.add(ocean);
+
+    sunS=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex([[0,'rgba(255,246,220,1)'],[.22,'rgba(255,190,90,1)'],[.34,'rgba(250,140,50,.55)'],[1,'rgba(240,110,40,0)']]),transparent:true,depthWrite:false,fog:false}));
+    sunS.scale.set(40,40,1); scene.add(sunS);
+    sunHalo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex([[0,'rgba(255,170,90,.45)'],[1,'rgba(255,120,60,0)']]),transparent:true,depthWrite:false,fog:false}));
+    sunHalo.scale.set(190,80,1); scene.add(sunHalo);
+    moonS=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex([[0,'rgba(250,252,255,1)'],[.28,'rgba(232,240,255,1)'],[.34,'rgba(190,212,255,.35)'],[1,'rgba(160,190,255,0)']]),transparent:true,depthWrite:false,fog:false}));
+    moonS.scale.set(16,16,1); scene.add(moonS);
+    moonHalo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex([[0,'rgba(170,200,255,.28)'],[1,'rgba(120,160,255,0)']]),transparent:true,depthWrite:false,fog:false,blending:THREE.AdditiveBlending}));
+    moonHalo.scale.set(90,90,1); scene.add(moonHalo);
+
+    plat=new THREE.Group();
+    platMat=new THREE.LineBasicMaterial({color:0xd8e7f4,transparent:true,opacity:0});
+    const add=(g,x,y,z,ry)=>{const m=new THREE.LineSegments(new THREE.EdgesGeometry(g),platMat);m.position.set(x,y,z);if(ry)m.rotation.y=ry;plat.add(m);return m;};
+    const legs=[[-4,-2.6],[4,-2.6],[4,2.6],[-4,2.6]];
+    legs.forEach(([x,z])=>add(new THREE.CylinderGeometry(.42,.7,9,6,1),x,4.5,z));
+    const br=[];
+    for(let i=0;i<4;i++){const a=legs[i],b=legs[(i+1)%4];for(let h=0;h<8;h+=2.7){br.push(a[0],h,a[1],b[0],h+2.7,b[1], b[0],h,b[1],a[0],h+2.7,a[1], a[0],h,a[1],b[0],h,b[1]);}}
+    const brG=new THREE.BufferGeometry(); brG.setAttribute('position',new THREE.Float32BufferAttribute(br,3));
+    plat.add(new THREE.LineSegments(brG,platMat));
+    add(new THREE.BoxGeometry(11,1.3,7.5),0,9.6,0);
+    add(new THREE.BoxGeometry(8,1.1,5.6),.8,10.8,0);
+    add(new THREE.BoxGeometry(3,2.4,3),-3.2,12.6,.9);
+    add(new THREE.CylinderGeometry(.45,1.5,9,4,5,true),2.6,15.9,-.6,Math.PI/4);
+    add(new THREE.CylinderGeometry(2.2,2.2,.15,14,1),-6.2,14.1,1.2);
+    const ex=[5.5,10.6,0, 11.5,16.5,0, -1.6,11.4,-2.6, -7.5,15.6,-4.2, -7.5,15.6,-4.2, -7.5,12.4,-4.2, -5.2,11.4,1.2, -6.2,14,1.2];
+    const exG=new THREE.BufferGeometry(); exG.setAttribute('position',new THREE.Float32BufferAttribute(ex,3));
+    plat.add(new THREE.LineSegments(exG,platMat));
+    flare=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex([[0,'rgba(255,232,170,1)'],[.3,'rgba(245,150,40,.85)'],[1,'rgba(211,58,44,0)']]),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+    flare.position.set(11.7,17.4,0); flare.scale.set(3,4.2,1); plat.add(flare);
+    beacon=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex([[0,'rgba(255,120,100,1)'],[1,'rgba(211,58,44,0)']]),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+    beacon.position.set(2.6,20.6,-.6); beacon.scale.set(1.6,1.6,1); plat.add(beacon);
+    const dlTex=glowTex([[0,'rgba(255,220,150,1)'],[1,'rgba(255,180,90,0)']]);
+    [[-4.5,10.4,3.8],[-1.5,10.4,3.8],[1.5,10.4,3.8],[4.5,10.4,3.8],[-3.2,13.8,2.5],[.8,11.6,2.9]].forEach(p=>{const s=new THREE.Sprite(new THREE.SpriteMaterial({map:dlTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));s.position.set(p[0],p[1],p[2]);s.scale.set(1.1,1.1,1);plat.add(s);deckLights.push(s);});
+    plat.scale.set(1.15,1.15,1.15); plat.position.z=-48; scene.add(plat);
+
+    tMat=new THREE.LineBasicMaterial({color:0xbcd3e8,transparent:true,opacity:0});
+    function turbine(x,z,s){
+      const g=new THREE.Group();
+      const tw=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(.14,.32,22,5,1)),tMat); tw.position.y=11; g.add(tw);
+      const nc=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.8,.8,.8)),tMat); nc.position.set(0,22.2,0); g.add(nc);
+      const rotor=new THREE.Group(); rotor.position.set(0,22.2,.6);
+      const bl=[]; for(let i=0;i<3;i++){const a=i*Math.PI*2/3; bl.push(0,0,0, Math.cos(a)*10,Math.sin(a)*10,0);}
+      const blG=new THREE.BufferGeometry(); blG.setAttribute('position',new THREE.Float32BufferAttribute(bl,3));
+      rotor.add(new THREE.LineSegments(blG,tMat)); g.add(rotor);
+      g.position.set(x,0,z); g.scale.setScalar(s); scene.add(g);
+      turbines.push({g,rotor,speed:.5+Math.random()*.4,ph:Math.random()*6,bx:x});
+    }
+    turbine(46,-96,1); turbine(66,-118,.95); turbine(30,-130,.85);
+
+    const bMat=new THREE.LineBasicMaterial({color:0xe8452f,transparent:true,opacity:0});
+    for(let i=0;i<9;i++){
+      const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(new Float32Array(9),3));
+      const l=new THREE.Line(g,bMat); scene.add(l);
+      birds.push({l,mat:bMat,x:-60-i*5-Math.random()*8,y:16+Math.random()*7,z:-34-Math.random()*26,s:.8+Math.random()*.5,ph:Math.random()*6,v:5+Math.random()*1.8});
+    }
+
+    applyMix(mix);
+    layout();
+    window.addEventListener('resize',layout,{passive:true});
+    window.addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth-.5);my=(e.clientY/innerHeight-.5);},{passive:true});
+    window.addEventListener('scroll',()=>{scrollK=clamp(scrollY/Math.max(1,H()));},{passive:true});
+    new IntersectionObserver(es=>{visible=es[0].isIntersecting; if(visible) loop();},{threshold:0}).observe(hero);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden) loop();});
+    sunDir=new THREE.Vector3();
+    ok=true; loop(); return true;
+  }
+  function lc(k,m){ return (tmp[k]||(tmp[k]=new THREE.Color())).copy(PAL.dark[k]).lerp(PAL.light[k],m); }
+  const lf=(k,m)=>PAL.dark[k]+(PAL.light[k]-PAL.dark[k])*m;
+  function applyMix(m){
+    const u=skyMat.uniforms;
+    ['zen','mid','hor','haze','glow'].forEach(k=>u[k].value.copy(lc(k,m)));
+    u.glowK.value=lf('glowK',m); u.glowI.value=lf('glowI',m); u.bandI.value=lf('bandI',m);
+    scene.fog.color.copy(lc('fog',m)); scene.fog.density=lf('fogD',m);
+    seaMat.color.copy(lc('plane',m));
+    const o=oceanMat.uniforms; o.cDeep.value.copy(lc('deep',m)); o.cSurf.value.copy(lc('surf',m)); o.cSun.value.copy(lc('glint',m)); o.uAlpha.value=lf('alpha',m); o.uGlintW.value=3.5+m*4;
+    platMat.color.copy(lc('line',m)); tMat.color.copy(lc('line',m));
+  }
+  let orbX=14;
+  function layout(){
+    if(!renderer) return;
+    const w=W(),h=H(); renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+    const a=w/h; plat.position.x=a<.8?5:a<1.2?13:24; orbX=a<.8?-3:a<1.2?5:13;
+    turbines.forEach(t=>t.g.position.x=t.bx-(a<.8?30:a<1.2?14:0));
+  }
+  let raf=0;
+  function loop(){ if(raf||!ok) return; raf=requestAnimationFrame(frame); }
+  let sunDir=null;
+  function frame(now){
+    raf=0;
+    const dt=Math.min(.05,(now-last)/1000); last=now;
+    const time=(now-t0)/1000;
+    if(mixAnim){ const k=clamp((now-mixT0)/1400); mix=mixFrom+(mixTo-mixFrom)*easeIO(k); applyMix(mix); if(k>=1) mixAnim=false; }
+    const p=progress, e=easeIO(p);
+    oceanMat.uniforms.uTime.value=reduce?4:time;
+    oceanMat.uniforms.uReveal.value=easeOut(clamp(p/.62));
+    const ex=mx*4, ey=6.8-my*1.5+scrollK*10;
+    camera.position.set(ex*e, 78+(ey-78)*e, 8+(32-8)*e);
+    camera.lookAt(mx*6*e, (6.5-scrollK*4)*e, -26+(-90+26)*e);
+    sky.position.copy(camera.position); stars.position.copy(camera.position);
+    const sp=easeOut(clamp((p-.25)/.75));
+    sunS.position.set(orbX,-12+sp*10.5,-200); sunHalo.position.set(orbX,-6+sp*7,-205);
+    moonS.position.set(orbX-6,-10+sp*40,-200); moonHalo.position.copy(moonS.position);
+    sunS.material.opacity=mix*sp; sunHalo.material.opacity=mix*sp;
+    moonS.material.opacity=(1-mix)*sp; moonHalo.material.opacity=(1-mix)*sp;
+    const orb=mix>.5?sunS:moonS;
+    sunDir.copy(orb.position).sub(camera.position).normalize();
+    skyMat.uniforms.sunDir.value.copy(sunDir);
+    oceanMat.uniforms.uSunX.value=orb.position.x;
+    stars.material.opacity=(1-mix)*clamp((p-.3)/.5)*(.75+Math.sin(time*1.3)*.08);
+    const pp=easeOut(clamp((p-.38)/.45));
+    plat.scale.y=1.15*Math.max(.001,pp); platMat.opacity=(.88+mix*.07)*pp;
+    flare.material.opacity=pp*(.75+Math.sin(time*13)*.12+Math.sin(time*7.3)*.1);
+    flare.scale.set(3+Math.sin(time*9)*.4,4.2+Math.sin(time*11)*.6,1);
+    beacon.material.opacity=pp*(Math.sin(time*3)>.55?1:.12);
+    deckLights.forEach((d,i)=>d.material.opacity=pp*(1-mix)*(.75+Math.sin(time*2+i)*.15));
+    plat.position.y=Math.sin(time*.7)*.15;
+    const tp=easeOut(clamp((p-.55)/.4));
+    tMat.opacity=(.7+mix*.15)*tp;
+    turbines.forEach(t=>{t.rotor.rotation.z=reduce?t.ph:t.ph-time*t.speed;});
+    const bp=clamp((p-.6)/.4);
+    birds.forEach(b=>{
+      b.mat.opacity=.95*bp;
+      if(!reduce){ b.x+=b.v*dt*(ready?1:.6); if(b.x>90){b.x=-90-Math.random()*30;b.y=15+Math.random()*8;} }
+      const f=Math.sin(time*7+b.ph)*.75*b.s, s=1.4*b.s, yy=b.y+Math.sin(time*.8+b.ph)*.6;
+      const a=b.l.geometry.attributes.position.array;
+      a[0]=b.x-s;a[1]=yy+f;a[2]=b.z; a[3]=b.x;a[4]=yy;a[5]=b.z; a[6]=b.x+s*.9;a[7]=yy+f*.9;a[8]=b.z;
+      b.l.geometry.attributes.position.needsUpdate=true;
+    });
+    renderer.render(scene,camera);
+    if(visible && !document.hidden && (!reduce || !ready || mixAnim)) loop();
+  }
+  return {
+    init,
+    setProgress(v){progress=v; if(ok) loop();},
+    setReady(){ready=true; if(ok) loop();},
+    setTheme(light,instant){ const to=light?1:0; if(!ok){mix=to;return;} if(instant||reduce){mix=to;mixAnim=false;applyMix(mix);loop();return;} mixFrom=mix; mixTo=to; mixT0=performance.now(); mixAnim=true; loop(); }
+  };
+})();
+
+/* ================= TEMA ================= */
+let lastLight=isLight();
+function syncTheme(){ const l=isLight(); if(l!==lastLight){ lastLight=l; Scene.setTheme(l); } }
+$('#themeBtn').addEventListener('click',()=>{
+  const next=isLight()?'dark':'light';
+  root.setAttribute('data-theme',next);
+  try{localStorage.setItem('cmmeb-theme',next);}catch(e){}
+  syncTheme();
+});
+new MutationObserver(syncTheme).observe(root,{attributes:true,attributeFilter:['data-theme']});
+if(darkMQ.addEventListener) darkMQ.addEventListener('change',syncTheme);
+
+/* ================= LOADER ================= */
+const loader=$('#loader'), pctEl=$('#ldPct'), bar=$('#ldBar'), stage=$('#ldStage'), coord=$('#ldCoord');
+const stages=[[0,'Lendo a batimetria'],[.36,'Erguendo a plataforma'],[.62,'Ligando os aerogeradores'],[.82,'Chegando a São Luís']];
+const DUR=reduce?700:3600;
+let lt0=null, finished=false;
+Scene.init();
+const fmt=(n,w)=>String(Math.floor(n)).padStart(w,'0');
+function stepLoader(now){
+  if(finished) return;
+  if(lt0===null) lt0=now;
+  const t=clamp((now-lt0)/DUR), p=easeIO(t);
+  pctEl.textContent=Math.round(p*100);
+  bar.style.transform=`scaleX(${p})`;
+  for(let i=stages.length-1;i>=0;i--){if(p>=stages[i][0]){ if(stage.textContent!==stages[i][1]) stage.textContent=stages[i][1]; break;}}
+  const la=(2+31/60)*p, lo=(44+18/60)*p;
+  coord.textContent=`LAT ${fmt(la,2)}°${fmt((la%1)*60,2)}′S · LON ${fmt(lo,3)}°${fmt((lo%1)*60,2)}′W`;
+  Scene.setProgress(p);
+  if(t<1) requestAnimationFrame(stepLoader); else finish();
+}
+function finish(){
+  if(finished) return; finished=true;
+  Scene.setProgress(1);
+  pctEl.textContent='100'; bar.style.transform='scaleX(1)';
+  coord.textContent='LAT 02°31′S · LON 044°18′W';
+  loader.classList.add('done');
+  setTimeout(()=>{root.classList.remove('is-loading'); Scene.setReady();},reduce?0:350);
+  setTimeout(()=>{loader.hidden=true;},1500);
+}
+$('#ldSkip').addEventListener('click',()=>{
+  const from=parseFloat(pctEl.textContent)/100||0, s0=performance.now(); finished=true;
+  (function jump(n){const k=clamp((n-s0)/500), v=from+(1-from)*easeOut(k); Scene.setProgress(v); pctEl.textContent=Math.round(v*100); bar.style.transform=`scaleX(${v})`; if(k<1) requestAnimationFrame(jump); else {finished=false; finish();}})(s0);
+});
+requestAnimationFrame(stepLoader);
+setTimeout(finish,9000);
+
+/* ================= NAV ================= */
+const nav=$('#nav');
+const onScroll=()=>nav.classList.toggle('solid',scrollY>innerHeight*.75);
+addEventListener('scroll',onScroll,{passive:true}); onScroll();
+const menuBtn=$('#menuBtn'), panel=$('#mobilePanel');
+function setMenu(open){
+  menuBtn.setAttribute('aria-expanded',open); menuBtn.setAttribute('aria-label',open?'Fechar menu':'Abrir menu');
+  if(open){panel.hidden=false; requestAnimationFrame(()=>panel.classList.add('open')); document.body.style.overflow='hidden'; nav.style.color='var(--ink)';}
+  else{panel.classList.remove('open'); document.body.style.overflow=''; nav.style.color=''; setTimeout(()=>{if(menuBtn.getAttribute('aria-expanded')==='false') panel.hidden=true;},750);}
+}
+menuBtn.addEventListener('click',()=>setMenu(menuBtn.getAttribute('aria-expanded')!=='true'));
+$$('a',panel).forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+const links=$$('#navLinks a');
+const secObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting) links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));});},{rootMargin:'-45% 0px -50% 0px'});
+['sobre','eixos','palestrantes','programacao','inscricoes','local','faq'].forEach(id=>secObs.observe(document.getElementById(id)));
+
+/* ================= CONTAGEM ================= */
+function tickCD(){
+  let d=Math.max(0,EVENT_START-Date.now());
+  const D=Math.floor(d/864e5); d-=D*864e5; const H=Math.floor(d/36e5); d-=H*36e5; const M=Math.floor(d/6e4); d-=M*6e4; const S=Math.floor(d/1e3);
+  $('#cdD').textContent=D; $('#cdH').textContent=String(H).padStart(2,'0'); $('#cdM').textContent=String(M).padStart(2,'0'); $('#cdS').textContent=String(S).padStart(2,'0');
+}
+tickCD(); setInterval(tickCD,1000);
+$('#heroDate').textContent=(()=>{const a=EVENT_START, b=new Date(a.getTime()+2*864e5); const M=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; return `${a.getDate()} a ${b.getDate()} de ${M[a.getMonth()]} de ${a.getFullYear()}`;})();
+
+/* ================= TICKER ================= */
+const orgs=['UFMA','USP','UFPA','UFRJ','UFF','UFSC','UFRA','UNIFAP','UERN','IFMA','UFDPar','IDAEA-CSIC · Espanha','Petrobras · CENPES','ANP','ANTAQ','IEPA','OceanPact','Tetra Tech','Mineral Engenharia','Aquasis','APEM','SBH'];
+const wave='<svg viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 5c2.5-3.5 5-3.5 7 0s4.5 3.5 7 0 4.5-3.5 6 0"/></svg>';
+const tkSet=`<div class="tk-set"><em>Na programação de 2024</em>${wave}${orgs.join(wave)}${wave}</div>`;
+$('#tkTrack').innerHTML=tkSet+tkSet;
+
+/* ================= MANIFESTO ================= */
+(function(){
+  const m=$('#manifesto'); const walker=document.createTreeWalker(m,NodeFilter.SHOW_TEXT); const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(n=>{const frag=document.createDocumentFragment(); n.textContent.split(/(\s+)/).forEach(t=>{ if(!t) return; if(/^\s+$/.test(t)) frag.appendChild(document.createTextNode(t)); else {const s=document.createElement('span'); s.className='w'; s.textContent=t; frag.appendChild(s);} }); n.parentNode.replaceChild(frag,n);});
+  const ws=$$('.w',m);
+  if(reduce){ws.forEach(w=>w.classList.add('lit')); return;}
+  let tick=false;
+  function upd(){tick=false; const r=m.getBoundingClientRect(), vh=innerHeight; const p=clamp((vh*.82-r.top)/(r.height+vh*.25)); const n=Math.round(p*ws.length); ws.forEach((w,i)=>w.classList.toggle('lit',i<n));}
+  addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(upd);}},{passive:true}); upd();
+})();
+
+/* ================= FIGURA ================= */
+(function(){
+  let d='M150,96'; for(let x=150;x<1000;x+=25){ d+=` Q${x+12.5},${(x/25)%2?99:93} ${x+25},96`; } $('#xsSurf').setAttribute('d',d);
+  const HS=[
+    ['Manguezais',['amb','soc'],'A costa entre o Pará e o Maranhão abriga a maior faixa contínua de manguezais do mundo, berçário de peixes e crustáceos e base da economia local.','Eixos 2 e 7'],
+    ['Pesca artesanal e maretórios',['soc'],'Currais de pesca, extrativismo e maricultura sustentam comunidades inteiras ao longo da costa, que precisam estar na conversa sobre o uso do mar.','Eixo 7'],
+    ['Eólica offshore',['ind'],'A plataforma rasa e os ventos constantes colocam a região no mapa da geração eólica no mar, uma nova frente para a indústria de energia.','Eixo 5'],
+    ['Recifes mesofóticos',['amb'],'Sob a pluma do Amazonas existe um sistema recifal de águas intermediárias, descrito há poucos anos e ainda pouco conhecido.','Eixo 2'],
+    ['Corrente Norte do Brasil',['amb','ind'],'Corrente intensa que corre ao longo do talude rumo ao noroeste. Controla o transporte de calor e sedimentos e define a trajetória de uma eventual mancha de óleo.','Eixo 1'],
+    ['Cânions submarinos',['amb','ind'],'Cânions e deslizamentos no talude são riscos geológicos para dutos e poços e, ao mesmo tempo, habitats de profundidade.','Eixo 4'],
+    ['Poços em águas profundas',['ind'],'Os blocos exploratórios ficam além da quebra da plataforma, em lâminas d’água de centenas a milhares de metros.','Eixo 5']
+  ];
+  const BS=[
+    ['Foz do Amazonas',['ind','amb'],'Pluma do rio Amazonas, Grande Sistema Recifal Amazônico e os primeiros poços exploratórios em águas profundas da região, no bloco FZA-M-59.','Bacia'],
+    ['Pará-Maranhão',['amb'],'Plataforma continental larga e rasa, manguezais contínuos e marés de grande amplitude, com forte influência da descarga amazônica.','Bacia'],
+    ['Barreirinhas',['amb','soc'],'Em frente ao Golfão Maranhense e aos Lençóis Maranhenses. É a bacia mais próxima de São Luís, sede do congresso.','Bacia'],
+    ['Ceará',['amb'],'Talude marcado por cânions submarinos, mapeado em alta resolução por cruzeiros científicos recentes.','Bacia'],
+    ['Potiguar',['ind'],'Bacia já produtora em terra e no mar, vizinha aos polos de energia eólica do Rio Grande do Norte e do Ceará.','Bacia']
+  ];
+  const LBL={amb:'Ambiente',ind:'Indústria',soc:'Sociedade'};
+  function note(it){ $('#noteTitle').innerHTML=`${it[0]} ${it[1].map(k=>`<span class="chip c-${k}">${LBL[k]}</span>`).join('')}`; $('#noteText').textContent=it[2]; $('#noteEixo').textContent=it[3].toUpperCase(); }
+  const hs=$$('.hs'), bs=$$('.basin');
+  function pickH(i){hs.forEach((h,k)=>h.classList.toggle('on',k===i)); note(HS[i]);}
+  function pickB(i){bs.forEach((b,k)=>b.classList.toggle('on',k===i)); note(BS[i]);}
+  const bind=(els,fn)=>els.forEach((el,i)=>{['mouseenter','focus','click'].forEach(ev=>el.addEventListener(ev,()=>fn(i))); el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn(i);}});});
+  bind(hs,pickH); bind(bs,pickB);
+  pickH(0);
+  const tabs=$$('#fig [role=tab]');
+  tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>{const on=x===t; x.setAttribute('aria-selected',on); document.getElementById(x.getAttribute('aria-controls')).hidden=!on;}); if(t.id==='t-planta') pickB(0); else pickH(0);}));
+})();
+
+/* ================= EIXOS ================= */
+const ICON={
+  wave:'<path d="M8 70c12-12 20 12 34 0s22 12 36 0 22 12 34 0 18 10 30 4M8 100c12-12 20 12 34 0s22 12 36 0 22 12 34 0 18 10 30 4"/><path d="M30 34h70M100 34l-16-12M100 34l-16 12"/><circle cx="120" cy="34" r="6"/>',
+  coral:'<path d="M75 140V90M75 90c0-22-26-22-26-48M75 90c0-18 26-18 26-44M75 112c-14 0-30-8-34-26M75 112c14 0 28-6 32-18"/><circle cx="49" cy="38" r="6"/><circle cx="101" cy="42" r="6"/><circle cx="41" cy="82" r="5"/><path d="M20 140h110"/>',
+  fauna:'<path d="M14 92c22-34 62-44 98-26l18-14-4 28c-14 22-46 36-80 26-14-4-24-8-32-14Z"/><circle cx="104" cy="70" r="3"/><path d="M60 112c4 10 12 16 22 18"/>',
+  geo:'<path d="M10 40h130M10 68c26 0 36 12 62 12s36-12 68-12M10 98h130M10 126h130"/><path d="M62 40v86" stroke-dasharray="4 6"/><path d="M96 70l10 56"/>',
+  rig:'<path d="M36 140l12-62h54l12 62M48 78V60h54v18M75 60V18M64 30h22M114 70l20-26"/><path d="M48 104h54M20 140h110"/><circle cx="136" cy="40" r="5"/>',
+  data:'<rect x="16" y="22" width="118" height="80" rx="8"/><path d="M34 82l22-22 18 14 26-32 14 14M56 130h38M75 102v28"/>',
+  people:'<circle cx="52" cy="48" r="16"/><circle cx="102" cy="48" r="16"/><path d="M18 128c0-22 16-36 34-36s34 14 34 36M86 96c5-3 11-4 16-4 18 0 34 14 34 36"/>',
+  ship:'<path d="M18 96h114l-18 26H36L18 96ZM40 96V66h62l12 30M58 66V40h26v26"/><path d="M12 138c12-8 22 8 34 0s22 8 34 0 22 8 34 0 16 6 24 2"/>'
+};
+const axes=[
+  ['Oceanografia física e modelagem','Correntes, marés, ondas e bases hidrodinâmicas que sustentam previsão, planejamento e resposta a emergências.',.45,['amb','ind'],'wave',[['Ilson C. A. da Silveira · USP','A Corrente Norte do Brasil na Margem Equatorial'],['Gabriel Clauzet · Tetra Tech','Base hidrodinâmica para a Margem Equatorial'],['Alexandre Guerra · CENPES','Medições oceanográficas no Projeto REMObs']]],
+  ['Biodiversidade, ecossistemas e qualidade ambiental','Recifes mesofóticos, manguezais, plâncton, bentos e contaminantes em uma das regiões menos estudadas do litoral.',.12,['amb'],'coral',[['Rodrigo Leão de Moura · UFRJ','Recifes mesofóticos: da caracterização ao manejo'],['Halesio Barros Neto · CENPES','Expedição Tucuju e o primeiro recife amazônico'],['Damià Barceló · IDAEA-CSIC','Microplásticos no ambiente aquático global']]],
+  ['Fauna marinha e redes de proteção','Monitoramento de cetáceos, aves migratórias e tartarugas, encalhes e centros de reabilitação.',.22,['amb','soc'],'fauna',[['Daniela Ferro de Godoy · Mineral','Tetrápodes marinhos na Foz do Amazonas'],['José Onofre Monteiro · Aquasis','Aves costeiras migratórias e suas conexões'],['Claudia Funi · IEPA','Cetáceos no Amapá']]],
+  ['Geologia marinha e riscos geológicos','Morfologia do talude, cânions, sedimentos e geohazards para a infraestrutura submarina.',.55,['amb','ind'],'geo',[['Alberto G. de Figueiredo Jr. · UFF','Geologia marinha da Margem Equatorial'],['Antônio H. da F. Klein · UFSC','Inversão topo-batimétrica por imagens de satélite']]],
+  ['Energia offshore: óleo, gás e eólica','Exploração, licenciamento, segurança operacional e a transição para a geração eólica no mar.',.86,['ind','amb'],'rig',[['Halesio Barros Neto · CENPES','Ciências do Mar na eólica offshore'],['Ludmilla V. V. Silva · ANP','Responsabilidade socioambiental na E&P'],['Cláudia Chelala · UNIFAP','Impactos socioeconômicos da exploração de petróleo']]],
+  ['Monitoramento, dados e tecnologia','Sensores, satélites, modelagem computacional e a passagem do dado ambiental do papel ao digital.',.62,['ind','amb'],'data',[['N. Medeiros e C. A. P. de Senna · Petrobras','Dados ambientais, do papel ao digital'],['Carlos L. da Silva Jr. · OceanPact','Monitoramento meteoceanográfico'],['Marcelo Rollnic · UFPA','Observatório da Costa Amazônica']]],
+  ['Sociedade, pesca e maretórios','Pesca artesanal, extrativismo, maricultura, arqueologia e impactos socioeconômicos na costa.',.3,['soc','amb'],'people',[['Francisco Holanda · UFPA','Currais de pesca bragantinos'],['Dioniso de S. Sampaio · UFPA','Extrativismo e maricultura nos maretórios'],['Arkley M. Bandeira · UFMA','Arqueologia das ocupações humanas']]],
+  ['Portos, navegação e hidrografia','Transporte aquaviário, praticagem e cartografia náutica em um litoral de macromarés.',.76,['ind','soc'],'ship',[['Uirá C. Oliveira · ANTAQ','Panorama do transporte aquaviário'],['Josivaldo F. Reis · APEM','A praticagem na Margem Equatorial'],['Walbert T. de Almeida · SBH','Hidrografia no Golfão Maranhense']]]
+];
+const LBL2={amb:'Ambiente',ind:'Indústria',soc:'Sociedade'};
+const axList=$('#axList'), axPanel=$('#axPanel'), axWrap=$('.ax');
+axList.innerHTML=axes.map((a,i)=>`<li><button class="ax-row" role="tab" id="ax${i}" aria-controls="axPanel" aria-selected="${i===0}" type="button"><span class="ax-n">${String(i+1).padStart(2,'0')}</span><span class="ax-t">${a[0]}</span><span class="ax-dots">${a[3].map(k=>`<i style="background:var(--${k})" title="${LBL2[k]}"></i>`).join('')}</span></button></li>`).join('');
+let axI=0;
+function placeAx(){
+  if(innerWidth<=900){ const li=axList.children[axI]; if(axPanel.parentNode!==li) li.appendChild(axPanel); }
+  else if(axPanel.parentNode!==axWrap) axWrap.appendChild(axPanel);
+}
+function renderAx(i){
+  const a=axes[i]; axI=i;
+  axPanel.setAttribute('aria-labelledby','ax'+i);
+  axPanel.innerHTML=`<div class="art"><svg viewBox="0 0 150 150" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICON[a[4]]}</svg><span class="ax-big">${String(i+1).padStart(2,'0')}</span></div>
+    <h3>${a[0]}</h3><p>${a[1]}</p>
+    <div class="meter"><div class="meter-track"><i style="left:${a[2]*100}%"></i></div><div class="meter-lbl"><span>Ambiente</span><span>Indústria</span></div></div>
+    <div class="past"><h4>Na edição 2024</h4><ul>${a[5].map(t=>`<li><b>${t[1]}</b><span>${t[0]}</span></li>`).join('')}</ul></div>`;
+  axPanel.classList.remove('swap'); void axPanel.offsetWidth; axPanel.classList.add('swap');
+  $$('.ax-row').forEach((b,k)=>b.setAttribute('aria-selected',k===i));
+  placeAx();
+}
+const hoverWide=matchMedia('(hover:hover) and (min-width:901px)');
+$$('.ax-row').forEach((b,i)=>{ b.addEventListener('click',()=>renderAx(i)); b.addEventListener('mouseenter',()=>{ if(hoverWide.matches && axI!==i) renderAx(i); }); });
+addEventListener('resize',placeAx,{passive:true});
+renderAx(0);
+
+/* ================= PALESTRANTES ================= */
+const SEC={aca:['Academia','#5ccbe0'],ind:['Setor produtivo','#f5a524'],gov:['Órgãos públicos','#b9d3ea'],ong:['Sociedade civil','#ff8a76']};
+const sp24=[
+  ['Ilson Carlos Almeida da Silveira','USP','aca','A Corrente Norte do Brasil na Margem Equatorial'],
+  ['Damià Barceló','IDAEA-CSIC','aca','Microplásticos no ambiente aquático global: análise, efeitos, remediação e políticas'],
+  ['Halesio Milton C. de Barros Neto','CENPES','ind','Ciências do Mar na eólica offshore e a Expedição Tucuju, que descreveu o primeiro recife amazônico'],
+  ['Ludmilla Valente Viana Silva','ANP','gov','Responsabilidade socioambiental na exploração e produção de óleo e gás na Margem Equatorial'],
+  ['Rodrigo Leão de Moura','UFRJ','aca','Recifes mesofóticos da Margem Equatorial: da caracterização ao manejo'],
+  ['Cláudia Chelala','UNIFAP','aca','Impactos e perspectivas socioeconômicas da exploração de petróleo na Margem Equatorial'],
+  ['Alberto Garcia de Figueiredo Júnior','UFF','aca','Geologia marinha da Margem Equatorial brasileira'],
+  ['Carlos Leandro da Silva Júnior','OceanPact','ind','Novas tecnologias para o monitoramento meteoceanográfico'],
+  ['Marcelo Rollnic','UFPA','aca','OCA, Observatório da Costa Amazônica: conectar, catalisar e comunicar'],
+  ['Gabriel Clauzet','Tetra Tech','ind','Desenvolvimento de uma base hidrodinâmica para a Margem Equatorial'],
+  ['Nãnashaira Medeiros','Petrobras','ind','Dados ambientais, do papel ao digital (com Carlos A. P. de Senna)'],
+  ['Carlos Augusto Portela de Senna','Petrobras','ind','Dados ambientais, do papel ao digital (com Nãnashaira Medeiros)'],
+  ['Alexandre Guerra','CENPES','ind','Medições oceanográficas no âmbito do Projeto REMObs'],
+  ['Antônio Henrique da Fontoura Klein','UFSC','aca','Plataforma CASSIE-CORE: inversão topo-batimétrica a partir de imagens de satélite'],
+  ['Arkley Marques Bandeira','UFMA','aca','Arqueologia e antropologia das ocupações humanas na Margem Equatorial'],
+  ['Uirá Cavalcante Oliveira','ANTAQ','gov','Panorama do transporte aquaviário: infraestrutura, estatísticas e sustentabilidade'],
+  ['Josivaldo Freire Reis','APEM','ind','A atividade de praticagem na Margem Equatorial'],
+  ['Daniela Ferro de Godoy','Mineral','ind','Monitoramento de tetrápodes marinhos na Foz do Amazonas'],
+  ['Cláudio de Souza Vieira Júnior','Mineral','ind','Desafios para estruturar centros de reabilitação de fauna'],
+  ['Natilene Brito','IFMA','aca','Contaminação por compostos orgânicos emergentes em água do mar'],
+  ['Denilson da Silva Bezerra','UFMA','aca','Geotecnologias e modelagem computacional para monitorar manguezais do litoral amazônico'],
+  ['Francisco C. A. Fonteles Holanda','UFPA','aca','Currais de pesca bragantinos, um modelo para os litorais da Margem Equatorial'],
+  ['Dioniso de Souza Sampaio','UFPA','aca','Extrativismo e maricultura nos maretórios da Margem Equatorial'],
+  ['Eduardo Tavares Paes','UFRA','aca','Processos biogeofísicos e a produção pesqueira no meta-ecossistema marinho amazônico'],
+  ['Ana Silvia Sardinha','UFRA','aca','O papel dos centros de reabilitação: estamos preparados?'],
+  ['Flávio José de Lima Silva','UERN','aca','Importância e resultados da atuação em rede de fauna'],
+  ['Cezar Augusto Freire Fernandes','UFDPar','aca','Estatística pesqueira do Piauí e coleta de dados de desembarque'],
+  ['Claudia Funi','IEPA','gov','Caracterização e monitoramento de cetáceos no Amapá'],
+  ['Walbert Tavares de Almeida','SBH','ong','Hidrografia no Golfão Maranhense: perspectivas e dificuldades'],
+  ['José Onofre Nascimento Monteiro','Aquasis','ong','Aves costeiras migratórias e suas conexões'],
+  ['Vitor Luz Carvalho','Aquasis','ong','Fortalecimento da Rede de Encalhes de Mamíferos Aquáticos do Nordeste (REMANE)']
+];
+const lineup=$('#lineup'), lnCard=$('#lnCard'), lnWrap=$('#lineupWrap');
+lineup.innerHTML=sp24.map((s,i)=>`<button class="ln-name${[1,4,6,9,13,15,18,22,24,27,29].includes(i)?' it':''}" type="button" data-i="${i}" data-s="${s[2]}">${s[0]}<sup style="color:${SEC[s[2]][1]}">${s[1]}</sup></button>`).join('<span class="ln-sep" aria-hidden="true">/</span>');
+$('#lnHint').textContent=`${sp24.length} PALESTRANTES · 22 INSTITUIÇÕES · SÃO LUÍS, OUTUBRO DE 2024`;
+let lnOn=null;
+function showCard(btn){
+  const s=sp24[+btn.dataset.i];
+  lnCard.innerHTML=`<small><i style="background:${SEC[s[2]][1]}"></i>${SEC[s[2]][0]} · ${s[1]}</small><b>${s[0]}</b><p>${s[3]}</p>`;
+  const wr=lnWrap.getBoundingClientRect(), r=btn.getBoundingClientRect();
+  const cw=Math.min(340,wr.width-8);
+  const left=Math.max(0,Math.min(r.left-wr.left,wr.width-cw));
+  lnCard.style.left=left+'px'; lnCard.style.top=(r.bottom-wr.top+10)+'px';
+  lnCard.classList.add('show');
+  if(lnOn) lnOn.classList.remove('on'); lnOn=btn; btn.classList.add('on');
+}
+function hideCard(){lnCard.classList.remove('show'); if(lnOn){lnOn.classList.remove('on'); lnOn=null;}}
+const coarse=matchMedia('(hover:none)');
+$$('.ln-name').forEach(b=>{
+  b.addEventListener('mouseenter',()=>showCard(b));
+  b.addEventListener('focus',()=>showCard(b));
+  b.addEventListener('click',()=>{ if(lnOn===b && coarse.matches) hideCard(); else showCard(b); });
+});
+lnWrap.addEventListener('mouseleave',hideCard);
+document.addEventListener('click',e=>{ if(!lnWrap.contains(e.target)) hideCard(); });
+$('#spFilters').innerHTML=[['all','Todos','']].concat(Object.entries(SEC).map(([k,v])=>[k,v[0],v[1]])).map(f=>`<button type="button" data-f="${f[0]}" aria-pressed="${f[0]==='all'}">${f[2]?`<i style="background:${f[2]}"></i>`:''}${f[1]}</button>`).join('');
+$$('#spFilters button').forEach(b=>b.addEventListener('click',()=>{const f=b.dataset.f; $$('#spFilters button').forEach(x=>x.setAttribute('aria-pressed',x===b)); $$('.ln-name').forEach(n=>n.classList.toggle('dim',f!=='all'&&n.dataset.s!==f)); hideCard();}));
+const soon=[['Conferência de abertura','Integração indústria e meio ambiente na Margem Equatorial'],['Setor de energia','Operação offshore e monitoramento ambiental'],['Regulação','Licenciamento e responsabilidade socioambiental'],['Ciência oceânica','Circulação e modelagem da plataforma equatorial'],['Conferência internacional','Experiências de outras margens equatoriais'],['Comunidades costeiras','Pesca, território e desenvolvimento']];
+$('#soon').innerHTML=soon.map(s=>`<div class="soon-row"><b>${s[0]}</b><span>${s[1]}</span><em>a anunciar</em></div>`).join('');
+(function(){const tabs=$$('#palestrantes [role=tab]'); tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>{const on=x===t; x.setAttribute('aria-selected',on); document.getElementById(x.getAttribute('aria-controls')).hidden=!on;}); $('#spFilters').style.visibility=t.id==='t-sp24'?'visible':'hidden'; hideCard();}));})();
+
+/* ================= PROGRAMAÇÃO ================= */
+const K={plen:'Plenária',sess:'Sessão temática',mesa:'Mesa-redonda',post:'Pôsteres',curso:'Minicurso',brk:''};
+const days=[
+  ['Oceano e energia','18:00',[
+    ['08:00','brk','Credenciamento e entrega de material',''],
+    ['09:00','plen','Abertura oficial','Reitoria da UFMA, comissão organizadora e instituições parceiras'],
+    ['09:40','plen','Conferência de abertura: integração indústria e meio ambiente','Panorama da Margem Equatorial entre a fronteira energética e a conservação'],
+    ['10:30','brk','Café e visita à área de exposição',''],
+    ['11:00','sess','Oceanografia física e modelagem','Eixo 1 · circulação, marés e previsão'],
+    ['12:30','brk','Almoço',''],
+    ['14:00','sess','Energia offshore: óleo, gás e eólica','Eixo 5 · operação, segurança e transição energética'],
+    ['15:30','post','Sessão de pôsteres I','Eixos 1, 4 e 5, com café'],
+    ['16:30','mesa','Licenciamento, monitoramento e responsabilidade socioambiental','Reguladores, operadoras e universidades na mesma mesa'],
+  ]],
+  ['Vida marinha e dados','21:00',[
+    ['08:00','sess','Biodiversidade e ecossistemas recifais','Eixo 2 · recifes mesofóticos, manguezais e plâncton'],
+    ['10:00','brk','Café',''],
+    ['10:30','post','Sessão de pôsteres II','Eixos 2, 3 e 6'],
+    ['11:00','sess','Monitoramento, dados e tecnologia','Eixo 6 · sensores, satélite e modelagem computacional'],
+    ['12:30','brk','Almoço',''],
+    ['14:00','curso','Minicursos em paralelo','Análise de dados oceanográficos em Python · Sensoriamento remoto costeiro · Resposta a incidentes com fauna oleada'],
+    ['16:00','brk','Café',''],
+    ['16:30','mesa','Do papel ao digital: dados ambientais compartilhados','Como empresas e universidades podem abrir e reaproveitar dados de monitoramento'],
+    ['18:00','brk','Pausa',''],
+    ['19:00','brk','Confraternização','Local divulgado durante o evento'],
+  ]],
+  ['Território e futuro','18:00',[
+    ['08:00','sess','Sociedade, pesca e maretórios','Eixo 7 · pesca artesanal, extrativismo e impactos socioeconômicos'],
+    ['09:30','sess','Fauna marinha e redes de proteção','Eixo 3 · encalhes, reabilitação e cetáceos'],
+    ['10:30','brk','Café',''],
+    ['11:00','post','Sessão de pôsteres III','Eixos 7 e 8'],
+    ['12:00','brk','Almoço',''],
+    ['14:00','sess','Portos, navegação e hidrografia','Eixo 8 · logística em litoral de macromarés'],
+    ['15:30','mesa','Mesa de encerramento: o que a ciência pede à indústria','Uma agenda comum para a Margem Equatorial'],
+    ['17:00','plen','Premiação dos melhores trabalhos e encerramento',''],
+  ]]
+];
+const MES=['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+const dayDate=i=>{const d=new Date(EVENT_START.getTime()+i*864e5); return `${String(d.getDate()).padStart(2,'0')} ${MES[d.getMonth()]}`;};
+const dayTabs=$('#dayTabs'), dayPanel=$('#dayPanel'), dbTrack=$('#dbTrack'), dbTicks=$('#dbTicks');
+dayTabs.innerHTML=days.map((d,i)=>`<button class="day-btn" role="tab" id="tday${i}" aria-controls="dayPanel" aria-selected="${i===0}" type="button"><small>DIA ${i+1} · ${dayDate(i)}</small><b>Dia ${i+1}</b><span>${d[0]}</span></button>`).join('');
+const toMin=s=>{const q=s.split(':').map(Number); return q[0]*60+q[1];};
+function renderDay(i){
+  const d=days[i], items=d[2], start=toMin(items[0][0]), end=toMin(d[1]), span=end-start;
+  dayPanel.setAttribute('aria-labelledby','tday'+i);
+  dbTrack.innerHTML=items.map((r,k)=>{const a=toMin(r[0]), b=k<items.length-1?toMin(items[k+1][0]):end; return `<span class="db-seg t-${r[1]}" data-k="${k}" title="${r[0]} · ${r[2]}" style="left:${(a-start)/span*100}%;width:${(b-a)/span*100}%"></span>`;}).join('');
+  let ticks=''; for(let m=start;m<=end;m+=120){ ticks+=`<span style="left:${(m-start)/span*100}%">${String(Math.floor(m/60)).padStart(2,'0')}h</span>`; } dbTicks.innerHTML=ticks;
+  dayPanel.innerHTML=`<ol class="sched">${items.map((r,k)=>`<li class="${r[1]==='brk'?'brk':''}" data-k="${k}"><time>${r[0]}</time><span class="rail"><i class="t-${r[1]}"></i></span><div class="body"><h4>${r[2]}</h4>${r[3]?`<p>${r[3]}</p>`:''}</div><span class="kind">${K[r[1]]}</span></li>`).join('')}</ol>`;
+  const segs=$$('.db-seg',dbTrack), rows=$$('.sched li',dayPanel);
+  const hl=(k,on)=>{if(segs[k]) segs[k].classList.toggle('on',on); if(rows[k]) rows[k].classList.toggle('on',on);};
+  segs.forEach((s,k)=>{s.addEventListener('mouseenter',()=>hl(k,true)); s.addEventListener('mouseleave',()=>hl(k,false)); s.addEventListener('click',()=>rows[k].scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'}));});
+  rows.forEach((r,k)=>{r.addEventListener('mouseenter',()=>hl(k,true)); r.addEventListener('mouseleave',()=>hl(k,false));});
+  if(!reduce && r0done){ rows.forEach((r,k)=>r.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:600,delay:k*45,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'})); segs.forEach((s,k)=>s.animate([{transform:'scaleY(0)'},{transform:'scaleY(1)'}],{duration:600,delay:k*40,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'})); }
+}
+let r0done=false;
+$$('.day-btn',dayTabs).forEach((b,i)=>b.addEventListener('click',()=>{$$('.day-btn',dayTabs).forEach(x=>x.setAttribute('aria-selected',x===b)); renderDay(i);}));
+renderDay(0); r0done=true;
+
+/* ================= ROTA + CARTÕES ================= */
+const ms=[['FEV · 2027','Abertura das inscrições','previsto'],['MAR – MAI','Submissão de resumos','previsto'],['JUN · 2027','Resultado da avaliação','previsto'],['JUL · 2027','Fim do primeiro lote','previsto'],['SET · 2027','Congresso em São Luís','três dias']];
+let routeLen=0;
+(function(){
+  const path=$('#routePath'), fg=$('#routeFg'), box=$('#route'); routeLen=path.getTotalLength();
+  [0,.25,.5,.74,1].forEach((f,i)=>{const pt=path.getPointAtLength(routeLen*f); const el=document.createElement('div'); el.className='buoy '+(i===0?'first ':'')+(i===4?'end up':(pt.y>100?'up':'down')); el.style.left=(pt.x/10)+'%'; el.style.top=(pt.y/190*100)+'%'; el.innerHTML=`<i></i><div class="lbl"><time>${ms[i][0]}</time><b>${ms[i][1]}</b><span>${ms[i][2]}</span></div>`; box.appendChild(el);});
+  fg.style.strokeDasharray=routeLen; fg.style.strokeDashoffset=reduce?0:routeLen;
+  $('#routeList').innerHTML=ms.map(m=>`<li><time>${m[0]}</time><b>${m[1]}</b></li>`).join('');
+})();
+const passes=[['Graduação','Estudantes de graduação de qualquer área ligada ao mar, à energia ou ao ambiente.','GRD'],['Pós-graduação','Mestrandos e doutorandos, com ou sem apresentação de trabalho.','PÓS'],['Pesquisadores e docentes','Profissionais de universidades, institutos e órgãos públicos.','PES'],['Setor produtivo','Profissionais de empresas de energia, consultoria ambiental, portos e serviços offshore.','IND']];
+$('#passes').innerHTML=passes.map((p,i)=>`<article class="pass rv ${i===3?'feat':''}" style="--i:${i%2}"><div class="pass-main"><div class="pass-top"><span>CARTÃO DE EMBARQUE</span><span>II CMMEB · ${p[2]}</span></div><h3>${p[0]}</h3><p>${p[1]}</p><dl><div><dt>Embarque</dt><dd>SLZ</dd></div><div><dt>Destino</dt><dd>MEB</dd></div><div><dt>Data</dt><dd>SET/27</dd></div></dl></div><div class="pass-stub"><small>VALOR</small><b>em breve</b><i class="barcode"></i></div></article>`).join('');
+
+/* ================= MARÉ ================= */
+(function(){
+  const X0=40,X1=505,Y0=220,Y1=20,maxM=7;
+  const x=h=>X0+(X1-X0)*h/24, y=m=>Y0-(Y0-Y1)*m/maxM;
+  const level=h=>3.5+3.2*Math.cos(2*Math.PI*(h-1.5)/12.42);
+  let g='';
+  [0,2,4,6].forEach(m=>{g+=`<line class="ax" x1="${X0}" x2="${X1}" y1="${y(m)}" y2="${y(m)}"/><text class="lbl" x="${X0-8}" y="${y(m)+3}" text-anchor="end">${m} m</text>`;});
+  [0,6,12,18,24].forEach(h=>{g+=`<text class="lbl" x="${x(h)}" y="${Y0+18}" text-anchor="middle">${String(h).padStart(2,'0')}h</text>`;});
+  $('#tideGrid').innerHTML=g;
+  let d=''; for(let h=0;h<=24;h+=.2){d+=(h?'L':'M')+x(h).toFixed(1)+','+y(level(h)).toFixed(1);}
+  $('#tideLine').setAttribute('d',d); $('#tideArea').setAttribute('d',d+`L${X1},${Y0}L${X0},${Y0}Z`);
+  const dot=$('#tideDot'), cur=$('#tideCursor'), hEl=$('#tideH'), vEl=$('#tideV');
+  function set(h){const v=level(h); dot.setAttribute('cx',x(h)); dot.setAttribute('cy',y(v)); cur.setAttribute('x1',x(h)); cur.setAttribute('x2',x(h)); cur.setAttribute('y1',Y1); cur.setAttribute('y2',Y0);
+    hEl.textContent=String(Math.floor(h)).padStart(2,'0')+':'+String(Math.floor((h%1)*60)).padStart(2,'0'); vEl.textContent=v.toFixed(1).replace('.',',')+' m';}
+  set(4.2);
+  if(!reduce){let on=false; const s=performance.now();
+    function f(n){ if(!on) return; set(((n-s)/1000*1.6)%24); requestAnimationFrame(f);}
+    new IntersectionObserver(es=>{on=es[0].isIntersecting; if(on) requestAnimationFrame(f);}).observe($('.tide')); }
+})();
+
+/* ================= REVELAÇÃO ================= */
+const rvEls=$$('.rv'), vh0=innerHeight;
+rvEls.forEach(el=>{ if(el.getBoundingClientRect().top>vh0*.92) el.classList.add('rv-pre'); });
+function countUp(n){ if(reduce||n.dataset.done) return; n.dataset.done=1; const to=+n.dataset.count, s=performance.now();
+  (function f(t){const k=clamp((t-s)/1500); n.textContent=Math.round(to*easeOut(k)); if(k<1) requestAnimationFrame(f);})(s);}
+function drawRoute(){ if(reduce) return; $('#routeFg').animate([{strokeDashoffset:routeLen},{strokeDashoffset:0}],{duration:2200,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'}); }
+const rvObs=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting) return; const el=e.target; el.classList.add('rv-in'); el.classList.remove('rv-pre'); rvObs.unobserve(el);
+  const n=$('[data-count]',el); if(n) countUp(n);
+  if(el.id==='route') drawRoute();});},{rootMargin:'0px 0px -8% 0px'});
+rvEls.forEach(el=>rvObs.observe(el));
+if(!$('#route').classList.contains('rv-pre')) drawRoute();
+})();
+</script>
+
+</body>
+</html>

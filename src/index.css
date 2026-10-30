@@ -1,0 +1,427 @@
+@import "tailwindcss";
+@import "@fontsource/epilogue/latin-400.css";
+@import "@fontsource/epilogue/latin-500.css";
+@import "@fontsource/epilogue/latin-900.css";
+
+/* Paleta herdada do site original: da superfície ao fundo */
+@theme {
+  --color-paper: #f2f9fb;
+  --color-foam: #cdeef5;
+  --color-sky: #8fd3e8;
+  --color-surf: #2a9fbd;
+  --color-sea: #1b6ba3;
+  --color-deep: #0c4d79;
+  --color-navy: #0a3253;
+  --color-ink: #0b2440;
+  --color-abyss: #06142a;
+  --color-sun: #f5a524;
+  --color-dusk: #e0622a;
+  --color-guara: #d33a2c;
+  --color-guara-field: #c4352a;
+  --font-sans: "Epilogue", "Segoe UI", system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+:root {
+  --m: clamp(16px, 2.4vw, 36px);
+  --hdr: 64px;
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 0.95rem + 0.9vw, 1.75rem);
+  --step-sub: clamp(1.5rem, 1rem + 1.6vw, 2.75rem);
+  --step-head: clamp(2rem, 0.6rem + 5.6vw, 5.5rem);
+  --step-display: clamp(2.3rem, 9.2vw, 8.5rem);
+  color-scheme: light;
+  scroll-padding-top: var(--hdr);
+}
+
+@layer base {
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--step-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
+}
+body.locked { overflow: hidden; }
+::selection { background: var(--color-sun); color: var(--color-ink); }
+:focus-visible { outline: 3px solid var(--color-sun); outline-offset: 3px; border-radius: 2px; }
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 0.06em; }
+img { display: block; max-width: 100%; }
+html { scrollbar-color: var(--color-sea) var(--color-ink); }
+}
+
+@layer components {
+.wrap { padding-inline: var(--m); }
+.grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(12px, 1.8vw, 28px); }
+
+/* tipografia */
+.t-display { font-weight: 900; font-size: var(--step-display); line-height: 0.88; letter-spacing: -0.035em; }
+.t-head { font-weight: 900; font-size: var(--step-head); line-height: 0.92; letter-spacing: -0.03em; text-wrap: balance; }
+.t-sub { font-weight: 900; font-size: var(--step-sub); line-height: 1; letter-spacing: -0.03em; text-wrap: balance; }
+.t-lead { font-size: var(--step-lead); line-height: 1.18; letter-spacing: -0.015em; text-wrap: pretty; }
+.t-body { font-size: var(--step-body); line-height: 1.5; text-wrap: pretty; }
+.t-small { font-size: var(--step-small); line-height: 1.45; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* botões: retangulares, um preenchimento */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.6em; min-height: 48px; padding: 0 1.4em;
+  font-weight: 500; font-size: var(--step-body); text-decoration: none; cursor: pointer; border: 0;
+  border-radius: 0; transition: transform 160ms var(--ease-out), background-color 200ms ease, color 200ms ease;
+  user-select: none;
+}
+.btn:active { transform: scale(0.97); }
+.btn svg { width: 1.1em; height: 1.1em; transition: transform 220ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .btn:hover svg { transform: translateX(4px); } }
+.btn-sun { background: var(--color-sun); color: var(--color-ink); }
+@media (hover: hover) and (pointer: fine) { .btn-sun:hover { background: #ffb940; } }
+.btn-ink { background: var(--color-ink); color: var(--color-paper); }
+@media (hover: hover) and (pointer: fine) { .btn-ink:hover { background: var(--color-navy); } }
+.btn-paper { background: var(--color-paper); color: var(--color-ink); }
+@media (hover: hover) and (pointer: fine) { .btn-paper:hover { background: var(--color-foam); } }
+.link { font-weight: 500; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.25em; transition: text-underline-offset 200ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .link:hover { text-underline-offset: 0.4em; } }
+
+/* entradas: conteúdo visível sem JS; com JS sobe e aparece uma vez */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity 700ms var(--ease-out), transform 900ms cubic-bezier(0.16, 1, 0.3, 1); transition-delay: calc(var(--d, 0) * 75ms); }
+  .js [data-reveal].is-in { opacity: 1; transform: none; }
+  /* o recorte vai no filho: o elemento observado precisa ter área visível */
+  .js [data-reveal="clip"] { opacity: 1; transform: none; }
+  .js [data-reveal="clip"] > :first-child { clip-path: inset(0 0 100% 0); transition: clip-path 1100ms var(--ease-in-out); transition-delay: calc(var(--d, 0) * 75ms); }
+  .js [data-reveal="clip"].is-in > :first-child { clip-path: inset(0 0 0 0); }
+}
+
+/* cabeçalho: assume a cor do capítulo abaixo */
+.hdr { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--hdr); background: var(--hdr-bg, transparent); color: var(--hdr-ink, var(--color-paper)); transition: background-color 300ms ease, color 300ms ease; }
+.hdr a.nav-l { text-decoration: none; font-weight: 500; position: relative; padding-block: 6px; }
+.hdr a.nav-l::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 260ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .hdr a.nav-l:hover::after { transform: scaleX(1); } }
+.hdr a.nav-l[aria-current="true"]::after { transform: scaleX(1); }
+
+/* botão do menu: três traços que se abrem um pouco no hover */
+.burger { display: grid; place-items: center; align-content: center; gap: 5px; width: 44px; height: 44px; border-radius: 999px; transition: background-color 200ms ease, transform 160ms var(--ease-out); }
+.burger span { display: block; width: 22px; height: 2.5px; border-radius: 2px; background: currentColor; transition: width 260ms var(--ease-out); }
+.burger span:nth-child(2) { width: 15px; justify-self: end; margin-right: 11px; }
+.burger:active { transform: scale(0.94); }
+@media (hover: hover) and (pointer: fine) { .burger:hover { background: color-mix(in srgb, currentColor 12%, transparent); } .burger:hover span:nth-child(2) { width: 22px; margin-right: 11px; } }
+
+/* menu lateral (celular e tablet): painel que entra pela direita sobre a cena escurecida */
+.drawer-scrim { position: fixed; inset: 0; z-index: 60; background: rgba(6, 20, 42, 0.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; visibility: hidden; transition: opacity 360ms ease, visibility 0s 360ms; } /* taste-skill-ignore: véu atrás do menu lateral */
+.drawer-scrim[data-open="true"] { opacity: 1; visibility: visible; transition: opacity 360ms ease; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 61; width: min(88vw, 400px);
+  display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y;
+  color: var(--color-paper); border-radius: 24px 0 0 24px;
+  /* fundo em pontos, como a cena */
+  background: radial-gradient(circle at 1px 1px, rgba(143, 211, 232, 0.16) 1px, transparent 1.6px) 0 0 / 14px 14px, linear-gradient(170deg, var(--color-navy), var(--color-ink) 45%, var(--color-abyss)); /* taste-skill-ignore: textura de pontos do menu */
+  box-shadow: -24px 0 60px rgba(6, 20, 42, 0.45); /* taste-skill-ignore: profundidade do painel lateral */
+  padding: max(14px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+  transform: translateX(105%); visibility: hidden;
+  transition: transform 520ms var(--ease-out), visibility 0s 520ms;
+}
+.drawer[data-open="true"] { transform: none; visibility: visible; transition: transform 520ms var(--ease-out); }
+.drawer-top { display: flex; align-items: center; justify-content: space-between; min-height: 52px; }
+.drawer-x { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 999px; background: rgba(242, 249, 251, 0.12); color: var(--color-paper); transition: background-color 200ms ease, transform 300ms var(--ease-out); }
+.drawer-x svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+.drawer-x:active { transform: scale(0.92); }
+@media (hover: hover) and (pointer: fine) { .drawer-x:hover { background: var(--color-sun); color: var(--color-ink); transform: rotate(90deg); } }
+.drawer-body { margin-top: 18px; display: grid; gap: 22px; }
+.drawer-label { font-size: var(--step-small); font-weight: 500; color: var(--color-sky); letter-spacing: 0.02em; padding-bottom: 2px; }
+.drawer-body ul { display: grid; }
+.drawer-body a { display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 6px 10px; margin-inline: -10px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; transition: background-color 200ms ease, color 200ms ease; }
+.drawer-body a.big { font-weight: 900; font-size: 1.75rem; letter-spacing: -0.03em; min-height: 54px; }
+.drawer-dot { width: 9px; height: 9px; border-radius: 999px; background: var(--dot); flex: none; outline: 4px solid color-mix(in srgb, var(--dot) 18%, transparent); outline-offset: 0; transition: transform 260ms var(--ease-out); }
+.drawer-arrow { width: 1.05rem; height: 1.05rem; margin-left: auto; opacity: 0; transform: translateX(-8px); transition: opacity 200ms ease, transform 260ms var(--ease-out); }
+.drawer-body a:active { background: rgba(242, 249, 251, 0.1); }
+.drawer-body a[aria-current="true"] { background: rgba(242, 249, 251, 0.08); color: var(--color-sun); }
+.drawer-body a[aria-current="true"] .drawer-arrow { opacity: 1; transform: none; }
+.drawer-body a[aria-current="true"] .drawer-dot { transform: scale(1.35); }
+@media (hover: hover) and (pointer: fine) {
+  .drawer-body a:hover { background: rgba(242, 249, 251, 0.08); }
+  .drawer-body a:hover .drawer-arrow { opacity: 1; transform: none; }
+  .drawer-body a:hover .drawer-dot { transform: scale(1.35); }
+}
+.drawer-foot { margin-top: auto; padding-top: 24px; }
+/* entrada em cascata dos itens */
+.drawer-label, .drawer-body li, .drawer-foot { opacity: 0; transform: translateX(24px); transition: opacity 200ms ease, transform 200ms ease; }
+.drawer[data-open="true"] :is(.drawer-label, .drawer-body li, .drawer-foot) { opacity: 1; transform: none; transition: opacity 420ms ease calc(120ms + var(--i, 0) * 40ms), transform 520ms var(--ease-out) calc(120ms + var(--i, 0) * 40ms); }
+@media (prefers-reduced-motion: reduce) {
+  .drawer, .drawer[data-open="true"] { transition: opacity 200ms ease, visibility 0s; transform: none; opacity: 0; }
+  .drawer[data-open="true"] { opacity: 1; }
+  .drawer-label, .drawer-body li, .drawer-foot { transform: none; }
+}
+
+/* carregamento: tela leve, sem 3D, enquanto a cena é montada */
+.boot { position: fixed; inset: 0; z-index: 100; background: var(--color-abyss); color: var(--color-paper); transition: opacity 700ms ease, visibility 0s 700ms; }
+.boot[data-out="true"] { opacity: 0; visibility: hidden; pointer-events: none; }
+.boot-dot { width: 10px; height: 10px; border-radius: 50%; background: color-mix(in srgb, var(--color-sky) 18%, transparent); transition: background-color 300ms ease, transform 300ms var(--ease-out); }
+.boot-dot.is-on { background: var(--color-sun); transform: scale(1.15); }
+/* durante o carregamento e o voo: sem rolagem e sem barra de navegação */
+body.intro-lock { overflow: hidden; }
+body.intro-lock .hdr { opacity: 0; pointer-events: none; }
+.hdr { transition: background-color 300ms ease, color 300ms ease, opacity 800ms ease; }
+
+/* hero */
+.hero-l2 { color: var(--color-sun); }
+.hero-copy { will-change: opacity, transform; }
+.h-in { animation: hIn 1100ms var(--ease-out) both; animation-delay: calc(var(--d, 0) * 110ms + 150ms); }
+@keyframes hIn { from { opacity: 0; transform: translateY(40px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+.paused .h-in { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .h-in { animation: none; } }
+
+/* transecto: folhas que empilham */
+/* cada faixa de profundidade é um capítulo de cor inteiro */
+.sheet { position: relative; min-height: 78svh; }
+@media (max-width: 899px) { .sheet { min-height: 0; } }
+.profile-art .sway { animation: sway 6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.profile-art .spin { animation: spin 9s linear infinite; transform-box: fill-box; transform-origin: center; }
+.profile-art .drift { animation: drift 7s ease-in-out infinite; }
+.profile-art .flow { stroke-dasharray: 26 18; animation: flow 2.8s linear infinite; }
+.profile-art .flick { animation: flick 0.9s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 100%; }
+.profile-art .bob { animation: bob 4.5s ease-in-out infinite; }
+@keyframes sway { 50% { transform: rotate(1.4deg); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes drift { 50% { transform: translate(18px, -10px); } }
+@keyframes flow { to { stroke-dashoffset: -88; } }
+@keyframes flick { to { transform: scale(0.85, 1.15); } }
+@keyframes bob { 50% { transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .profile-art * { animation: none !important; } }
+
+/* foto que respira */
+.breathe { animation: breathe 18s ease-in-out infinite alternate; }
+@keyframes breathe { from { transform: scale(1.02); } to { transform: scale(1.1) translate(-1.5%, 1%); } }
+@media (prefers-reduced-motion: reduce) { .breathe { animation: none; } }
+
+.pulse-dot { position: relative; }
+.pulse-dot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; animation: pulse 2s var(--ease-out) infinite; }
+@keyframes pulse { from { transform: scale(1); opacity: .8; } to { transform: scale(3.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .pulse-dot::after { animation: none; opacity: 0; } }
+
+/* arco das portas do Centro Histórico, em unidades da caixa */
+.arch { clip-path: url(#arch-clip); }
+
+/* só o tamanho de cada passo, para combinar com outro peso */
+.fs-display { font-size: var(--step-display); }
+.fs-head { font-size: var(--step-head); }
+.fs-sub { font-size: var(--step-sub); }
+.fs-lead { font-size: var(--step-lead); }
+}
+
+/* espaço reservado: conteúdo de 2027 ainda a definir */
+@layer components {
+  .ph { background: color-mix(in srgb, currentColor 14%, transparent); padding: 0.06em 0.4em; font-weight: 500; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .ph b { font-weight: 900; }
+}
+
+
+@layer components {
+  /* título do hero: cabe na metade esquerda, a cena ocupa a direita */
+  .hero-h1 { font-size: clamp(2.05rem, 6.4vw, 7rem); line-height: 0.9; letter-spacing: -0.035em; }
+  .hero-label { transition: opacity 300ms ease; will-change: transform; }
+}
+
+@layer components {
+  .stage-in { animation: stageIn 700ms var(--ease-out) both; }
+  @keyframes stageIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .stage-in { animation: none; } }
+}
+
+/*
+  A página como descida: a cena fica fixa ao fundo e o conteúdo vira cards de vidro fosco
+  na cor de cada bloco (--glass vem do data-bg). No desktop os cards ocupam ~2/3 da tela;
+  o terço direito fica para a coluna de perfuração.
+*/
+@layer components {
+  .deep-layer { z-index: 0; }
+  main > section, #root > footer { position: relative; z-index: 1; }
+  main > section:not(#inicio), #root > footer {
+    width: min(66vw, 1240px);
+    margin: 0 0 clamp(20px, 3vw, 44px) var(--m);
+    border-radius: 22px;
+    overflow: hidden;
+    isolation: isolate;
+    -webkit-backdrop-filter: blur(22px) saturate(1.15); /* taste-skill-ignore: vidro fosco pedido pelo cliente */
+    backdrop-filter: blur(22px) saturate(1.15); /* taste-skill-ignore: vidro fosco pedido pelo cliente */
+  }
+  main > section:not(#inicio)[data-chapter],
+  main > section:not(#inicio) [data-chapter],
+  #root > footer {
+    background-color: color-mix(in srgb, var(--glass, #0b2440) 82%, transparent) !important;
+  }
+  @media (min-width: 1024px) and (max-width: 1279px) { main > section:not(#inicio), #root > footer { width: 70vw; } }
+  @media (max-width: 1023px) {
+    main > section:not(#inicio), #root > footer { width: 80vw; margin: 0 0 20px var(--card-edge); border-radius: 16px; }
+    main > section:not(#inicio)[data-chapter], main > section:not(#inicio) [data-chapter], #root > footer {
+      background-color: color-mix(in srgb, var(--glass, #0b2440) 88%, transparent) !important;
+    }
+  }
+  .hdr {
+    background: color-mix(in srgb, var(--hdr-bg, transparent) 70%, transparent);
+    -webkit-backdrop-filter: blur(16px); /* taste-skill-ignore: barra de vidro sobre a cena */
+    backdrop-filter: blur(16px); /* taste-skill-ignore: barra de vidro sobre a cena */
+  }
+}
+
+/* borda do card até a tela e quanto o card desliza quando troca de lado */
+:root { --card-edge: 8px; --swap: 20vw; }
+@media (min-width: 600px) { :root { --card-edge: 16px; } }
+@media (min-width: 1024px) { :root { --card-edge: var(--m); --swap: 34vw; } }
+/* no celular (referência: iPhone 16 Pro, 402 pt) os cards têm ~320 pt: títulos um pouco menores */
+@media (max-width: 599px) {
+  :root { --step-head: clamp(1.6rem, 0.4rem + 5.4vw, 2rem); }
+}
+
+/* no desktop o conteúdo ocupa ~2/3 da tela: a escala dos títulos acompanha a coluna */
+@media (min-width: 1024px) {
+  :root {
+    --step-head: clamp(2rem, 0.6rem + 4.1vw, 4.6rem);
+    --step-sub: clamp(1.5rem, 1rem + 1.15vw, 2.4rem);
+    --step-display: clamp(2.3rem, 6.8vw, 7.2rem);
+  }
+  .hero-h1 { font-size: clamp(2.05rem, 6.4vw, 7rem); }
+}
+
+/*
+  Troca de lados: em três idas e voltas os cards passam para a direita e a coluna de perfuração para a esquerda.
+  O primeiro card de cada trecho desliza para o seu lado conforme entra na tela.
+*/
+@layer components {
+  #margem, #eixos, #palestrantes, #inscricoes, #local { margin-left: auto !important; margin-right: var(--card-edge) !important; }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      #margem, #eixos, #inscricoes { animation: card-to-right linear both; animation-timeline: view(); animation-range: entry 0% entry 85%; }
+      #ambiente, #programacao, #realizacao { animation: card-to-left linear both; animation-timeline: view(); animation-range: entry 0% entry 85%; }
+    }
+  }
+  @keyframes card-to-right { from { transform: translateX(calc(var(--swap) * -1)); } to { transform: none; } }
+  @keyframes card-to-left { from { transform: translateX(var(--swap)); } to { transform: none; } }
+
+  /* o rodapé ocupa a largura toda e, à direita, se desfaz em pontos sobre a formação */
+  #root > footer.foot-dissolve {
+    width: auto;
+    margin: 0;
+    border-radius: 24px 24px 0 0;
+    background: transparent !important;
+    -webkit-backdrop-filter: none; /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+    backdrop-filter: none; /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+  }
+  .foot-dissolve::before,
+  .foot-dissolve::after,
+  .foot-dissolve > .wrap::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  /* o card sólido, que some para a direita */
+  .foot-dissolve::before {
+    background: var(--glass, #c4352a);
+    -webkit-mask-image: linear-gradient(to right, #000 0 62%, transparent 80%); /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+    mask-image: linear-gradient(to right, #000 0 62%, transparent 80%); /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+  }
+  /* pontos grandes: a primeira camada da desintegração */
+  .foot-dissolve::after {
+    background-image: radial-gradient(circle, var(--glass, #c4352a) 0 3px, transparent 3.5px); /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+    background-size: 11px 11px;
+    -webkit-mask-image: linear-gradient(to right, transparent 54%, #000 66%, #000 72%, transparent 90%); /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+    mask-image: linear-gradient(to right, transparent 54%, #000 66%, #000 72%, transparent 90%); /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+  }
+  /* pontos menores e quentes, que se espalham até a broca */
+  .foot-dissolve > .wrap::before {
+    left: 0; right: 0; width: 100vw;
+    background-image:
+      radial-gradient(circle, #e0622a 0 1.8px, transparent 2.2px), /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+      radial-gradient(circle, #f5a524 0 1.2px, transparent 1.6px); /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+    background-size: 9px 9px, 13px 13px;
+    background-position: 0 0, 5px 7px;
+    -webkit-mask-image: linear-gradient(to right, transparent 64%, #000 76%, transparent 98%); /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+    mask-image: linear-gradient(to right, transparent 64%, #000 76%, transparent 98%); /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+  }
+  .foot-dissolve > .wrap { position: relative; }
+  @media (max-width: 1023px) {
+    .foot-dissolve::before { -webkit-mask-image: linear-gradient(to right, #000 0 78%, transparent 90%); mask-image: linear-gradient(to right, #000 0 78%, transparent 90%); } /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+    .foot-dissolve::after { background-size: 9px 9px; -webkit-mask-image: linear-gradient(to right, transparent 72%, #000 81%, transparent 96%); mask-image: linear-gradient(to right, transparent 72%, #000 81%, transparent 96%); } /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+    .foot-dissolve > .wrap::before { -webkit-mask-image: linear-gradient(to right, transparent 80%, #000 89%, transparent 100%); mask-image: linear-gradient(to right, transparent 80%, #000 89%, transparent 100%); } /* taste-skill-ignore: dissolução do rodapé em pontos, pedida pelo cliente */
+  }
+}
+
+/*
+  Celular (referência: iPhone 16 Pro, 402 pt): cards ~25% mais baixos.
+  Menos respiro vertical, alturas mínimas desligadas, imagens mais baixas e tipo um pouco menor.
+*/
+@media (max-width: 599px) {
+  :root {
+    --step-lead: 1.125rem;
+    --step-body: 1rem;
+    --step-sub: 1.375rem;
+    --step-display: clamp(2rem, 9vw, 2.6rem);
+  }
+  /* respiro vertical das seções e entre blocos */
+  [class*="py-[clamp(48px,8vw,140px)]"], [class*="py-[clamp(48px,7vw,120px)]"] { padding-top: 28px !important; padding-bottom: 28px !important; }
+  [class*="pt-[clamp(48px,8vw,140px)]"], [class*="pt-[clamp(48px,7vw,112px)]"] { padding-top: 26px !important; }
+  [class*="pb-[clamp(48px,8vw,140px)]"], [class*="pb-[clamp(48px,8vw,128px)]"], [class*="pb-[clamp(48px,7vh,88px)]"] { padding-bottom: 24px !important; }
+  [class*="mt-[clamp("] { margin-top: 20px !important; }
+  [class*="gap-[clamp(48px,7vw,96px)]"] { gap: 28px !important; }
+  main > section .mt-12, main > section .mt-10 { margin-top: 1.25rem !important; }
+  main > section .mt-8, main > section .mt-7 { margin-top: 1rem !important; }
+  main > section .gap-y-10, main > section .gap-y-8 { row-gap: 1.25rem !important; }
+  /* alturas mínimas pensadas para telas grandes */
+  #inscricoes [class*="min-h-["], #duvidas [class*="min-h-["], #local [class*="min-h-["], #bacias [class*="min-h-["] { min-height: 0 !important; }
+  #local p.wrap, #local a.wrap { min-height: 56px !important; padding-bottom: 10px !important; }
+  #inscricoes .pt-12 { padding-top: 1.5rem !important; }
+  #duvidas h2 { padding-top: 40px; padding-bottom: 16px; }
+  #duvidas .py-8 { padding-top: 18px !important; padding-bottom: 18px !important; }
+  /* imagens e figuras mais baixas */
+  #ambiente img, #ambiente figure > div { aspect-ratio: 2 / 1 !important; }
+  #programacao img { aspect-ratio: 2 / 1 !important; }
+  #margem .min-h-\[240px\] { min-height: 150px !important; }
+  #industria [class*="min-h-[420px]"] { min-height: 300px !important; }
+  #realizacao figure { min-width: 170px !important; width: 46vw !important; }
+  #realizacao .gap-14 { gap: 1.5rem !important; }
+  /* anos e listas do Sobre, mais compactos */
+  #sobre ol.grid { gap: 1rem !important; }
+  #sobre ol .fs-display { font-size: var(--step-head); }
+  /* rodapé */
+  .foot-dissolve p[aria-hidden="true"] { font-size: 17vw !important; }
+}
+@media (max-width: 599px) {
+  /* itens de lista: menos acolchoamento */
+  main > section li.p-5, main > section li.p-6, main > section article.p-6 { padding: 0.85rem 1rem !important; }
+  main > section li.md\:p-8 { padding: 0.85rem 1rem !important; }
+  #palestrantes li.py-5 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+  #industria [role="tablist"] button { padding-top: 0.35rem !important; padding-bottom: 0.35rem !important; }
+  #industria [class*="min-h-[420px]"] { min-height: 250px !important; }
+  #sobre ol a { padding: 0.75rem !important; }
+  #realizacao ul.gap-4 { gap: 0.6rem !important; }
+  /* textos de destaque dentro dos blocos do transecto e do ambiente: tamanho de texto corrido */
+  #margem .t-lead, #ambiente li .t-lead { font-size: var(--step-body); }
+  #margem .min-h-\[240px\] { min-height: 120px !important; }
+  #ambiente img, #ambiente figure > div { aspect-ratio: 5 / 2 !important; }
+  #margem .sheet .pt-6 { padding-top: 0.75rem !important; }
+  /* rodapé */
+  #root > footer .mt-10 { margin-top: 1.25rem !important; }
+  #root > footer .gap-y-10 { row-gap: 1.25rem !important; }
+  #root > footer .gap-8 { gap: 1rem !important; }
+  #root > footer .mt-6 { margin-top: 0.85rem !important; }
+}
+@media (max-width: 599px) {
+  #eixos li { padding: 0.6rem 0.85rem !important; }
+  #eixos ol { gap: 0.35rem !important; }
+  #realizacao figure { min-width: 140px !important; width: 40vw !important; }
+  #realizacao .p-6 { padding: 1rem !important; }
+  #realizacao .pb-6 { padding-bottom: 1rem !important; }
+  .foot-dissolve p[aria-hidden="true"] { font-size: 14vw !important; }
+  #root > footer ul.gap-2 { gap: 0.3rem !important; }
+  #root > footer ul.gap-1\.5 { gap: 0.2rem !important; }
+  #root > footer .pt-\[clamp\(48px\,5vw\,80px\)\] { padding-top: 28px !important; }
+}
