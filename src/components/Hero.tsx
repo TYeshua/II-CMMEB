@@ -227,17 +227,17 @@ export function Hero() {
         )}
 
         <div
-          className="hero-copy wrap relative flex h-full flex-col pt-[calc(var(--hdr)+9svh)] pb-8"
+          className="hero-copy wrap relative flex h-full flex-col pt-[calc(var(--hdr)+3svh)] pb-8"
           style={{ opacity: copyFade, transform: `translateY(${-p * 120}px)`, visibility: copyFade <= 0 || phase !== 'done' ? 'hidden' : undefined }}
           aria-hidden={phase !== 'done' ? true : undefined}
         >
           <div ref={copy} className="self-start">
-            <h1 className="hero-h1 font-black">
-              <span className="block h-in" style={d(0)}>Óleo e gás na</span>
-              <span className="hero-l2 block h-in" style={d(1)}>Margem Equatorial</span>
+            <h1 className="font-black">
+              <span className="hero-name block h-in" style={d(0)}>II CMMEB</span>
+              <span className="hero-theme hero-l2 block h-in" style={d(1)}>Integração Indústria e Meio Ambiente</span>
             </h1>
-            <p className="t-lead mt-7 max-w-[38ch] font-medium h-in" style={d(2)}>
-              II Congresso de Ciências do Mar na Margem Equatorial Brasileira: Integração da Indústria e do Meio Ambiente.
+            <p className="t-lead mt-6 max-w-[38ch] font-medium h-in" style={d(2)}>
+              II Congresso de Ciências do Mar na Margem Equatorial Brasileira.
             </p>
             <p className="t-body mt-4 h-in" style={d(3)}><Ph id="datas" /> · Salinópolis, PA</p>
             <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4 h-in" style={d(4)}>

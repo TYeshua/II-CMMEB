@@ -224,8 +224,9 @@ body.intro-lock .hdr { opacity: 0; pointer-events: none; }
 
 
 @layer components {
-  /* título do hero: cabe na metade esquerda, a cena ocupa a direita */
-  .hero-h1 { font-size: clamp(2.05rem, 6.4vw, 7rem); line-height: 0.9; letter-spacing: -0.035em; }
+  /* título do hero: o nome do congresso em destaque e, logo abaixo, o tema */
+  .hero-name { font-size: clamp(3.5rem, 10vw, 10.5rem); line-height: 0.86; letter-spacing: -0.05em; }
+  .hero-theme { margin-top: 0.45em; font-size: clamp(1.45rem, 2.6vw, 2.9rem); line-height: 1.05; letter-spacing: -0.025em; text-wrap: balance; }
   .hero-label { transition: opacity 300ms ease; will-change: transform; }
 }
 
@@ -287,7 +288,6 @@ body.intro-lock .hdr { opacity: 0; pointer-events: none; }
     --step-sub: clamp(1.5rem, 1rem + 1.15vw, 2.4rem);
     --step-display: clamp(2.3rem, 6.8vw, 7.2rem);
   }
-  .hero-h1 { font-size: clamp(2.05rem, 6.4vw, 7rem); }
 }
 
 /*
