@@ -35,11 +35,12 @@ const ORBIT: { id: string; make: () => Cloud; scale: number; flap?: boolean; y?:
 const R_IN = 20, R_OUT = 28, ORBIT_Y = 10, LINK_N = 70
 const FLARE = new THREE.Vector3(14.4, 12.4, -5.4)
 const FLIGHT_MS = 12000
-const TOP = 44 // altitude (no globo) em que a descida local começa
 // 0–0.3: o planeta gira até o Brasil e aproxima · 0.3–0.44: o mapa do Pará e das bacias · até SPLIT: segue para a Foz
 const SPLIT = 0.56 // daqui em diante, a câmera desce sobre a plataforma
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
+// no celular (retrato) o mapa não cabe inteiro em largura: o enquadramento fica no Pará, na Foz e na Pará-Maranhão
+const MAP_CENTER_NARROW = { lat: -2.3, lon: -50.2 }
 const frame = () => new Promise<void>(r => requestAnimationFrame(() => r()))
 
 type P = THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial>
@@ -54,6 +55,9 @@ export class World {
   // planeta
   private planet: P[] = []
   private planetSize: number[] = []
+  private planetIn: P[] = [] // pontos do globo dentro da janela do mapa: saem quando o mapa entra
+  private planetInSize: number[] = []
+  private top = 44 // altitude (no globo) em que a descida local começa; mais baixa no celular
   private halo!: P
   private stars!: P
   private region: P[] = []
@@ -143,6 +147,7 @@ export class World {
     step(0.36, 'Distribuindo os pontos do planeta')
     await frame()
     const ocean = cloud(), land = cloud(), br = cloud(), band = cloud()
+    const oceanI = cloud(), landI = cloud(), brI = cloud(), bandI = cloud(), gratI = cloud()
     const N = small ? 70000 : 170000
     const golden = Math.PI * (3 - Math.sqrt(5))
     for (let i = 0; i < N; i++) {
@@ -150,19 +155,24 @@ export class World {
       const lat = Math.asin(y) / DEG
       const lon = ((Math.atan2(Math.sin(th), Math.cos(th)) / DEG + 540) % 360) - 180
       const m = gm(lat, lon)
+      const w = rg.inside(lat, lon)
       dir(lat, lon, v).multiplyScalar(R)
       const inMargin = !m.land && rg.inside(lat, lon) && lat > -6 && lon > -54 && (() => { const r = rg.at(lat, lon); return !r.land && r.km < 260 })()
-      if (inMargin) push(band, v.x, v.y, v.z, hash(i, 4) > 0.35 ? '#f5a524' : '#ffd27a', 1.1)
-      else if (m.brazil) push(br, v.x, v.y, v.z, hash(i, 1) > 0.5 ? '#cdeef5' : '#8fd3e8', 1.15)
-      else if (m.land) push(land, v.x, v.y, v.z, hash(i, 2) > 0.7 ? '#8fd3e8' : '#2a9fbd', 1)
-      else if (hash(i, 3) < 0.42) push(ocean, v.x, v.y, v.z, '#1b6ba3', 0.85)
+      if (inMargin) push(w ? bandI : band, v.x, v.y, v.z, hash(i, 4) > 0.35 ? '#f5a524' : '#ffd27a', 1.1)
+      else if (m.brazil) push(w ? brI : br, v.x, v.y, v.z, hash(i, 1) > 0.5 ? '#cdeef5' : '#8fd3e8', 1.15)
+      else if (m.land) push(w ? landI : land, v.x, v.y, v.z, hash(i, 2) > 0.7 ? '#8fd3e8' : '#2a9fbd', 1)
+      else if (hash(i, 3) < 0.42) push(w ? oceanI : ocean, v.x, v.y, v.z, '#1b6ba3', 0.85)
     }
     const grat = cloud()
-    for (let lon = -180; lon < 180; lon += 15) for (let lat = -80; lat <= 80; lat += 0.6) { dir(lat, lon, v).multiplyScalar(R * 1.004); push(grat, v.x, v.y, v.z, '#2a9fbd', 0.6) }
-    for (let lat = -75; lat <= 75; lat += 15) for (let lon = -180; lon < 180; lon += 0.6) { dir(lat, lon, v).multiplyScalar(R * 1.004); push(grat, v.x, v.y, v.z, lat === 0 ? '#f5a524' : '#2a9fbd', lat === 0 ? 0.9 : 0.6) }
+    for (let lon = -180; lon < 180; lon += 15) for (let lat = -80; lat <= 80; lat += 0.6) { dir(lat, lon, v).multiplyScalar(R * 1.004); push(rg.inside(lat, lon) ? gratI : grat, v.x, v.y, v.z, '#2a9fbd', 0.6) }
+    for (let lat = -75; lat <= 75; lat += 15) for (let lon = -180; lon < 180; lon += 0.6) { dir(lat, lon, v).multiplyScalar(R * 1.004); push(rg.inside(lat, lon) ? gratI : grat, v.x, v.y, v.z, lat === 0 ? '#f5a524' : '#2a9fbd', lat === 0 ? 0.9 : 0.6) }
     for (const [c, size, tw] of [[ocean, 8, 0], [land, 9, 0], [br, 10, 0], [grat, 7, 0], [band, 10, 0.3]] as const) {
       this.planet.push(this.add(c, { pr, size, far: 4000, twinkle: tw }))
       this.planetSize.push(size)
+    }
+    for (const [c, size] of [[oceanI, 8], [landI, 9], [brI, 10], [gratI, 7], [bandI, 10]] as const) {
+      this.planetIn.push(this.add(c, { pr, size, far: 4000 }))
+      this.planetInSize.push(size)
     }
     const halo = cloud()
     for (let i = 0; i < (small ? 3000 : 7000); i++) {
@@ -256,7 +266,8 @@ export class World {
     this.buildLocal()
 
     // trajetória da descida, em unidades locais (x leste, y para cima, z sul)
-    const top = TOP / S, D = this.narrow ? 92 : 70
+    this.top = this.narrow ? 34 : 44
+    const top = this.top / S, D = this.narrow ? 92 : 70
     const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z)
     this.camPath = new THREE.CatmullRomCurve3([V(0, top, 0.1), V(45, top * 0.42, 140), V(26, 95, 150), V(8, 34, D + 30), V(0, 17, D)], false, 'centripetal')
     this.lookPath = new THREE.CatmullRomCurve3([V(0, 0, -0.1), V(0, 0, 0), V(0, 4, 0), V(0, 8, 0), V(0, 9, 0)], false, 'centripetal')
@@ -446,7 +457,9 @@ export class World {
     const dy = (this.narrow ? 0.22 * this.h : 0.14 * this.h) * shift * (1 - dk)
     cam.setViewOffset(this.w, this.h, -dx, -dy, this.w, this.h)
     const globeFov = this.narrow ? 60 : 40, heroFov = this.narrow ? 58 : 40
-    cam.fov = globeFov + (heroFov - globeFov) * shift
+    // na descida até a plataforma, a lente fecha (a plataforma chega com tamanho) e abre de novo para a tela inicial
+    const lens = smooth(0.48, 0.6, k) * (1 - smooth(0.8, 0.98, k))
+    cam.fov = globeFov + (heroFov - globeFov) * shift - lens * (this.narrow ? 22 : 14)
     cam.updateProjectionMatrix()
 
     this.site.updateMatrixWorld()
@@ -455,11 +468,12 @@ export class World {
       // do espaço ao mapa da margem, e do mapa até o alto da plataforma
       const a = ease(smooth(0, 0.22, k)), zIn = ease(smooth(0.13, 0.3, k)), m = ease(smooth(0.44, SPLIT, k))
       const start = dir(24, -82, this.tmp)
-      const d = start.clone().lerp(dir(MAP_CENTER.lat, MAP_CENTER.lon), a).normalize().lerp(this.siteDir, m).normalize()
-      const far = R * (this.narrow ? 4.2 : 3.3), mapAlt = this.narrow ? 330 : 150
+      const mc = this.narrow ? MAP_CENTER_NARROW : MAP_CENTER
+      const d = start.clone().lerp(dir(mc.lat, mc.lon), a).normalize().lerp(this.siteDir, m).normalize()
+      const far = R * (this.narrow ? 4.2 : 3.3), mapAlt = this.narrow ? 215 : 150
       let dist = far + (R + mapAlt - far) * Math.pow(zIn, 0.8)
       dist -= 12 * smooth(0.3, 0.44, k) * (1 - m) // deriva lenta enquanto o mapa está na tela
-      dist += (TOP - mapAlt + 12 * (1 - m)) * m
+      dist += (this.top - mapAlt + 12 * (1 - m)) * m
       cam.position.copy(d).multiplyScalar(dist)
       cam.up.set(0, 1, 0)
       cam.lookAt(d.clone().multiplyScalar(R * smooth(0.08, 0.3, k)))
@@ -490,9 +504,15 @@ export class World {
     const alt = cam.position.length() - R
     const shrink = 0.18 + 0.82 * smooth(2, R * 0.6, alt)
     this.planet.forEach((p, i) => {
-      // o globo some por inteiro sob o mapa: a grade dele por trás das amostras da margem fazia moiré
-      p.material.uniforms.uOpacity.value = 1 - smooth(0.16, 0.3, k)
-      p.material.uniforms.uSize.value = this.planetSize[i] * shrink
+      // fora da janela do mapa o globo continua, mais baixo: o mapa é um recorte ampliado dele
+      const mapK = smooth(0.16, 0.3, k)
+      p.material.uniforms.uOpacity.value = 1 - 0.7 * mapK - 0.3 * smooth(0.48, 0.6, k)
+      p.material.uniforms.uSize.value = this.planetSize[i] * shrink * (1 - 0.55 * mapK) // de perto, pontos menores: sem retícula grossa
+    })
+    // dentro da janela, sai: a grade dele por trás das amostras da margem fazia moiré
+    this.planetIn.forEach((p, i) => {
+      p.material.uniforms.uOpacity.value = 1 - smooth(0.16, 0.28, k)
+      p.material.uniforms.uSize.value = this.planetInSize[i] * shrink
     })
     this.halo.material.uniforms.uOpacity.value = 0.7 * (1 - smooth(0.14, 0.26, k))
     this.stars.material.uniforms.uOpacity.value = 1 - smooth(0.58, 0.78, k)
@@ -505,7 +525,7 @@ export class World {
     const usePB = k >= 0.47
     const ping = usePB ? this.tmp2.copy(this.siteDir).multiplyScalar(R) : this.mapPts.sede
     const pingR = usePB ? pb * 34 : pa * 210
-    const pingK = usePB ? (k < 0.48 ? 0 : 1 - pb * 0.55) : (pa > 0 && pa < 1 ? 1 - pa * 0.6 : 0)
+    const pingK = usePB ? (k < 0.48 ? 0 : 0.75 - pb * 0.4) : (pa > 0 && pa < 1 ? 1 - pa * 0.85 : 0)
     this.region.forEach((p, i) => {
       const u = p.material.uniforms
       u.uOpacity.value = near * (1 - smooth(0.74, 0.9, k))

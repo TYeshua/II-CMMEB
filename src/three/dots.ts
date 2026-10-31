@@ -151,6 +151,7 @@ export function dotMaterial(o: DotOpts) {
         a *= 1.0 - smoothstep(uFar * 0.5, uFar, dist);
         float s = uSize * aSize * uPix * (130.0 / max(dist, 0.001));
         a *= clamp(s, 0.0, 1.0); // pontos menores que 1 px somem em vez de cintilar
+        s *= 1.0 + min(front, 1.0) * uPingK * 0.8; // a frente do pulso engrossa os pontos: lê-se de longe
         s = clamp(s, 1.0, uMaxPx);
         gl_PointSize = s;
         gl_Position = projectionMatrix * mv;

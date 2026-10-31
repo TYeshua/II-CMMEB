@@ -105,7 +105,8 @@ export function mangrove() {
       [new THREE.SphereGeometry(1.5 * s, 14, 10), at(tx + 0.8 * s, 3.8 * s, 0.3)],
       [new THREE.SphereGeometry(1.6 * s, 14, 10), at(tx, 4.6 * s, -0.2)],
     ])
-    sample(c, can, 520, p => (p.y > 4.6 * s ? '#cdeef5' : '#8fd3e8'))
+    // copa em azul do mar, com luz só no alto: a nuvem densa não estoura
+    sample(c, can, 400, p => (p.y > 4.9 * s ? '#8fd3e8' : p.y > 3.9 * s ? '#2a9fbd' : '#1b6ba3'))
   }
   return c
 }
