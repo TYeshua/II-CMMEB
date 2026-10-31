@@ -183,7 +183,7 @@ export function Hero() {
       {/* a cena fica fixa atrás da página inteira: a coluna de perfuração desce com a rolagem */}
       <div className="deep-layer fixed inset-0" aria-hidden="true">
         <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
-        <div className="pointer-events-none absolute left-0 top-0 hidden md:block" ref={el => { labelEls.current.broca = el as HTMLSpanElement | null }} style={{ opacity: 0 }}>
+        <div className="pointer-events-none absolute left-0 top-0 hidden md:block" ref={el => { labelEls.current.broca = el as HTMLSpanElement | null }} style={{ opacity: 0, textShadow: "0 1px 10px rgba(6,20,42,0.95), 0 0 2px rgba(6,20,42,0.9)" }}>
           <span className="block translate-x-24 -translate-y-1/2 tnum fs-lead font-black leading-none text-paper" />
           <span className="block translate-x-24 -translate-y-1/2 pt-1 t-small text-sky" />
         </div>

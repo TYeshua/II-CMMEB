@@ -11,6 +11,11 @@ import { BOTTOM, SEABED, bit, bop, cuttings, drillPipe, lightRays, riser, seabed
   exatamente no enquadramento da tela inicial: a indústria no centro, o ambiente em órbita.
   Depois disso, a rolagem (dive 0..1) desce pelo riser até o fundo.
 
+  Os pontos são amostras de um levantamento (sonar, sísmica): nítidos, coloridos pela profundidade,
+  e a luz que passa por eles tem causa. Um pulso de sonar parte de Salinópolis e varre a margem
+  enquanto o mapa está na tela; um segundo pulso parte do ponto da plataforma e revela o mar
+  ao redor dela: é ele que leva do mapa à cena da indústria.
+
   O "local" (mar, plataforma, órbita) vive num grupo tangente ao globo, em unidades próprias
   (plataforma ≈ 22 de altura) e reduzido por S para caber no planeta. Tamanhos de ponto e
   distâncias de esmaecimento desse grupo são multiplicados por S.
@@ -30,6 +35,7 @@ const ORBIT: { id: string; make: () => Cloud; scale: number; flap?: boolean; y?:
 const R_IN = 20, R_OUT = 28, ORBIT_Y = 10, LINK_N = 70
 const FLARE = new THREE.Vector3(14.4, 12.4, -5.4)
 const FLIGHT_MS = 12000
+const TOP = 44 // altitude (no globo) em que a descida local começa
 // 0–0.3: o planeta gira até o Brasil e aproxima · 0.3–0.44: o mapa do Pará e das bacias · até SPLIT: segue para a Foz
 const SPLIT = 0.56 // daqui em diante, a câmera desce sobre a plataforma
 
@@ -49,7 +55,6 @@ export class World {
   private planet: P[] = []
   private planetSize: number[] = []
   private halo!: P
-  private sats!: P
   private stars!: P
   private region: P[] = []
   private regionSize: number[] = []
@@ -110,7 +115,8 @@ export class World {
     this.pr = Math.min(devicePixelRatio || 1, this.small ? 1.5 : 2)
     this.renderer.setPixelRatio(this.pr)
     this.renderer.setClearColor('#06142a')
-    this.fx = bloom(this.renderer, this.scene, this.camera, { strength: 0.6, radius: 0.4, threshold: 0.3 })
+    // brilho só nas fontes de luz (chama, luzes da plataforma, o pulso)
+    this.fx = bloom(this.renderer, this.scene, this.camera, { strength: 0.55, radius: 0.35, threshold: 0.6 })
   }
 
   private add(c: Cloud, o: Parameters<typeof points>[1], into: THREE.Object3D = this.scene) {
@@ -154,29 +160,19 @@ export class World {
     const grat = cloud()
     for (let lon = -180; lon < 180; lon += 15) for (let lat = -80; lat <= 80; lat += 0.6) { dir(lat, lon, v).multiplyScalar(R * 1.004); push(grat, v.x, v.y, v.z, '#2a9fbd', 0.6) }
     for (let lat = -75; lat <= 75; lat += 15) for (let lon = -180; lon < 180; lon += 0.6) { dir(lat, lon, v).multiplyScalar(R * 1.004); push(grat, v.x, v.y, v.z, lat === 0 ? '#f5a524' : '#2a9fbd', lat === 0 ? 0.9 : 0.6) }
-    for (const [c, size, tw] of [[ocean, 8, 0.2], [land, 9, 0.15], [br, 10, 0.2], [grat, 7, 0.3], [band, 10, 0.4]] as const) {
+    for (const [c, size, tw] of [[ocean, 8, 0], [land, 9, 0], [br, 10, 0], [grat, 7, 0], [band, 10, 0.3]] as const) {
       this.planet.push(this.add(c, { pr, size, far: 4000, twinkle: tw }))
       this.planetSize.push(size)
     }
     const halo = cloud()
-    for (let i = 0; i < (small ? 5000 : 12000); i++) {
-      v.randomDirection().multiplyScalar(R * (1.01 + Math.pow(Math.random(), 2.2) * 0.09))
+    for (let i = 0; i < (small ? 3000 : 7000); i++) {
+      v.randomDirection().multiplyScalar(R * (1.008 + Math.pow(Math.random(), 3) * 0.035))
       push(halo, v.x, v.y, v.z, Math.random() > 0.8 ? '#cdeef5' : '#8fd3e8', 0.7)
     }
-    this.halo = this.add(halo, { pr, size: 8, far: 4000, twinkle: 0.6 })
-    const sats = cloud()
-    for (const [tilt, rot, r] of [[0.45, 0.3, 1.32], [-0.62, 1.4, 1.48]]) {
-      const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(tilt, rot, 0))
-      for (let i = 0; i < 900; i++) {
-        const a = (i / 900) * Math.PI * 2
-        v.set(Math.cos(a) * R * r, 0, Math.sin(a) * R * r).applyQuaternion(q)
-        push(sats, v.x, v.y, v.z, '#f5a524', 1.2, i / 900 + rot)
-      }
-    }
-    this.sats = this.add(sats, { pr, size: 18, far: 5000, twinkle: 0, trail: { speed: 0.06, pow: 10 } })
+    this.halo = this.add(halo, { pr, size: 6, far: 4000, opacity: 0.7 })
     const stars = cloud()
     for (let i = 0; i < 4000; i++) { v.randomDirection().multiplyScalar(2500 + Math.random() * 1500); push(stars, v.x, v.y, v.z, Math.random() > 0.9 ? '#f5a524' : '#cdeef5', 0.8 + Math.random() * 2) }
-    this.stars = this.add(stars, { pr, size: 50, far: 9000, twinkle: 0.7 })
+    this.stars = this.add(stars, { pr, size: 40, far: 9000, twinkle: 0.5 })
 
     /* ---------- a margem, colada na superfície ---------- */
     step(0.52, 'Modelando o relevo da margem')
@@ -240,7 +236,7 @@ export class World {
     }
     dir(SALINOPOLIS.lat, SALINOPOLIS.lon, v).multiplyScalar(R + 0.15)
     for (let i = 0; i < 24; i++) push(lines, v.x + (Math.random() - 0.5) * 0.15, v.y + (Math.random() - 0.5) * 0.15, v.z + (Math.random() - 0.5) * 0.15, '#ff4a36', 1.8)
-    for (const [c, size, tw] of [[sea, 1.05, 0.15], [ground, 1.1, 0.1], [shore, 1.9, 0.35], [lines, 1.2, 0.2]] as const) {
+    for (const [c, size, tw] of [[sea, 1.05, 0], [ground, 1, 0], [shore, 1.5, 0], [lines, 1.15, 0]] as const) {
       this.region.push(this.add(c, { pr, size, far: 4000, opacity: 0, twinkle: tw }))
       this.regionSize.push(size)
     }
@@ -260,7 +256,7 @@ export class World {
     this.buildLocal()
 
     // trajetória da descida, em unidades locais (x leste, y para cima, z sul)
-    const top = 64 / S, D = this.narrow ? 92 : 70
+    const top = TOP / S, D = this.narrow ? 92 : 70
     const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z)
     this.camPath = new THREE.CatmullRomCurve3([V(0, top, 0.1), V(45, top * 0.42, 140), V(26, 95, 150), V(8, 34, D + 30), V(0, 17, D)], false, 'centripetal')
     this.lookPath = new THREE.CatmullRomCurve3([V(0, 0, -0.1), V(0, 0, 0), V(0, 4, 0), V(0, 8, 0), V(0, 9, 0)], false, 'centripetal')
@@ -297,7 +293,7 @@ export class World {
       v.multiplyScalar(880)
       push(sky, v.x, v.y, v.z, Math.random() > 0.7 ? '#8fd3e8' : '#2a9fbd', 0.6 + Math.random() * 0.9)
     }
-    this.sky = this.addLocal(sky, { pr, size: 0.9, far: 3000, twinkle: 0.6, opacity: 0 }, L)
+    this.sky = this.addLocal(sky, { pr, size: 0.9, far: 3000, twinkle: 0.5, opacity: 0 }, L)
 
     // mar: malha polar, densa perto da plataforma e rala no horizonte
     const sea = cloud()
@@ -309,29 +305,29 @@ export class World {
         push(sea, Math.cos(a) * r, 0, Math.sin(a) * r, '#1b6ba3', 1)
       }
     }
-    this.ocean = this.addLocal(sea, { pr, size: 0.6, far: 260, waves: true, twinkle: 0.1, opacity: 0 }, L)
+    this.ocean = this.addLocal(sea, { pr, size: 0.6, far: 260, waves: true, opacity: 0, reveal: true }, L)
     this.ocean.material.uniforms.uGlow.value.copy(FLARE).applyAxisAngle(new THREE.Vector3(0, 1, 0), -0.55)
 
     // a indústria no centro, com luz contida para não estourar os detalhes
     const rig = new THREE.Group()
     rig.rotation.y = -0.55
     L.add(rig)
-    this.rigPts.push(this.addLocal(platform(small ? 0.9 : 1.6), { pr, size: 0.62, far: 400, twinkle: 0.1, opacity: 0 }, rig))
+    this.rigPts.push(this.addLocal(platform(small ? 0.9 : 1.6), { pr, size: 0.6, far: 400, opacity: 0 }, rig))
     this.rigPts.push(this.addLocal(flame(small ? 200 : 360), { pr, size: 0.55, far: 400, flare: true, twinkle: 0, opacity: 0 }, rig))
     const glow = cloud()
     for (let i = 0; i < 50; i++) { v.randomDirection().multiplyScalar(Math.random() * 1.8); push(glow, FLARE.x + v.x, FLARE.y + 0.8 + v.y, FLARE.z + v.z, '#e0622a', 2 + Math.random() * 2) }
-    this.rigPts.push(this.addLocal(glow, { pr, size: 0.45, far: 400, twinkle: 0.6, opacity: 0 }, rig))
+    this.rigPts.push(this.addLocal(glow, { pr, size: 0.45, far: 400, twinkle: 0.4, opacity: 0 }, rig))
 
     // órbita do ambiente
     const ringA = cloud(), ringB = cloud()
     const na = small ? 320 : 720, nb = small ? 280 : 620
     for (let i = 0; i < na; i++) { const a = (i / na) * Math.PI * 2; push(ringA, Math.cos(a) * R_IN, 0, Math.sin(a) * R_IN, '#8fd3e8', 1.3, (i / na) * 2) }
     for (let i = 0; i < nb; i++) { const a = (i / nb) * Math.PI * 2; push(ringB, Math.cos(a) * R_OUT, 0, Math.sin(a) * R_OUT, '#2a9fbd', 1, 1 - i / nb) }
-    this.ringPts.push(this.addLocal(ringA, { pr, size: 0.65, far: 400, twinkle: 0.2, opacity: 0, trail: { speed: 0.05, pow: 3 } }, this.orbit))
-    this.ringPts.push(this.addLocal(ringB, { pr, size: 0.65, far: 400, twinkle: 0.2, opacity: 0, trail: { speed: 0.03, pow: 2 } }, this.orbit))
+    this.ringPts.push(this.addLocal(ringA, { pr, size: 0.6, far: 400, opacity: 0, trail: { speed: 0.05, pow: 3 } }, this.orbit))
+    this.ringPts.push(this.addLocal(ringB, { pr, size: 0.6, far: 400, opacity: 0, trail: { speed: 0.03, pow: 2 } }, this.orbit))
     ORBIT.forEach((o, i) => {
       const holder = new THREE.Group()
-      const pts = this.addLocal(o.make(), { pr, size: 0.68, far: 400, flap: o.flap, twinkle: 0.12, opacity: 0 }, holder)
+      const pts = this.addLocal(o.make(), { pr, size: 0.58, far: 400, flap: o.flap, opacity: 0 }, holder)
       pts.scale.setScalar(o.scale)
       this.orbit.add(holder)
       this.orbiters.push({ id: o.id, o: holder, pts, a0: (i / ORBIT.length) * Math.PI * 2 + 0.4, y: o.y ?? 0 })
@@ -346,22 +342,22 @@ export class World {
     this.links = this.addLocal(links, { pr, size: 0.52, far: 400, twinkle: 0, opacity: 0, trail: { speed: 0.45, pow: 6 } }, L)
 
     // a coluna de perfuração sai do centro da plataforma e desce com a rolagem da página
-    this.pipePts = this.addLocal(drillPipe(small), { pr, size: 0.5, far: 160, twinkle: 0.08, opacity: 0, cut: true }, this.pipe)
+    this.pipePts = this.addLocal(drillPipe(small), { pr, size: 0.5, far: 160, opacity: 0, cut: true }, this.pipe)
     L.add(this.pipe)
     this.rigPts.push(this.pipePts)
-    this.rigPts.push(this.addLocal(riser(small), { pr, size: 0.45, far: 140, twinkle: 0.2, opacity: 0 }, L))
-    this.addLocal(bop(), { pr, size: 0.55, far: 120, twinkle: 0.1 }, L)
-    this.addLocal(bit(), { pr, size: 0.36, far: 120, twinkle: 0.05 }, this.bitGroup)
+    this.rigPts.push(this.addLocal(riser(small), { pr, size: 0.45, far: 140, opacity: 0 }, L))
+    this.addLocal(bop(), { pr, size: 0.55, far: 120 }, L)
+    this.addLocal(bit(), { pr, size: 0.3, far: 120, opacity: 0.62 }, this.bitGroup) // densa: menos intensidade para não estourar em rosa
     this.cut = this.addLocal(cuttings(small ? 260 : 520), { pr, size: 0.4, far: 120, twinkle: 0, flare: true, opacity: 0 }, this.bitGroup)
     L.add(this.bitGroup)
-    this.addLocal(seabed(small), { pr, size: 0.6, far: 120, twinkle: 0.1 }, L)
-    this.rock = this.addLocal(strata(small), { pr, size: 1, far: 120, twinkle: 0.06, hole: true }, L)
-    this.water = this.addLocal(waterColumn(small), { pr, size: 0.6, far: 110, twinkle: 0.5, opacity: 0 }, L)
-    this.rays = this.addLocal(lightRays(small), { pr, size: 0.6, far: 140, twinkle: 0.3, opacity: 0 }, L)
+    this.addLocal(seabed(small), { pr, size: 0.6, far: 120 }, L)
+    this.rock = this.addLocal(strata(small), { pr, size: 1, far: 120, hole: true }, L)
+    this.water = this.addLocal(waterColumn(small), { pr, size: 0.6, far: 110, opacity: 0, snow: true }, L)
+    this.rays = this.addLocal(lightRays(small), { pr, size: 0.6, far: 140, opacity: 0 }, L)
     // cardumes em duas profundidades
     for (const [y, x] of [[-70, -26], [-175, -34]]) {
       const g = new THREE.Group()
-      const f = this.addLocal(fishSchool(), { pr, size: 0.55, far: 120, twinkle: 0.2 }, g)
+      const f = this.addLocal(fishSchool(), { pr, size: 0.55, far: 120 }, g)
       f.scale.setScalar(3.2)
       g.position.set(x, y, -12)
       L.add(g)
@@ -423,6 +419,7 @@ export class World {
   }
 
   private tmp = new THREE.Vector3()
+  private tmp2 = new THREE.Vector3()
 
   private render(t: number) {
     const cam = this.camera, now = performance.now()
@@ -443,7 +440,7 @@ export class World {
     this.descentS += (this.descent * settle - this.descentS) * (this.reduced ? 1 : 0.1)
     const tip = this.tipAt(this.descentS)
     // na descida a coluna fica no terço direito; o conteúdo ocupa o resto da tela
-    this.sideS += (this.side - this.sideS) * (this.reduced ? 1 : 0.045) // a coluna desliza para o lado livre
+    this.sideS += (this.side - this.sideS) * (this.reduced ? 1 : 0.075) // a coluna desliza para o lado livre
     const deepX = (this.narrow ? 0.405 : 0.29) * this.sideS
     const dx = (this.narrow ? 0 : 0.2 * this.w) * shift * (1 - dk) + deepX * this.w * dk
     const dy = (this.narrow ? 0.22 * this.h : 0.14 * this.h) * shift * (1 - dk)
@@ -462,7 +459,7 @@ export class World {
       const far = R * (this.narrow ? 4.2 : 3.3), mapAlt = this.narrow ? 330 : 150
       let dist = far + (R + mapAlt - far) * Math.pow(zIn, 0.8)
       dist -= 12 * smooth(0.3, 0.44, k) * (1 - m) // deriva lenta enquanto o mapa está na tela
-      dist += (64 - mapAlt + 12 * (1 - m)) * m
+      dist += (TOP - mapAlt + 12 * (1 - m)) * m
       cam.position.copy(d).multiplyScalar(dist)
       cam.up.set(0, 1, 0)
       cam.lookAt(d.clone().multiplyScalar(R * smooth(0.08, 0.3, k)))
@@ -493,18 +490,29 @@ export class World {
     const alt = cam.position.length() - R
     const shrink = 0.18 + 0.82 * smooth(2, R * 0.6, alt)
     this.planet.forEach((p, i) => {
-      p.material.uniforms.uOpacity.value = 1 - 0.8 * smooth(0.16, 0.3, k) - 0.2 * smooth(0.52, 0.6, k)
+      // o globo some por inteiro sob o mapa: a grade dele por trás das amostras da margem fazia moiré
+      p.material.uniforms.uOpacity.value = 1 - smooth(0.16, 0.3, k)
       p.material.uniforms.uSize.value = this.planetSize[i] * shrink
     })
-    this.halo.material.uniforms.uOpacity.value = 1 - smooth(0.14, 0.26, k)
-    this.sats.material.uniforms.uOpacity.value = 1 - smooth(0.1, 0.22, k)
+    this.halo.material.uniforms.uOpacity.value = 0.7 * (1 - smooth(0.14, 0.26, k))
     this.stars.material.uniforms.uOpacity.value = 1 - smooth(0.58, 0.78, k)
     const near = 1 - smooth(R * 1.0, R * 1.4, alt) // o mapa aparece já da altitude do mapa (maior no celular)
     const siteDist = cam.position.distanceTo(this.tmp.copy(this.siteDir).multiplyScalar(R))
     const rShrink = Math.max(0.03, Math.min(1, siteDist / 70))
+    // pulso A: parte de Salinópolis e varre a margem enquanto o mapa está parado na tela
+    // pulso B: parte do ponto da plataforma; no mar local ele é o raio do que já foi "medido"
+    const pa = smooth(0.29, 0.46, k), pb = easeOut(smooth(0.48, 0.76, k))
+    const usePB = k >= 0.47
+    const ping = usePB ? this.tmp2.copy(this.siteDir).multiplyScalar(R) : this.mapPts.sede
+    const pingR = usePB ? pb * 34 : pa * 210
+    const pingK = usePB ? (k < 0.48 ? 0 : 1 - pb * 0.55) : (pa > 0 && pa < 1 ? 1 - pa * 0.6 : 0)
     this.region.forEach((p, i) => {
-      p.material.uniforms.uOpacity.value = near * (1 - smooth(0.7, 0.86, k))
-      p.material.uniforms.uSize.value = this.regionSize[i] * (k < SPLIT ? Math.max(1, (alt / 150) * 0.55) : rShrink)
+      const u = p.material.uniforms
+      u.uOpacity.value = near * (1 - smooth(0.74, 0.9, k))
+      u.uSize.value = this.regionSize[i] * (k < SPLIT ? Math.max(1, (alt / 150) * 0.55) : rShrink)
+      u.uPing.value.set(ping.x, ping.y, ping.z, pingR)
+      u.uPingW.value = usePB ? 0.9 : 5
+      u.uPingK.value = pingK
     })
 
     const localY = this.tmp.copy(cam.position).applyMatrix4(M.clone().invert()).y
@@ -512,12 +520,16 @@ export class World {
     const under = smooth(0.5, -1.5, localY - water)
     const ou = this.ocean.material.uniforms
     ou.uTide.value = water
-    ou.uOpacity.value = smooth(0.6, 0.84, k) * (1 - under * 0.45)
-    const rigOp = smooth(0.54, 0.7, k)
+    ou.uOpacity.value = smooth(0.48, 0.52, k) * (1 - under * 0.45)
+    ou.uPing.value.set(0, 0, 0, k >= 1 || this.doneAt >= 0 ? 1e4 : pb * 34 / S)
+    ou.uPingW.value = 14
+    ou.uPingK.value = pingK * 1.5
+    const rigOp = smooth(0.49, 0.57, k) // a plataforma acende quando o pulso parte dela
     this.rigPts.forEach(p => { p.material.uniforms.uOpacity.value = rigOp })
-    this.sky.material.uniforms.uOpacity.value = smooth(0.68, 0.92, k)
+    this.sky.material.uniforms.uOpacity.value = smooth(0.66, 0.9, k)
     this.ringPts.forEach(p => { p.material.uniforms.uOpacity.value = smooth(0.82, 0.95, k) })
-    this.orbiters.forEach((o, i) => { o.pts.material.uniforms.uOpacity.value = smooth(0.86 + i * 0.022, 0.94 + i * 0.012, k) })
+    // nuvens densas (manguezal, cardume) somam luz demais: intensidade um pouco abaixo da plataforma
+    this.orbiters.forEach((o, i) => { o.pts.material.uniforms.uOpacity.value = 0.8 * smooth(0.86 + i * 0.022, 0.94 + i * 0.012, k) })
     this.links.material.uniforms.uOpacity.value = smooth(0.96, 1, k) * (1 - smooth(0.05, 0.25, dk))
     this.water.material.uniforms.uOpacity.value = under
     this.rays.material.uniforms.uOpacity.value = under * (1 - smooth(-30, -110, tip))
@@ -532,8 +544,9 @@ export class World {
     }
     // brilho forte só no espaço; perto da plataforma ele é contido para preservar os detalhes
     // debaixo d'água não há detalhe fino a preservar: o brilho volta a subir
-    this.fx.pass.strength = 0.75 - 0.3 * smooth(0.5, 0.75, k) + under * 0.3
-    this.fx.pass.threshold = 0.18 + 0.12 * smooth(0.5, 0.75, k) - under * 0.14
+    this.fx.pass.strength = 0.55 + under * 0.1
+    this.fx.pass.threshold = 0.6 - under * 0.12
+    this.fx.finish.uniforms.uTime.value = t
 
     // órbita
     const spin = this.reduced ? 0 : t * 0.045
