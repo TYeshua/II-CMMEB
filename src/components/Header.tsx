@@ -15,9 +15,8 @@ const DRAWER: { title: string; links: [string, string, string][] }[] = [
   { title: 'O congresso', links: [['#sobre', 'Sobre', '#cdeef5'], ['#eixos', 'Eixos temáticos', '#d33a2c'], ['#palestrantes', 'Palestrantes', '#cdeef5'], ['#programacao', 'Programação', '#cdeef5'], ['#local', 'Local', '#e0622a'], ['#duvidas', 'Dúvidas', '#cdeef5']] },
 ]
 
-/** Barra simples. Cor de fundo e tinta vêm do capítulo que passa por baixo dela. */
+/** Barra fixa de vidro escuro; marca a seção que está passando por baixo dela. */
 export function Header() {
-  const ref = useRef<HTMLElement>(null)
   const [open, setOpen] = useState(false)
   const [current, setCurrent] = useState('')
   const panel = useRef<HTMLElement>(null)
@@ -28,17 +27,14 @@ export function Header() {
     let raf = 0
     const read = () => {
       raf = 0
-      const probe = 32
+      const probe = innerHeight * 0.3
       let hit: HTMLElement | null = null
       document.querySelectorAll<HTMLElement>('[data-chapter]').forEach(el => {
         const r = el.getBoundingClientRect()
         if (r.top <= probe && r.bottom > probe) hit = el
       })
-      const h = ref.current
-      if (!h || !hit) return
+      if (!hit) return
       const el = hit as HTMLElement
-      h.style.setProperty('--hdr-bg', el.dataset.bg || 'transparent')
-      h.style.setProperty('--hdr-ink', el.dataset.ink || '#f2f9fb')
       const sec = el.closest('section[id]')?.id || el.id
       setCurrent('#' + sec)
     }
@@ -91,7 +87,7 @@ export function Header() {
 
   return (
     <>
-      <header ref={ref} className="hdr">
+      <header className="hdr">
         <div className="wrap flex h-full items-center justify-between gap-6">
           <a href="#inicio" className="flex items-center gap-3 no-underline" aria-label="II CMMEB, início">
             <LogoMark className="h-9 w-9" />

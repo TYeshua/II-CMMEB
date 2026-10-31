@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { delay, useNow } from '../lib/hooks'
 import { fmtM, slzClock, tideAt } from '../lib/tide'
-import type { ReactNode } from 'react'
+import { SectionHead } from './Head'
 import { Ph } from './Ph'
 
 const W = 640, H = 220, PAD = 28, MAX = 7.2
@@ -45,51 +45,36 @@ function TideChart() {
   )
 }
 
-const ROWS: { t: ReactNode; key: string; href?: string; label?: string }[] = [
-  { key: 'regiao', t: 'Litoral nordeste do Pará' },
-  { key: 'datas', t: <Ph id="datas" /> },
-  { key: 'local', t: <Ph id="local" label="Espaço do evento" /> },
-  { key: 'coord', t: '00°37′S 47°21′W', href: 'https://www.openstreetmap.org/?mlat=-0.614&mlon=-47.356#map=12/-0.614/-47.356', label: 'Abrir 00°37′S 47°21′W no mapa' },
-]
+const COORD = 'https://www.openstreetmap.org/?mlat=-0.614&mlon=-47.356#map=12/-0.614/-47.356'
 
 export function Place() {
   return (
-    <section id="local" className="bg-navy text-paper" aria-labelledby="local-h">
-      <div data-chapter data-bg="#0c4d79" data-ink="#f2f9fb" className="bg-deep">
-        <div className="wrap flex min-h-[150px] items-end justify-between gap-6 pb-6 pt-[clamp(48px,8vw,140px)]">
-          <h2 id="local-h" className="fs-head font-black leading-[0.95] tracking-[-0.035em]" data-reveal>Salinópolis, Pará</h2>
-          <img src={import.meta.env.BASE_URL + 'assets/atalaia.webp'} width="1600" height="1067" alt="Faixa larga de areia da Praia do Atalaia, em Salinópolis, com barracas coloridas ao fundo" loading="lazy" decoding="async" className="hidden aspect-square w-[clamp(96px,10vw,150px)] shrink-0 rounded-full object-cover object-[30%_75%] sm:block" data-reveal style={delay(1)} />
-        </div>
-      </div>
-      <div data-chapter data-bg="#0a3253" data-ink="#f2f9fb">
-        {ROWS.map((r, i) => {
-          const inner = (
-            <>
-              <span className="fs-head font-normal leading-none tracking-[-0.03em]">
-                {r.t}
-              </span>
-            </>
-          )
-          return (
-            <div key={r.key} className={i % 2 ? 'bg-deep' : 'bg-navy'}>
-              {r.href ? (
-                <a href={r.href} aria-label={r.label} target="_blank" rel="noreferrer" className="wrap group flex min-h-[clamp(84px,13vh,150px)] items-end justify-between gap-6 pb-5 no-underline transition-colors duration-200 hover:text-sun">{inner}</a>
-              ) : (
-                <p className="wrap flex min-h-[clamp(84px,13vh,150px)] items-end justify-between gap-6 pb-5" data-reveal>{inner}</p>
-              )}
-            </div>
-          )
-        })}
-        <div className="wrap grid12 gap-y-10 py-[clamp(48px,7vw,120px)]">
-          <div className="col-span-12 lg:col-span-5">
-            <h3 className="fs-sub font-black leading-[1.05] tracking-[-0.025em]" data-reveal>Uma costa de macromarés</h3>
-            <p className="t-body mt-4 max-w-[46ch]" data-reveal style={delay(1)}>
-              Salinópolis fica de frente para a bacia Pará-Maranhão, entre manguezais contínuos e praias largas que a maré cobre e descobre duas vezes por dia. É a costa da Margem Equatorial que o congresso discute.
-            </p>
-            <p className="t-body mt-8"><Ph id="contato" /></p>
+    <section id="local" data-chapter data-bg="#0c4d79" data-ink="#f2f9fb" className="bg-deep text-paper" aria-labelledby="local-h">
+      <div className="wrap sec-pad">
+        <SectionHead id="local-h" title="Salinópolis, Pará" lead="No litoral nordeste do Pará, de frente para a bacia Pará-Maranhão." />
+        <div className="grid12 mt-block items-start gap-y-10">
+          <div className="col-span-12 md:col-span-5">
+            <figure className="m-0" data-reveal="clip">
+              <div className="overflow-hidden rounded-[10px]">
+                <img src={import.meta.env.BASE_URL + 'assets/atalaia.webp'} width="1600" height="1067" alt="Faixa larga de areia da Praia do Atalaia, em Salinópolis, com barracas coloridas ao fundo" loading="lazy" decoding="async" className="aspect-[3/2] w-full object-cover object-[50%_85%]" />
+              </div>
+              <figcaption className="t-small mt-2 text-sky">Praia do Atalaia, Salinópolis</figcaption>
+            </figure>
+            <dl className="facts mt-6" data-reveal style={delay(1)}>
+              <div><dt>Datas</dt><dd><Ph id="datas" /></dd></div>
+              <div><dt>Espaço</dt><dd><Ph id="local" label="Espaço do evento" /></dd></div>
+              <div><dt>Coordenadas</dt><dd><a href={COORD} target="_blank" rel="noreferrer" className="link" aria-label="Abrir 00°37′S 47°21′W no mapa">00°37′S 47°21′W</a></dd></div>
+              <div><dt>Contato</dt><dd><Ph id="contato" /></dd></div>
+            </dl>
           </div>
-          <div className="col-span-12 lg:col-span-6 lg:col-start-7" data-reveal style={delay(2)}>
-            <TideChart />
+          <div className="col-span-12 md:col-span-6 md:col-start-7">
+            <h3 className="t-sub" data-reveal>Uma costa de macromarés</h3>
+            <p className="t-body mt-3 max-w-[46ch]" data-reveal style={delay(1)}>
+              Salinópolis fica entre manguezais contínuos e praias largas que a maré cobre e descobre duas vezes por dia. É a costa da Margem Equatorial que o congresso discute.
+            </p>
+            <div className="mt-6" data-reveal style={delay(2)}>
+              <TideChart />
+            </div>
           </div>
         </div>
       </div>

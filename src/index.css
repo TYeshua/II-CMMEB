@@ -100,8 +100,8 @@ html { scrollbar-color: var(--color-sea) var(--color-ink); }
   .js [data-reveal="clip"].is-in > :first-child { clip-path: inset(0 0 0 0); }
 }
 
-/* cabeçalho: assume a cor do capítulo abaixo */
-.hdr { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--hdr); background: var(--hdr-bg, transparent); color: var(--hdr-ink, var(--color-paper)); transition: background-color 300ms ease, color 300ms ease; }
+/* cabeçalho: uma barra de vidro escuro, sempre igual, sobre a cena e os cards */
+.hdr { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--hdr); color: var(--color-paper); }
 .hdr a.nav-l { text-decoration: none; font-weight: 500; position: relative; padding-block: 6px; }
 .hdr a.nav-l::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 260ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .hdr a.nav-l:hover::after { transform: scaleX(1); } }
@@ -168,7 +168,7 @@ html { scrollbar-color: var(--color-sea) var(--color-ink); }
 /* durante o carregamento e o voo: sem rolagem e sem barra de navegação */
 body.intro-lock { overflow: hidden; }
 body.intro-lock .hdr { opacity: 0; pointer-events: none; }
-.hdr { transition: background-color 300ms ease, color 300ms ease, opacity 800ms ease; }
+.hdr { transition: opacity 800ms ease; }
 
 /* hero */
 .hero-l2 { color: var(--color-sun); }
@@ -178,10 +178,9 @@ body.intro-lock .hdr { opacity: 0; pointer-events: none; }
 .paused .h-in { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .h-in { animation: none; } }
 
-/* transecto: folhas que empilham */
-/* cada faixa de profundidade é um capítulo de cor inteiro */
-.sheet { position: relative; min-height: 78svh; }
-@media (max-width: 899px) { .sheet { min-height: 0; } }
+/* margem: cada faixa de profundidade é uma faixa de cor do mesmo card */
+.zone { position: relative; padding-block: clamp(32px, 4vw, 64px); }
+.zone:last-child { padding-bottom: clamp(40px, 5vw, 80px); }
 .profile-art .sway { animation: sway 6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
 .profile-art .spin { animation: spin 9s linear infinite; transform-box: fill-box; transform-origin: center; }
 .profile-art .drift { animation: drift 7s ease-in-out infinite; }
@@ -209,6 +208,42 @@ body.intro-lock .hdr { opacity: 0; pointer-events: none; }
 /* arco das portas do Centro Histórico, em unidades da caixa */
 .arch { clip-path: url(#arch-clip); }
 
+/* ritmo dos cards: o mesmo respiro em todas as seções */
+.sec-pad { padding-block: clamp(44px, 6vw, 104px); }
+.mt-block { margin-top: clamp(36px, 4.6vw, 72px); }
+/* frase de entrada das seções e títulos de item */
+.t-intro { font-size: clamp(1.125rem, 1rem + 0.45vw, 1.4rem); line-height: 1.38; letter-spacing: -0.01em; text-wrap: pretty; }
+.t-item { font-weight: 900; font-size: clamp(1.0625rem, 0.98rem + 0.4vw, 1.3rem); line-height: 1.2; letter-spacing: -0.015em; text-wrap: balance; }
+
+/* índice do Sobre: linhas com o sinal da órbita e uma seta que anda no hover */
+.index-row { display: flex; align-items: center; gap: 18px; padding: 14px 16px; margin-inline: -16px; border-radius: 12px; text-decoration: none; transition: background-color 200ms ease; }
+.index-arrow { color: var(--color-sea); transition: transform 260ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .index-row:hover { background: color-mix(in srgb, var(--color-paper) 70%, transparent); }
+  .index-row:hover .index-arrow { transform: translateX(4px); }
+}
+
+/* bacias: lista de abas com a escolhida em laranja e um ponto à esquerda */
+.basin-tab { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 10px 0 10px 20px; text-align: left; color: var(--color-paper); transition: color 200ms ease; }
+.basin-tab::before { content: ""; position: absolute; left: 0; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: currentColor; opacity: 0.3; transition: opacity 200ms ease, transform 260ms var(--ease-out); }
+.basin-tab.is-on { color: var(--color-sun); }
+.basin-tab.is-on::before { opacity: 1; transform: scale(1.3); }
+@media (hover: hover) and (pointer: fine) { .basin-tab:not(.is-on):hover { color: var(--color-sky); } }
+
+/* programação: blocos em sequência, ligados por uma linha de pontos */
+.steps { display: grid; gap: 18px; }
+.steps li { position: relative; padding-left: 30px; }
+.steps li::before { content: ""; position: absolute; left: 3px; top: 0.5em; width: 11px; height: 11px; border-radius: 50%; background: var(--color-surf); }
+.steps li:not(:last-child)::after { content: ""; position: absolute; left: 8px; top: calc(0.5em + 15px); bottom: -14px; width: 2px; background: radial-gradient(circle, var(--color-sky) 1px, transparent 1.4px) 0 0 / 2px 6px; } /* taste-skill-ignore: linha pontilhada da sequência, no estilo das cenas */
+
+/* local: pares rótulo e valor */
+.facts { display: grid; gap: 14px; }
+.facts dt { font-size: var(--step-small); color: var(--color-sky); }
+.facts dd { margin: 2px 0 0; font-size: var(--step-body); font-weight: 500; }
+
+/* marca grande do rodapé */
+.foot-mark { font-size: clamp(3.4rem, 9vw, 8.5rem); line-height: 0.82; letter-spacing: -0.04em; }
+
 /* só o tamanho de cada passo, para combinar com outro peso */
 .fs-display { font-size: var(--step-display); }
 .fs-head { font-size: var(--step-head); }
@@ -218,8 +253,8 @@ body.intro-lock .hdr { opacity: 0; pointer-events: none; }
 
 /* espaço reservado: conteúdo de 2027 ainda a definir */
 @layer components {
-  .ph { background: color-mix(in srgb, currentColor 14%, transparent); padding: 0.06em 0.4em; font-weight: 500; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-  .ph b { font-weight: 900; }
+  .ph { font-weight: 500; text-decoration: underline dashed; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 0.28em; }
+  .ph b { display: inline-block; margin-right: 0.3em; padding: 0.12em 0.5em; border-radius: 999px; background: color-mix(in srgb, currentColor 13%, transparent); font-size: 0.78em; font-weight: 700; line-height: 1.2; vertical-align: 0.08em; text-decoration: none; }
 }
 
 
@@ -256,19 +291,20 @@ body.intro-lock .hdr { opacity: 0; pointer-events: none; }
   main > section:not(#inicio)[data-chapter],
   main > section:not(#inicio) [data-chapter],
   #root > footer {
-    background-color: color-mix(in srgb, var(--glass, #0b2440) 82%, transparent) !important;
+    background-color: color-mix(in srgb, var(--glass, #0b2440) 94%, transparent) !important;
   }
+  main > section:not(#inicio) .wrap { padding-inline: clamp(16px, 3.4vw, 60px); }
   @media (min-width: 1024px) and (max-width: 1279px) { main > section:not(#inicio), #root > footer { width: 70vw; } }
   @media (max-width: 1023px) {
     main > section:not(#inicio), #root > footer { width: 80vw; margin: 0 0 20px var(--card-edge); border-radius: 16px; }
     main > section:not(#inicio)[data-chapter], main > section:not(#inicio) [data-chapter], #root > footer {
-      background-color: color-mix(in srgb, var(--glass, #0b2440) 88%, transparent) !important;
+      background-color: color-mix(in srgb, var(--glass, #0b2440) 96%, transparent) !important;
     }
   }
   .hdr {
-    background: color-mix(in srgb, var(--hdr-bg, transparent) 70%, transparent);
-    -webkit-backdrop-filter: blur(16px); /* taste-skill-ignore: barra de vidro sobre a cena */
-    backdrop-filter: blur(16px); /* taste-skill-ignore: barra de vidro sobre a cena */
+    background: color-mix(in srgb, var(--color-abyss) 62%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2); /* taste-skill-ignore: barra de vidro sobre a cena */
+    backdrop-filter: blur(16px) saturate(1.2); /* taste-skill-ignore: barra de vidro sobre a cena */
   }
 }
 
@@ -356,8 +392,8 @@ body.intro-lock .hdr { opacity: 0; pointer-events: none; }
 }
 
 /*
-  Celular (referência: iPhone 16 Pro, 402 pt): cards ~25% mais baixos.
-  Menos respiro vertical, alturas mínimas desligadas, imagens mais baixas e tipo um pouco menor.
+  Celular (referência: iPhone 16 Pro, 402 pt): cards compactos.
+  Menos respiro vertical, imagens mais baixas e tipo um pouco menor.
 */
 @media (max-width: 599px) {
   :root {
@@ -366,62 +402,20 @@ body.intro-lock .hdr { opacity: 0; pointer-events: none; }
     --step-sub: 1.375rem;
     --step-display: clamp(2rem, 9vw, 2.6rem);
   }
-  /* respiro vertical das seções e entre blocos */
-  [class*="py-[clamp(48px,8vw,140px)]"], [class*="py-[clamp(48px,7vw,120px)]"] { padding-top: 28px !important; padding-bottom: 28px !important; }
-  [class*="pt-[clamp(48px,8vw,140px)]"], [class*="pt-[clamp(48px,7vw,112px)]"] { padding-top: 26px !important; }
-  [class*="pb-[clamp(48px,8vw,140px)]"], [class*="pb-[clamp(48px,8vw,128px)]"], [class*="pb-[clamp(48px,7vh,88px)]"] { padding-bottom: 24px !important; }
-  [class*="mt-[clamp("] { margin-top: 20px !important; }
-  [class*="gap-[clamp(48px,7vw,96px)]"] { gap: 28px !important; }
-  main > section .mt-12, main > section .mt-10 { margin-top: 1.25rem !important; }
-  main > section .mt-8, main > section .mt-7 { margin-top: 1rem !important; }
-  main > section .gap-y-10, main > section .gap-y-8 { row-gap: 1.25rem !important; }
-  /* alturas mínimas pensadas para telas grandes */
-  #inscricoes [class*="min-h-["], #duvidas [class*="min-h-["], #local [class*="min-h-["], #bacias [class*="min-h-["] { min-height: 0 !important; }
-  #local p.wrap, #local a.wrap { min-height: 56px !important; padding-bottom: 10px !important; }
-  #inscricoes .pt-12 { padding-top: 1.5rem !important; }
-  #duvidas h2 { padding-top: 40px; padding-bottom: 16px; }
-  #duvidas .py-8 { padding-top: 18px !important; padding-bottom: 18px !important; }
-  /* imagens e figuras mais baixas */
-  #ambiente img, #ambiente figure > div { aspect-ratio: 2 / 1 !important; }
-  #programacao img { aspect-ratio: 2 / 1 !important; }
-  #margem .min-h-\[240px\] { min-height: 150px !important; }
-  #industria [class*="min-h-[420px]"] { min-height: 300px !important; }
-  #realizacao figure { min-width: 170px !important; width: 46vw !important; }
-  #realizacao .gap-14 { gap: 1.5rem !important; }
-  /* anos e listas do Sobre, mais compactos */
-  #sobre ol.grid { gap: 1rem !important; }
-  #sobre ol .fs-display { font-size: var(--step-head); }
-  /* rodapé */
-  .foot-dissolve p[aria-hidden="true"] { font-size: 17vw !important; }
-}
-@media (max-width: 599px) {
-  /* itens de lista: menos acolchoamento */
-  main > section li.p-5, main > section li.p-6, main > section article.p-6 { padding: 0.85rem 1rem !important; }
-  main > section li.md\:p-8 { padding: 0.85rem 1rem !important; }
-  #palestrantes li.py-5 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
-  #industria [role="tablist"] button { padding-top: 0.35rem !important; padding-bottom: 0.35rem !important; }
+  .sec-pad { padding-block: 28px; }
+  .mt-block { margin-top: 22px; }
+  .t-intro { font-size: 1.0625rem; line-height: 1.35; }
+  .zone { padding-block: 22px; }
+  .zone:last-child { padding-bottom: 28px; }
+  #margem .min-h-\[200px\] { min-height: 120px; }
   #industria [class*="min-h-[420px]"] { min-height: 250px !important; }
-  #sobre ol a { padding: 0.75rem !important; }
-  #realizacao ul.gap-4 { gap: 0.6rem !important; }
-  /* textos de destaque dentro dos blocos do transecto e do ambiente: tamanho de texto corrido */
-  #margem .t-lead, #ambiente li .t-lead { font-size: var(--step-body); }
-  #margem .min-h-\[240px\] { min-height: 120px !important; }
   #ambiente img, #ambiente figure > div { aspect-ratio: 5 / 2 !important; }
-  #margem .sheet .pt-6 { padding-top: 0.75rem !important; }
-  /* rodapé */
-  #root > footer .mt-10 { margin-top: 1.25rem !important; }
-  #root > footer .gap-y-10 { row-gap: 1.25rem !important; }
-  #root > footer .gap-8 { gap: 1rem !important; }
-  #root > footer .mt-6 { margin-top: 0.85rem !important; }
-}
-@media (max-width: 599px) {
-  #eixos li { padding: 0.6rem 0.85rem !important; }
-  #eixos ol { gap: 0.35rem !important; }
-  #realizacao figure { min-width: 140px !important; width: 40vw !important; }
-  #realizacao .p-6 { padding: 1rem !important; }
-  #realizacao .pb-6 { padding-bottom: 1rem !important; }
-  .foot-dissolve p[aria-hidden="true"] { font-size: 14vw !important; }
-  #root > footer ul.gap-2 { gap: 0.3rem !important; }
-  #root > footer ul.gap-1\.5 { gap: 0.2rem !important; }
-  #root > footer .pt-\[clamp\(48px\,5vw\,80px\)\] { padding-top: 28px !important; }
+  #ambiente ul.grid { gap: 28px; }
+  #programacao img, #local img { aspect-ratio: 5 / 2 !important; }
+  #realizacao figure { max-width: 46vw; }
+  .index-row { padding: 10px 12px; margin-inline: -12px; gap: 14px; }
+  .steps { gap: 12px; }
+  .foot-mark { font-size: 15vw; }
+  #root > footer .mt-10 { margin-top: 1.25rem; }
+  #root > footer .mt-8 { margin-top: 1rem; }
 }
