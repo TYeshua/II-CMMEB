@@ -1,3 +1,4 @@
+import { DATES } from '../data/content'
 import { delay } from '../lib/hooks'
 import { SectionHead } from './Head'
 import { Ph } from './Ph'
@@ -12,7 +13,7 @@ export function Program() {
         <SectionHead
           id="prog-h"
           title="Programação"
-          lead="A grade sai com a confirmação das datas. O formato segue a primeira edição: palestras, mesas-redondas e sessões de pôsteres."
+          lead="De 14 a 17 de setembro de 2027, em Salinópolis. O formato segue a primeira edição: palestras, mesas-redondas e sessões de pôsteres."
         />
         <div className="grid12 mt-block items-start gap-y-8">
           <figure className="col-span-12 md:col-span-5" data-reveal="clip">
@@ -22,7 +23,7 @@ export function Program() {
             <figcaption className="t-small mt-2 text-deep">Praia do Atalaia na maré baixa, Salinópolis</figcaption>
           </figure>
           <div className="col-span-12 md:col-span-6 md:col-start-7">
-            <p className="t-item" data-reveal><Ph id="datas" /></p>
+            <p className="t-item" data-reveal>{DATES}</p>
             {/* a ordem dos blocos segue os dias do congresso */}
             <ol className="steps mt-6">
               {ITEMS.map((id, i) => (

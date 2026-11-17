@@ -1,13 +1,14 @@
+import { DATES } from '../data/content'
 import { delay } from '../lib/hooks'
 import { SectionHead } from './Head'
 import { Arrow } from './Logo'
 import { Ph } from './Ph'
 
-const STEPS: [string, string][] = [
+const STEPS: [string, string, string?][] = [
   ['insc-abertura', 'Abertura das inscrições'],
   ['sub-prazo', 'Prazo de submissão'],
   ['resultado', 'Resultado da avaliação'],
-  ['datas', 'Congresso em Salinópolis'],
+  ['datas', 'Congresso em Salinópolis', DATES],
 ]
 
 /** A ação principal do site: um card só, com inscrição, submissão e o cronograma que as liga. */
@@ -38,11 +39,11 @@ export function Registration() {
           <h3 className="t-sub" data-reveal>Cronograma</h3>
           <ol className="relative mt-6 grid gap-6 md:grid-cols-4 md:gap-4">
             <span aria-hidden="true" className="absolute bottom-2 left-[6px] top-2 w-[3px] rounded-full bg-ink/25 md:bottom-auto md:left-0 md:right-0 md:top-[6px] md:h-[3px] md:w-auto" />
-            {STEPS.map(([id, t], i) => (
+            {STEPS.map(([id, t, val], i) => (
               <li key={id} className="relative pl-9 md:pl-0 md:pt-9" data-reveal style={delay(i)}>
                 <span aria-hidden="true" className="absolute left-0 top-1 h-[15px] w-[15px] rounded-full bg-ink md:top-0" />
                 <p className="t-item">{t}</p>
-                <p className="t-small mt-1.5"><Ph id={id} label="Data a definir" /></p>
+                <p className="t-small mt-1.5">{val ?? <Ph id={id} label="Data a definir" />}</p>
               </li>
             ))}
           </ol>

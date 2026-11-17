@@ -1,3 +1,4 @@
+import { DATES, LEADERSHIP } from '../data/content'
 import { delay } from '../lib/hooks'
 import { SectionHead } from './Head'
 import { Ph } from './Ph'
@@ -21,7 +22,7 @@ export function Organizers() {
         <SectionHead
           id="real-h"
           title="Quem faz o congresso"
-          lead="A primeira edição foi realizada em São Luís pela Universidade Federal do Maranhão. A segunda acontece em Salinópolis."
+          lead={`A primeira edição foi realizada em São Luís pela Universidade Federal do Maranhão. A segunda acontece de ${DATES}, em Salinópolis.`}
         />
         <div className="grid12 mt-block items-end gap-y-10">
           {/* a Igreja Matriz de Salinópolis, no arco das portas do centro histórico */}
@@ -31,6 +32,17 @@ export function Organizers() {
           </figure>
           <div className="col-span-12 grid gap-10 sm:col-span-7 md:col-span-7 md:col-start-6">
             <div data-reveal style={delay(1)}>
+              <h3 className="t-item">Presidência e coordenação · 2027</h3>
+              <dl className="mt-4 grid gap-x-8 gap-y-4 md:grid-cols-2">
+                {LEADERSHIP.map(([role, name]) => (
+                  <div key={role}>
+                    <dt className="t-small text-sky">{role}</dt>
+                    <dd className="t-body m-0 mt-0.5 font-medium text-paper">{name}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div data-reveal style={delay(2)}>
               <h3 className="t-item">Quem realizou a primeira edição</h3>
               <ul className="mt-4 grid gap-x-8 gap-y-4 md:grid-cols-2">
                 {ORGS.map(([n, t]) => (
@@ -42,7 +54,7 @@ export function Organizers() {
               </ul>
               <p className="t-body mt-5"><Ph id="realizacao-2027" /></p>
             </div>
-            <div data-reveal style={delay(2)}>
+            <div data-reveal style={delay(3)}>
               <h3 className="t-item">Sua empresa no congresso</h3>
               <p className="t-body mt-2 max-w-[48ch] text-foam">Espaço para empresas que operam ou prestam serviços na Margem Equatorial.</p>
               <p className="t-body mt-3"><Ph id="patrocinio" /></p>

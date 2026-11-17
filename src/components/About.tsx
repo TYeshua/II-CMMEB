@@ -13,7 +13,7 @@ const PARTS: [Ring, string, string, string][] = [
 const YEARS = [
   { y: '2023', h: 'Oficinas de trabalho', t: 'Em São Luís, 71 pesquisadores e 10 representantes da Petrobras mapearam as lacunas de conhecimento oceanográfico da região.' },
   { y: '2024', h: 'I Congresso', t: '31 palestras, 3 mesas-redondas e 3 sessões de pôsteres, com 22 instituições na programação, em três dias de outubro.' },
-  { y: '2027', h: 'II Congresso', t: 'Segunda edição, com o tema Integração Indústria e Meio Ambiente, em Salinópolis, no Pará.' },
+  { y: '2027', h: 'II Congresso', t: 'Segunda edição, com o tema Integração Indústria e Meio Ambiente, de 14 a 17 de setembro de 2027, em Salinópolis, no Pará.' },
 ]
 
 export function About() {

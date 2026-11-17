@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { DATES } from '../data/content'
 import { delay, useNow } from '../lib/hooks'
 import { fmtM, slzClock, tideAt } from '../lib/tide'
 import { SectionHead } from './Head'
@@ -61,7 +62,7 @@ export function Place() {
               <figcaption className="t-small mt-2 text-sky">Praia do Atalaia, Salinópolis</figcaption>
             </figure>
             <dl className="facts mt-6" data-reveal style={delay(1)}>
-              <div><dt>Datas</dt><dd><Ph id="datas" /></dd></div>
+              <div><dt>Datas</dt><dd>{DATES}</dd></div>
               <div><dt>Espaço</dt><dd><Ph id="local" label="Espaço do evento" /></dd></div>
               <div><dt>Coordenadas</dt><dd><a href={COORD} target="_blank" rel="noreferrer" className="link" aria-label="Abrir 00°37′S 47°21′W no mapa">00°37′S 47°21′W</a></dd></div>
               <div><dt>Contato</dt><dd><Ph id="contato" /></dd></div>

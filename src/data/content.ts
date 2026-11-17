@@ -2,6 +2,11 @@
 // O que ainda não foi definido para 2027 aparece na página como [n] (ver PLACEHOLDERS no fim do arquivo).
 
 export const SITE = 'cmmeb.com.br'
+export const DATES = '14 a 17 de setembro de 2027'
+export const LEADERSHIP: [string, string][] = [
+  ['Presidente do Congresso', 'Prof. Dr. João Luiz Baptista de Carvalho'],
+  ['Coordenador do Congresso', 'Prof. Dr. Cláudio Regis dos Santos Lucas'],
+]
 
 export type Lens = 'amb' | 'ind' | 'soc'
 export const LENS: Record<Lens, string> = { amb: 'Ambiente', ind: 'Indústria', soc: 'Sociedade' }
@@ -163,7 +168,6 @@ export const faq: [string, string][] = [
    A ordem desta lista é a numeração que aparece na página ([1], [2] ...).
    Para preencher um item, troque o <Ph id="..."/> correspondente pelo conteúdo final. */
 export const PLACEHOLDERS: [string, string][] = [
-  ['datas', 'Datas do congresso'],
   ['eixo-central', 'Ementa do eixo central: a indústria de óleo e gás na Margem Equatorial'],
   ...Array.from({ length: 7 }, (_, i): [string, string] => [`eixo-${i + 1}`, 'Eixo temático: título e ementa']),
   ...Array.from({ length: 6 }, (_, i): [string, string] => [`pal-${i + 1}`, 'Palestrante 2027: nome, instituição e tema']),

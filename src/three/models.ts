@@ -63,8 +63,6 @@ export function platform(density = 1) {
       line(c, corner(h0, ...cs[i]), corner(h1, ...cs[(i + 1) % 4]), 0.3 / density, '#f5a524', 0.9)
     }
   }
-  // braço do flare
-  line(c, V(6, 7.2, -5.4), V(14.2, 12.2, -5.4), 0.2 / density, '#ffd27a', 1)
   // luzes do convés
   for (const [x, y, z] of [[-5.8, 7.6, 6.8], [5.8, 7.6, 6.8], [-5.8, 7.6, -6.8], [5.8, 7.6, -6.8], [-2.8, 9.9, 5.8], [3.4, 9, 6.1], [1.5, 22.4, -2]])
     for (let i = 0; i < 6; i++) push(c, x + (Math.random() - 0.5) * 0.3, y + (Math.random() - 0.5) * 0.3, z, '#ffffff', 2.2)
@@ -159,5 +157,122 @@ export function biana() {
   const sail = new THREE.BufferGeometry()
   sail.setAttribute('position', new THREE.Float32BufferAttribute([-0.2, 4.1, 0, -0.2, 0.9, 0, 2, 0.9, 0], 3))
   sample(c, sail, 420, p => (p.y > 2.6 ? '#f5a524' : '#e0622a'))
+  return c
+}
+
+/* ---------------- a lua e suas fases (atrás da plataforma) ---------------- */
+const MARIA: [number, number, number, number, number][] = [
+  [-0.50,  0.08, 0.32, 0.46, 0.90], // Oceanus Procellarum
+  [-0.25,  0.40, 0.28, 0.25, 0.98], // Mare Imbrium
+  [ 0.18,  0.35, 0.20, 0.19, 0.95], // Mare Serenitatis
+  [ 0.38,  0.09, 0.24, 0.20, 0.92], // Mare Tranquillitatis
+  [ 0.67,  0.22, 0.13, 0.15, 0.95], // Mare Crisium
+  [ 0.54, -0.16, 0.18, 0.22, 0.84], // Mare Foecunditatis
+  [ 0.33, -0.24, 0.13, 0.13, 0.78], // Mare Nectaris
+  [-0.22, -0.35, 0.22, 0.20, 0.86], // Mare Nubium
+  [-0.47, -0.35, 0.15, 0.15, 0.86], // Mare Humorum
+  [-0.04,  0.66, 0.40, 0.10, 0.72], // Mare Frigoris
+]
+
+const CRATERS: [number, number, number][] = [
+  [-0.12, -0.62, 0.085], // Tycho
+  [-0.27,  0.14, 0.092], // Copernicus
+  [-0.52,  0.10, 0.065], // Kepler
+  [-0.16,  0.60, 0.072], // Plato
+  [-0.08,  0.37, 0.064], // Archimedes
+  [ 0.65, -0.14, 0.072], // Langrenus
+  [ 0.16, -0.45, 0.078], // Maurolycus
+]
+
+/**
+ * Hemisfério visível da Lua em pontilhismo (use com moon: true).
+ * aFlap <= 1 guarda o relevo local de crateras para recortar o terminador;
+ * aFlap > 1 marca a coroa de poeira luminosa ao redor do limbo.
+ */
+export function moon(small = false) {
+  const c = cloud()
+  const R = 31
+  const N = small ? 1900 : 3400
+  const golden = Math.PI * (3 - Math.sqrt(5))
+
+  for (let i = 0; i < N; i++) {
+    const r0 = Math.sqrt((i + 0.5) / N) * 0.985
+    const th = i * golden
+    let nx = Math.cos(th) * r0 + (Math.random() - 0.5) * 0.013
+    let ny = Math.sin(th) * r0 + (Math.random() - 0.5) * 0.013
+    const r2 = nx * nx + ny * ny
+    if (r2 > 0.985) {
+      const s = Math.sqrt(0.985 / r2)
+      nx *= s; ny *= s
+    }
+    const nz = Math.sqrt(Math.max(0.015, 1 - nx * nx - ny * ny))
+
+    let mare = 0
+    for (const [mx, my, rx, ry, d] of MARIA) {
+      const dx = (nx - mx) / rx, dy = (ny - my) / ry
+      const k = 1 - (dx * dx + dy * dy)
+      if (k > 0) mare = Math.max(mare, k * d)
+    }
+
+    // relevo rugoso nas terras altas para o terminador das fases recortar crateras
+    let relief = Math.sin(nx * 19 + ny * 13) * Math.cos(nx * 11 - ny * 23) * 0.085 * (1 - mare * 0.65)
+    let onRay = false
+    for (const [cx, cy, cr] of CRATERS) {
+      const dx = nx - cx, dy = ny - cy
+      const dist = Math.hypot(dx, dy)
+      if (dist < cr * 1.45) {
+        relief += (dx / cr) * 0.09 * Math.exp(-Math.pow((dist - cr * 0.85) / (cr * 0.4), 2))
+      }
+      if (cr > 0.08 && dist < cr * 4.2 && dist > cr * 0.9) {
+        const ang = Math.atan2(dy, dx)
+        if (Math.sin(ang * 7 + cx * 12) > 0.78) onRay = true
+      }
+    }
+    relief = Math.max(-0.14, Math.min(0.14, relief))
+
+    const col =
+      mare > 0.62 ? '#2a9fbd' :
+      mare > 0.36 ? '#8fd3e8' :
+      onRay ? '#fff1c9' :
+      Math.random() > 0.72 ? '#ffd27a' :
+      Math.random() > 0.35 ? '#f2f9fb' : '#cdeef5'
+    const sz = mare > 0.36 ? 0.78 + (1 - mare) * 0.22 : 0.98 + (onRay ? 0.22 : Math.random() * 0.24)
+    push(c, nx * R, ny * R, nz * R, col, sz, relief)
+  }
+
+  // anéis das crateras principais: parede leste/oeste rebate a luz rasante do sol
+  const ringPts = small ? 18 : 28
+  for (const [cx, cy, cr] of CRATERS) {
+    for (let i = 0; i < ringPts; i++) {
+      const a = (i / ringPts) * Math.PI * 2
+      const nx = cx + Math.cos(a) * cr
+      const ny = cy + Math.sin(a) * cr
+      const r2 = nx * nx + ny * ny
+      if (r2 >= 0.97) continue
+      const nz = Math.sqrt(1 - r2)
+      const slope = Math.cos(a) * 0.13
+      push(c, nx * R, ny * R, nz * R, i % 2 ? '#fff1c9' : '#f2f9fb', 1.15, slope)
+    }
+  }
+
+  // contorno esférico nítido ao longo de todo o limbo
+  const limbN = small ? 150 : 240
+  for (let i = 0; i < limbN; i++) {
+    const a = (i / limbN) * Math.PI * 2
+    const nx = Math.cos(a) * 0.994, ny = Math.sin(a) * 0.994, nz = 0.11
+    push(c, nx * R, ny * R, nz * R, i % 3 === 0 ? '#ffd27a' : '#f2f9fb', 1.05, Math.cos(a) * 0.04)
+  }
+
+  // coroa e halo de luar ao redor do disco (aFlap = 2 aciona o modo halo no shader)
+  const haloN = small ? 280 : 480
+  for (let i = 0; i < haloN; i++) {
+    const a = (i / haloN) * Math.PI * 2 + (Math.random() - 0.5) * 0.08
+    const t = Math.pow(Math.random(), 1.55)
+    const r = R * (1.035 + t * 0.48)
+    const z = (Math.random() - 0.5) * 2.5
+    const col = t < 0.28 ? (Math.random() > 0.65 ? '#ffd27a' : '#f2f9fb') : t < 0.65 ? '#cdeef5' : '#8fd3e8'
+    push(c, Math.cos(a) * r, Math.sin(a) * r, z, col, (1 - t * 0.65) * 0.95, 2)
+  }
+
   return c
 }

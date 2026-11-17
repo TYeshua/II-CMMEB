@@ -1,4 +1,4 @@
-import { credits } from '../data/content'
+import { credits, DATES, LEADERSHIP } from '../data/content'
 import { Arrow } from './Logo'
 import { Ph } from './Ph'
 
@@ -22,8 +22,15 @@ export function Footer() {
             <p className="t-item mt-3">
               <a href="https://cmmeb.com.br" target="_blank" rel="noreferrer" className="no-underline hover:underline">cmmeb.com.br</a>
               <span className="mx-2 opacity-60" aria-hidden="true">·</span>
+              <span>{DATES}</span>
+              <span className="mx-2 opacity-60" aria-hidden="true">·</span>
               <a href="#local" className="no-underline hover:underline">Salinópolis, PA</a>
             </p>
+            <ul className="t-small mt-3 grid gap-1 text-foam">
+              {LEADERSHIP.map(([role, name]) => (
+                <li key={role}><span className="opacity-80">{role}:</span> <b className="font-medium text-paper">{name}</b></li>
+              ))}
+            </ul>
             <p className="t-small mt-3"><Ph id="contato" /></p>
             <a href="#inscricoes" className="btn btn-sun mt-6">Quero me inscrever <Arrow /></a>
           </div>

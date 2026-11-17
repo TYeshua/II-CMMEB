@@ -40,7 +40,7 @@ export function cloudGeometry(c: Cloud) {
 export type DotOpts = {
   pr: number; size?: number; far?: number; opacity?: number; maxPx?: number
   waves?: boolean; flap?: boolean; flare?: boolean; twinkle?: number; trail?: { speed: number; pow: number }
-  cut?: boolean; hole?: boolean; snow?: boolean; reveal?: boolean
+  cut?: boolean; hole?: boolean; snow?: boolean; reveal?: boolean; moon?: boolean
 }
 
 export function dotMaterial(o: DotOpts) {
@@ -53,6 +53,7 @@ export function dotMaterial(o: DotOpts) {
   if (o.hole) defines.HOLE = ''
   if (o.snow) defines.SNOW = ''
   if (o.reveal) defines.REVEAL = ''
+  if (o.moon) defines.MOON = ''
   return new THREE.ShaderMaterial({
     defines,
     transparent: true,
@@ -81,13 +82,15 @@ export function dotMaterial(o: DotOpts) {
       uPingW: { value: 1 },
       uPingK: { value: 0 },
       uPingCol: { value: new THREE.Color('#ffd27a') },
+      // fase lunar: direção do sol no espaço da lua (xyz) e fração iluminada (w)
+      uMoon: { value: new THREE.Vector4(1, 0, 0, 0.5) },
     },
     vertexShader: /* glsl */ `
       attribute vec3 aColor; attribute float aSize; attribute float aSeed; attribute float aFlap;
       uniform float uTime, uPix, uSize, uMaxPx, uFar, uOpacity, uTwinkle, uTide, uWS;
       uniform vec3 uLow, uHigh, uGlow, uPingCol;
       uniform float uSpeed, uPow, uCut, uPingW, uPingK;
-      uniform vec4 uPing;
+      uniform vec4 uPing, uMoon;
       varying vec3 vC; varying float vA; varying float vS;
       #ifdef WAVES
       vec3 gerstner(vec4 w, vec3 p){
@@ -100,6 +103,7 @@ export function dotMaterial(o: DotOpts) {
         vec3 p = position;
         vec3 col = aColor;
         float a = 1.0;
+        float moonS = 1.0;
         #ifdef SNOW
           // desce devagar e volta ao topo da coluna (de -2 a -296)
           p.y = -2.0 - mod(-position.y - 2.0 + uTime * (0.6 + aSeed * 0.8), 294.0);
@@ -118,6 +122,44 @@ export function dotMaterial(o: DotOpts) {
           float glint = exp(-dot(gd, gd) * 0.0035) * (0.2 + crest * crest * 1.3);
           col += vec3(1.0, 0.62, 0.28) * glint;
           a = min(1.0, a + glint * 0.5);
+          // reflexo prateado do luar nas cristas ao fundo, proporcional à fração iluminada da lua
+          float mx = (p.x - 16.0) / (uWS * 20.0);
+          float mz = (p.z + 52.0) / (uWS * 46.0);
+          float mGlint = exp(-(mx * mx + mz * mz)) * smoothstep(-4.0, -18.0, p.z) * crest * crest * (0.15 + 0.85 * uMoon.w) * 0.75;
+          col += vec3(0.78, 0.93, 1.0) * mGlint;
+          a = min(1.0, a + mGlint * 0.4);
+        #endif
+        #ifdef MOON
+          if (aFlap <= 1.0) {
+            vec3 n = normalize(p);
+            // libração suave: a lua oscila levemente no céu
+            float lx = sin(uTime * 0.22) * 0.035;
+            float ly = cos(uTime * 0.17) * 0.028;
+            vec3 nl = normalize(vec3(n.x + lx * n.z, n.y + ly * n.z, n.z - lx * n.x - ly * n.y));
+            float ndotl = dot(nl, uMoon.xyz) + aFlap;
+            float lit = smoothstep(-0.07, 0.09, ndotl);
+            // crista iluminada ao longo do terminador (relevo das crateras)
+            float term = exp(-ndotl * ndotl / 0.009) * smoothstep(-0.1, 0.02, ndotl);
+            float rim = pow(clamp(1.0 - n.z, 0.0, 1.0), 1.8);
+            // lado na sombra com luz cinérea (reflexo azulado da Terra) para nunca sumir na lua nova
+            vec3 earthshine = mix(vec3(0.08, 0.28, 0.46), vec3(0.16, 0.52, 0.72), rim);
+            vec3 sunlit = aColor + vec3(1.0, 0.88, 0.62) * (term * 0.38 + rim * 0.16);
+            col = mix(earthshine, sunlit, lit);
+            float darkA = 0.16 + 0.34 * rim;
+            float litA = 0.8 + 0.2 * rim + term * 0.24;
+            a *= mix(darkA, litA, lit);
+            moonS = mix(0.74 + 0.2 * rim, 1.0 + 0.22 * term, lit);
+            p += n * (sin(uTime * 0.9 + aSeed * 18.0) * 0.07);
+          } else {
+            // halo ao redor do limbo: acende do lado iluminado pelo sol
+            vec3 dir2 = normalize(vec3(p.xy, 0.001));
+            vec3 sun2 = normalize(vec3(uMoon.xy, 0.001));
+            float side = mix(0.38, 0.5 + 0.5 * dot(dir2, sun2), clamp(length(uMoon.xy), 0.0, 1.0));
+            float pulse = 0.78 + 0.22 * sin(uTime * 1.1 + aSeed * 25.0);
+            float haloK = (0.24 + 0.76 * side) * (0.28 + 0.72 * uMoon.w);
+            p.xy *= 1.0 + sin(uTime * 0.5 + aSeed * 12.0) * 0.025;
+            a *= haloK * pulse;
+          }
         #endif
         #ifdef FLAP
           p.y += sin(uTime * 7.0 + aSeed * 0.6) * aFlap;
@@ -149,7 +191,7 @@ export function dotMaterial(o: DotOpts) {
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         float dist = -mv.z;
         a *= 1.0 - smoothstep(uFar * 0.5, uFar, dist);
-        float s = uSize * aSize * uPix * (130.0 / max(dist, 0.001));
+        float s = uSize * aSize * moonS * uPix * (130.0 / max(dist, 0.001));
         a *= clamp(s, 0.0, 1.0); // pontos menores que 1 px somem em vez de cintilar
         s *= 1.0 + min(front, 1.0) * uPingK * 0.8; // a frente do pulso engrossa os pontos: lê-se de longe
         s = clamp(s, 1.0, uMaxPx);

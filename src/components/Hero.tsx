@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { DATES } from '../data/content'
 import { Arrow, LogoMark } from './Logo'
-import { Ph } from './Ph'
 import { useNow, useReducedMotion, useScrollProgress } from '../lib/hooks'
-import { fmtM, slzClock, tideNow, TIDE_MEAN } from '../lib/tide'
+import { fmtM, moonAt, slzClock, tideNow, TIDE_MEAN } from '../lib/tide'
 import type { Label, World } from '../three/World'
 
 const d = (n: number) => ({ '--d': n }) as CSSProperties
@@ -16,7 +16,6 @@ const fmtDepth = (tip: number) => {
 
 // o que orbita a indústria
 const LABELS: Record<string, string> = {
-  industria: 'Óleo e gás',
   mangue: 'Manguezais',
   guara: 'Fauna costeira',
   recife: 'Recifes amazônicos',
@@ -61,6 +60,7 @@ export function Hero() {
   const p = useScrollProgress(section)
   const now = useNow(30_000)
   const tide = tideNow()
+  const moon = moonAt(now)
 
   // monta a cena com um carregamento de verdade e só então começa o voo
   useEffect(() => {
@@ -142,7 +142,11 @@ export function Hero() {
     return () => { removeEventListener('wheel', skip); removeEventListener('touchmove', skip); removeEventListener('keydown', skip) }
   }, [phase])
 
-  useEffect(() => { if (world.current) world.current.tide = tide.h - TIDE_MEAN }, [tide.h, phase])
+  useEffect(() => {
+    if (!world.current) return
+    world.current.tide = tide.h - TIDE_MEAN
+    world.current.moonPhase = moon.phase
+  }, [tide.h, moon.phase, phase])
   useEffect(() => { if (world.current) world.current.dive = reduced ? 0 : p }, [p, reduced])
   useEffect(() => {
     let raf = 0
@@ -197,7 +201,7 @@ export function Hero() {
             <span
               key={id}
               ref={el => { labelEls.current[id] = el }}
-              className={`hero-label absolute left-0 top-0 whitespace-nowrap px-2 py-0.5 t-small font-medium ${id === 'industria' ? 'bg-sun text-ink' : 'text-foam'}`}
+              className="hero-label absolute left-0 top-0 whitespace-nowrap px-2 py-0.5 t-small font-medium text-foam"
               style={{ opacity: 0 }}
             >
               {t}
@@ -240,15 +244,15 @@ export function Hero() {
             <p className="t-lead mt-6 max-w-[38ch] font-medium h-in" style={d(2)}>
               II Congresso de Ciências do Mar na Margem Equatorial Brasileira.
             </p>
-            <p className="t-body mt-4 h-in" style={d(3)}><Ph id="datas" /> · Salinópolis, PA</p>
+            <p className="t-body mt-4 h-in" style={d(3)}>{DATES} · Salinópolis, PA</p>
             <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4 h-in" style={d(4)}>
               <a href="#inscricoes" className="btn btn-sun">Quero me inscrever <Arrow /></a>
               <a href="#industria" className="link">Começar pela indústria</a>
             </div>
           </div>
-          <p className="t-small mt-auto flex max-w-[64ch] items-center gap-2 text-foam tnum h-in" style={d(5)}>
+          <p className="t-small mt-auto flex max-w-[68ch] items-center gap-2 text-foam tnum h-in" style={d(5)}>
             <span className="pulse-dot inline-block h-2 w-2 shrink-0 rounded-full bg-sun" aria-hidden="true" />
-            <span>Simulação de maré em Salinópolis às {slzClock(now)}: <b className="font-medium text-paper">{fmtM(tide.h)}</b>, {tide.rising ? 'enchendo' : 'vazando'}. O nível do mar na cena acompanha.</span>
+            <span>Simulação de maré em Salinópolis às {slzClock(now)}: <b className="font-medium text-paper">{fmtM(tide.h)}</b>, {tide.rising ? 'enchendo' : 'vazando'} · <b className="font-medium text-paper">{moon.name}</b> ({moon.pct}%). O mar e a lua na cena acompanham.</span>
           </p>
         </div>
 

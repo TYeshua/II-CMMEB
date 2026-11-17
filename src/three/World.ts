@@ -2,8 +2,9 @@ import * as THREE from 'three'
 import { cloud, disposeAll, points, push, setTime, type Cloud } from './dots'
 import { bloom } from './fx'
 import { BASIN_COLORS, DEG, MAP_CENTER, PARA, R, SALINOPOLIS, SITE, VZ, depthAt, dir, ease, globalMask, hash, regional, regions, smooth } from './geo'
-import { biana, fishSchool, flame, ibisFlock, mangrove, platform, reef } from './models'
+import { biana, fishSchool, ibisFlock, mangrove, moon, platform, reef } from './models'
 import { BOTTOM, SEABED, bit, bop, cuttings, drillPipe, lightRays, riser, seabed, strata, waterColumn } from './drill'
+import { moonNow } from '../lib/tide'
 
 /*
   Uma única cena em pontilhismo, num só plano-sequência:
@@ -26,14 +27,13 @@ export type Step = (fraction: number, label: string) => void
 
 const S = 0.09
 const ORBIT: { id: string; make: () => Cloud; scale: number; flap?: boolean; y?: number }[] = [
-  { id: 'mangue', make: mangrove, scale: 1.05, y: -1.5 },
-  { id: 'guara', make: ibisFlock, scale: 1.15, flap: true, y: 1 },
-  { id: 'recife', make: reef, scale: 1.2, y: -1 },
-  { id: 'pesca', make: fishSchool, scale: 1.1 },
-  { id: 'comunidade', make: biana, scale: 1, y: -1.2 },
+  { id: 'mangue', make: mangrove, scale: 1.48, y: -1.5 },
+  { id: 'guara', make: ibisFlock, scale: 1.6, flap: true, y: 1 },
+  { id: 'recife', make: reef, scale: 1.68, y: -1 },
+  { id: 'pesca', make: fishSchool, scale: 1.55 },
+  { id: 'comunidade', make: biana, scale: 1.42, y: -1.2 },
 ]
-const R_IN = 20, R_OUT = 28, ORBIT_Y = 10, LINK_N = 70
-const FLARE = new THREE.Vector3(14.4, 12.4, -5.4)
+const R_IN = 21, R_OUT = 29, ORBIT_Y = 10, LINK_N = 70
 const FLIGHT_MS = 12000
 // 0–0.3: o planeta gira até o Brasil e aproxima · 0.3–0.44: o mapa do Pará e das bacias · até SPLIT: segue para a Foz
 const SPLIT = 0.56 // daqui em diante, a câmera desce sobre a plataforma
@@ -69,6 +69,8 @@ export class World {
   private ocean!: P
   private rigPts: P[] = []
   private sky!: P
+  private moonGroup = new THREE.Group()
+  private moonPts!: P
   private water!: P
   private rays!: P
   private pipe = new THREE.Group()
@@ -108,6 +110,7 @@ export class World {
   side = 1
   private sideS = 1
   tide = 0
+  moonPhase = moonNow().phase
   speed = 1
   /** Posição atual no voo (0..1). */
   get progress() { return this.flightK }
@@ -192,31 +195,57 @@ export class World {
     const st = small ? 0.075 : 0.042
     const shallow = new THREE.Color('#2a9fbd'), deepC = new THREE.Color('#0c4d79'), iso = new THREE.Color('#8fd3e8'), col = new THREE.Color(), tint = new THREE.Color()
     const ISO = [100, 1000, 2000, 3000]
+    // esmaecimento suave nas bordas da janela regional para não formar recorte retangular com o fundo
+    const edgeBox = (la: number, lo: number) =>
+      smooth(-59.2, -53.8, lo) *
+      smooth(-32.6, -36.2, lo) *
+      smooth(-10.3, -6.8, la) *
+      smooth(6.4, 3.4, la)
     for (let lat = 6.5; lat > -10.4; lat -= st) {
       for (let lon = -59.5; lon < -32.5; lon += st) {
         const la = lat + (hash(lat, lon) - 0.5) * st * 0.7, lo = lon + (hash(lon, lat) - 0.5) * st * 0.7
         if (!rg.inside(la, lo)) continue
         const r = rg.at(la, lo), g = geo.at(la, lo)
         if (r.land) {
-          if (r.km < 4) { dir(la, lo, v).multiplyScalar(R + 0.06); push(shore, v.x, v.y, v.z, hash(la, 9) > 0.4 ? '#f5a524' : '#ffd27a', 1.3) }
-          else if (g.uf === 15) {
+          if (r.km < 4) {
+            const shK = g.uf === 15 ? 1 : edgeBox(la, lo)
+            if (shK > 0.05 && hash(la * 3.1, lo * 3.7) < Math.pow(shK, 0.7)) {
+              dir(la, lo, v).multiplyScalar(R + 0.06)
+              col.set(hash(la, 9) > 0.4 ? '#f5a524' : '#ffd27a').multiplyScalar(0.25 + 0.75 * shK)
+              push(shore, v.x, v.y, v.z, col, 0.65 + 0.65 * shK)
+            }
+          } else if (g.uf === 15) {
             // o Pará, onde fica a sede, inteiro e mais claro
+            const pk = smooth(-59.4, -58.4, lo) * smooth(-10.35, -9.4, la)
             dir(la, lo, v).multiplyScalar(R + 0.05 + Math.min(r.km, 300) * 0.0006 + hash(lo, la) * 0.05)
-            push(ground, v.x, v.y, v.z, hash(la * 5, lo * 5) > 0.7 ? '#8fd3e8' : '#2a9fbd', 0.95)
-          } else if (r.km < 120 || hash(la, lo) < 0.4) {
-            dir(la, lo, v).multiplyScalar(R + 0.05 + Math.min(r.km, 300) * 0.0006 + hash(lo, la) * 0.05)
-            push(ground, v.x, v.y, v.z, r.km < 30 ? '#2a9fbd' : '#1b6ba3', 0.85)
+            col.set(hash(la * 5, lo * 5) > 0.7 ? '#8fd3e8' : '#2a9fbd').multiplyScalar(0.35 + 0.65 * pk)
+            push(ground, v.x, v.y, v.z, col, 0.95 * (0.5 + 0.5 * pk))
+          } else {
+            // terra vizinha fora do Pará: acompanha só a faixa costeira e se dissolve suavemente no fundo
+            const gk = smooth(95, 0, r.km) * edgeBox(la, lo)
+            if (gk > 0.04 && hash(la, lo) < gk * 0.72) {
+              dir(la, lo, v).multiplyScalar(R + 0.05 + Math.min(r.km, 300) * 0.0006 + hash(lo, la) * 0.05)
+              col.set(r.km < 30 ? '#2a9fbd' : '#1b6ba3').multiplyScalar(0.3 + 0.7 * gk)
+              push(ground, v.x, v.y, v.z, col, 0.5 + 0.35 * gk)
+            }
           }
         } else {
+          // mar: denso nas bacias e no talude; além disso se desfaz gradualmente no fundo abissal
+          const offK = g.basin ? 1 : smooth(340, 110, r.km)
+          const eb = g.basin
+            ? smooth(-59.4, -55.5, lo) * smooth(-32.55, -34.2, lo) * smooth(-10.3, -7.5, la) * smooth(6.45, 4.8, la)
+            : edgeBox(la, lo)
+          const sk = offK * eb
+          if (sk <= 0.03 || hash(la * 13.7, lo * 17.3) > Math.pow(sk, 1.15)) continue
           // nunca negativa: um NaN de cor numa única partícula apagaria a tela inteira no bloom
           const dm = Math.max(2, depthAt(r.km, la, lo))
           const k = Math.min(1, dm / 4300)
-          col.copy(shallow).lerp(deepC, Math.pow(k, 0.55)).multiplyScalar(0.75 + hash(lo * 7, la * 7) * 0.5)
+          col.copy(shallow).lerp(deepC, Math.pow(k, 0.55)).multiplyScalar((0.75 + hash(lo * 7, la * 7) * 0.5) * (0.2 + 0.8 * sk))
           if (g.basin) col.lerp(tint.set(BASIN_COLORS[g.basin - 1]), 0.4)
           const onIso = ISO.some(z => Math.abs(dm - z) < z * 0.035 + 12)
-          if (onIso) col.copy(iso)
+          if (onIso) col.copy(iso).multiplyScalar(0.25 + 0.75 * sk)
           dir(la, lo, v).multiplyScalar(R - dm * VZ)
-          push(sea, v.x, v.y, v.z, col, onIso ? 1.25 : 1 - k * 0.25)
+          push(sea, v.x, v.y, v.z, col, (onIso ? 1.25 : 1 - k * 0.25) * (0.45 + 0.55 * sk))
         }
       }
     }
@@ -229,8 +258,13 @@ export class World {
         const lat = geo.lat1 - (y + 0.5) / geo.ppd, lon = geo.lon0 + (x + 0.5) / geo.ppd
         const nb = [i - 1, i + 1, i - geo.w, i + geo.w]
         if (u && nb.some(j => geo.uf[j] && geo.uf[j] !== u) && (x + y) % 4 === 0) {
-          dir(lat, lon, v).multiplyScalar(R + 0.12)
-          push(lines, v.x, v.y, v.z, u === 15 || nb.some(j => geo.uf[j] === 15) ? '#f2f9fb' : '#8fd3e8', u === 15 || nb.some(j => geo.uf[j] === 15) ? 1.3 : 0.9)
+          const isPara = u === 15 || nb.some(j => geo.uf[j] === 15)
+          const lk = isPara ? 1 : edgeBox(lat, lon) * smooth(140, 20, rg.at(lat, lon).km)
+          if (lk > 0.08) {
+            dir(lat, lon, v).multiplyScalar(R + 0.12)
+            col.set(isPara ? '#f2f9fb' : '#8fd3e8').multiplyScalar(0.3 + 0.7 * lk)
+            push(lines, v.x, v.y, v.z, col, isPara ? 1.3 : 0.9 * lk)
+          }
         }
         if (bsn && nb.some(j => geo.basin[j] !== bsn) && (x + y) % 2 === 0) {
           dir(lat, lon, v).multiplyScalar(R + 0.04)
@@ -306,6 +340,12 @@ export class World {
     }
     this.sky = this.addLocal(sky, { pr, size: 0.9, far: 3000, twinkle: 0.5, opacity: 0 }, L)
 
+    // a lua atrás da plataforma: as fases acompanham o ciclo lunar real
+    this.moonGroup.position.set(18, 35, -115)
+    this.moonGroup.rotation.order = 'YXZ'
+    this.moonPts = this.addLocal(moon(small), { pr, size: 2.2, maxPx: 4.8, far: 480, moon: true, twinkle: 0.15, opacity: 0 }, this.moonGroup)
+    L.add(this.moonGroup)
+
     // mar: malha polar, densa perto da plataforma e rala no horizonte
     const sea = cloud()
     for (let r = 1.2; r < 230; r += 0.42 + r * (small ? 0.022 : 0.011)) {
@@ -317,17 +357,12 @@ export class World {
       }
     }
     this.ocean = this.addLocal(sea, { pr, size: 0.6, far: 260, waves: true, opacity: 0, reveal: true }, L)
-    this.ocean.material.uniforms.uGlow.value.copy(FLARE).applyAxisAngle(new THREE.Vector3(0, 1, 0), -0.55)
 
     // a indústria no centro, com luz contida para não estourar os detalhes
     const rig = new THREE.Group()
     rig.rotation.y = -0.55
     L.add(rig)
     this.rigPts.push(this.addLocal(platform(small ? 0.9 : 1.6), { pr, size: 0.6, far: 400, opacity: 0 }, rig))
-    this.rigPts.push(this.addLocal(flame(small ? 200 : 360), { pr, size: 0.55, far: 400, flare: true, twinkle: 0, opacity: 0 }, rig))
-    const glow = cloud()
-    for (let i = 0; i < 50; i++) { v.randomDirection().multiplyScalar(Math.random() * 1.8); push(glow, FLARE.x + v.x, FLARE.y + 0.8 + v.y, FLARE.z + v.z, '#e0622a', 2 + Math.random() * 2) }
-    this.rigPts.push(this.addLocal(glow, { pr, size: 0.45, far: 400, twinkle: 0.4, opacity: 0 }, rig))
 
     // órbita do ambiente
     const ringA = cloud(), ringB = cloud()
@@ -338,7 +373,7 @@ export class World {
     this.ringPts.push(this.addLocal(ringB, { pr, size: 0.6, far: 400, opacity: 0, trail: { speed: 0.03, pow: 2 } }, this.orbit))
     ORBIT.forEach((o, i) => {
       const holder = new THREE.Group()
-      const pts = this.addLocal(o.make(), { pr, size: 0.58, far: 400, flap: o.flap, opacity: 0 }, holder)
+      const pts = this.addLocal(o.make(), { pr, size: 0.66, far: 400, flap: o.flap, opacity: 0 }, holder)
       pts.scale.setScalar(o.scale)
       this.orbit.add(holder)
       this.orbiters.push({ id: o.id, o: holder, pts, a0: (i / ORBIT.length) * Math.PI * 2 + 0.4, y: o.y ?? 0 })
@@ -504,10 +539,10 @@ export class World {
     const alt = cam.position.length() - R
     const shrink = 0.18 + 0.82 * smooth(2, R * 0.6, alt)
     this.planet.forEach((p, i) => {
-      // fora da janela do mapa o globo continua, mais baixo: o mapa é um recorte ampliado dele
+      // o globo inteiro cede lugar ao recorte detalhado da margem sem deixar borda de janela nas laterais
       const mapK = smooth(0.16, 0.3, k)
-      p.material.uniforms.uOpacity.value = 1 - 0.7 * mapK - 0.3 * smooth(0.48, 0.6, k)
-      p.material.uniforms.uSize.value = this.planetSize[i] * shrink * (1 - 0.55 * mapK) // de perto, pontos menores: sem retícula grossa
+      p.material.uniforms.uOpacity.value = 1 - smooth(0.17, 0.3, k)
+      p.material.uniforms.uSize.value = this.planetSize[i] * shrink * (1 - 0.55 * mapK)
     })
     // dentro da janela, sai: a grade dele por trás das amostras da margem fazia moiré
     this.planetIn.forEach((p, i) => {
@@ -535,7 +570,9 @@ export class World {
       u.uPingK.value = pingK
     })
 
-    const localY = this.tmp.copy(cam.position).applyMatrix4(M.clone().invert()).y
+    const inv = M.clone().invert()
+    const localCam = this.tmp.copy(cam.position).applyMatrix4(inv)
+    const localY = localCam.y
     const water = this.tide * 0.35
     const under = smooth(0.5, -1.5, localY - water)
     const ou = this.ocean.material.uniforms
@@ -547,6 +584,31 @@ export class World {
     const rigOp = smooth(0.49, 0.57, k) // a plataforma acende quando o pulso parte dela
     this.rigPts.forEach(p => { p.material.uniforms.uOpacity.value = rigOp })
     this.sky.material.uniforms.uOpacity.value = smooth(0.66, 0.9, k)
+
+    // a lua atrás da plataforma: na chegada percorre as fases e pousa na fase real de hoje
+    const mx = this.narrow ? 12 : 18
+    const my = (this.narrow ? 32 : 35) + (this.reduced ? 0 : Math.sin(t * 0.28) * 0.65)
+    this.moonGroup.position.set(mx, my, -115)
+    const mdx = localCam.x - this.moonGroup.position.x
+    const mdy = localCam.y - this.moonGroup.position.y
+    const mdz = localCam.z - this.moonGroup.position.z
+    const mLen = Math.hypot(mdx, mdy, mdz) || 1
+    this.moonGroup.rotation.y = Math.atan2(mdx, mdz)
+    this.moonGroup.rotation.x = -Math.asin(Math.max(-1, Math.min(1, mdy / mLen)))
+    const moonIntro = this.reduced
+      ? 1
+      : smooth(0.72, 1, k) * 0.35 + 0.65 * (this.doneAt < 0 ? 0 : easeOut(Math.min(1, (now - this.doneAt) / 2800)))
+    const phaseAnim = (((this.moonPhase - (1 - moonIntro) * 0.85) % 1) + 1) % 1
+    const alpha = phaseAnim * Math.PI * 2
+    const illum = (1 - Math.cos(alpha)) * 0.5
+    const tilt = -0.32
+    const sx = Math.sin(alpha) * Math.cos(tilt)
+    const sy = Math.sin(alpha) * Math.sin(tilt)
+    const sz = -Math.cos(alpha)
+    this.moonPts.material.uniforms.uMoon.value.set(sx, sy, sz, illum)
+    this.moonPts.material.uniforms.uOpacity.value = smooth(0.64, 0.88, k) * (1 - smooth(0.12, 0.5, dk))
+    ou.uMoon.value.set(sx, sy, sz, illum)
+
     this.ringPts.forEach(p => { p.material.uniforms.uOpacity.value = smooth(0.82, 0.95, k) })
     // nuvens densas (manguezal, cardume) somam luz demais: intensidade um pouco abaixo da plataforma
     this.orbiters.forEach((o, i) => { o.pts.material.uniforms.uOpacity.value = 0.8 * smooth(0.86 + i * 0.022, 0.94 + i * 0.012, k) })
@@ -581,7 +643,6 @@ export class World {
     // linhas: da torre até cada elemento, num arco suave por cima (em coordenadas locais)
     const pos = this.links.geometry.attributes.position as THREE.BufferAttribute
     const hub = new THREE.Vector3(0, 9, 0), end = new THREE.Vector3(), mid = new THREE.Vector3()
-    const inv = M.clone().invert()
     this.orbiters.forEach((o, j) => {
       o.o.getWorldPosition(end).applyMatrix4(inv)
       mid.copy(hub).add(end).multiplyScalar(0.5); mid.y += 6
@@ -606,9 +667,7 @@ export class World {
         p.project(cam)
         out.push({ id, x: (p.x * 0.5 + 0.5) * this.w, y: (-p.y * 0.5 + 0.5) * this.h, show: show && p.z < 1 })
       }
-      // topo da torre (deslocada e girada dentro do equipamento)
-      proj('industria', new THREE.Vector3(1.5, 25, -2).applyAxisAngle(new THREE.Vector3(0, 1, 0), -0.55).applyMatrix4(M))
-      this.orbiters.forEach(o => { o.o.getWorldPosition(this.v); this.v.add(this.tmp.copy(this.siteDir).multiplyScalar(5.5 * S)); proj(o.id, this.v.clone()) })
+      this.orbiters.forEach(o => { o.o.getWorldPosition(this.v); this.v.add(this.tmp.copy(this.siteDir).multiplyScalar(7.5 * S)); proj(o.id, this.v.clone()) })
       // rótulos do mapa: o Pará, a sede e as cinco bacias, enquanto o mapa está na tela
       const mapA = smooth(0.27, 0.32, k) * (1 - smooth(0.5, 0.56, k))
       const mapLabel = (id: string, p: THREE.Vector3) => {

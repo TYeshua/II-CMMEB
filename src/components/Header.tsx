@@ -159,7 +159,7 @@ export function Header() {
         </div>
         <div className="drawer-foot" style={{ '--i': 11 } as CSSProperties}>
           <a href="#inscricoes" onClick={() => setOpen(false)} className="btn btn-sun w-full justify-between">Quero me inscrever <Arrow /></a>
-          <p className="t-small mt-3 text-sky">Salinópolis, Pará · 2027</p>
+          <p className="t-small mt-3 text-sky">14 a 17 de setembro de 2027 · Salinópolis, PA</p>
         </div>
       </nav>
     </>
