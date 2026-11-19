@@ -191,8 +191,8 @@ const CRATERS: [number, number, number][] = [
  */
 export function moon(small = false) {
   const c = cloud()
-  const R = 31
-  const N = small ? 1900 : 3400
+  const R = 13
+  const N = small ? 520 : 820
   const golden = Math.PI * (3 - Math.sqrt(5))
 
   for (let i = 0; i < N; i++) {
@@ -241,7 +241,7 @@ export function moon(small = false) {
   }
 
   // anéis das crateras principais: parede leste/oeste rebate a luz rasante do sol
-  const ringPts = small ? 18 : 28
+  const ringPts = small ? 9 : 12
   for (const [cx, cy, cr] of CRATERS) {
     for (let i = 0; i < ringPts; i++) {
       const a = (i / ringPts) * Math.PI * 2
@@ -251,27 +251,27 @@ export function moon(small = false) {
       if (r2 >= 0.97) continue
       const nz = Math.sqrt(1 - r2)
       const slope = Math.cos(a) * 0.13
-      push(c, nx * R, ny * R, nz * R, i % 2 ? '#fff1c9' : '#f2f9fb', 1.15, slope)
+      push(c, nx * R, ny * R, nz * R, i % 2 ? '#fff1c9' : '#f2f9fb', 1.05, slope)
     }
   }
 
   // contorno esférico nítido ao longo de todo o limbo
-  const limbN = small ? 150 : 240
+  const limbN = small ? 72 : 96
   for (let i = 0; i < limbN; i++) {
     const a = (i / limbN) * Math.PI * 2
     const nx = Math.cos(a) * 0.994, ny = Math.sin(a) * 0.994, nz = 0.11
-    push(c, nx * R, ny * R, nz * R, i % 3 === 0 ? '#ffd27a' : '#f2f9fb', 1.05, Math.cos(a) * 0.04)
+    push(c, nx * R, ny * R, nz * R, i % 3 === 0 ? '#ffd27a' : '#f2f9fb', 1.0, Math.cos(a) * 0.04)
   }
 
   // coroa e halo de luar ao redor do disco (aFlap = 2 aciona o modo halo no shader)
-  const haloN = small ? 280 : 480
+  const haloN = small ? 90 : 140
   for (let i = 0; i < haloN; i++) {
     const a = (i / haloN) * Math.PI * 2 + (Math.random() - 0.5) * 0.08
     const t = Math.pow(Math.random(), 1.55)
-    const r = R * (1.035 + t * 0.48)
-    const z = (Math.random() - 0.5) * 2.5
+    const r = R * (1.04 + t * 0.38)
+    const z = (Math.random() - 0.5) * 1.2
     const col = t < 0.28 ? (Math.random() > 0.65 ? '#ffd27a' : '#f2f9fb') : t < 0.65 ? '#cdeef5' : '#8fd3e8'
-    push(c, Math.cos(a) * r, Math.sin(a) * r, z, col, (1 - t * 0.65) * 0.95, 2)
+    push(c, Math.cos(a) * r, Math.sin(a) * r, z, col, (1 - t * 0.65) * 0.85, 2)
   }
 
   return c

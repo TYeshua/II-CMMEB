@@ -340,10 +340,10 @@ export class World {
     }
     this.sky = this.addLocal(sky, { pr, size: 0.9, far: 3000, twinkle: 0.5, opacity: 0 }, L)
 
-    // a lua atrás da plataforma: as fases acompanham o ciclo lunar real
-    this.moonGroup.position.set(18, 35, -115)
+    // a lua ao fundo, além do horizonte do mar: escala realista em relação à plataforma
+    this.moonGroup.position.set(42, 59, -240)
     this.moonGroup.rotation.order = 'YXZ'
-    this.moonPts = this.addLocal(moon(small), { pr, size: 2.2, maxPx: 4.8, far: 480, moon: true, twinkle: 0.15, opacity: 0 }, this.moonGroup)
+    this.moonPts = this.addLocal(moon(small), { pr, size: 2.6, maxPx: 3.2, far: 900, moon: true, twinkle: 0.15, opacity: 0 }, this.moonGroup)
     L.add(this.moonGroup)
 
     // mar: malha polar, densa perto da plataforma e rala no horizonte
@@ -586,9 +586,9 @@ export class World {
     this.sky.material.uniforms.uOpacity.value = smooth(0.66, 0.9, k)
 
     // a lua atrás da plataforma: na chegada percorre as fases e pousa na fase real de hoje
-    const mx = this.narrow ? 12 : 18
-    const my = (this.narrow ? 32 : 35) + (this.reduced ? 0 : Math.sin(t * 0.28) * 0.65)
-    this.moonGroup.position.set(mx, my, -115)
+    const mx = this.narrow ? 28 : 42
+    const my = (this.narrow ? 55 : 59) + (this.reduced ? 0 : Math.sin(t * 0.28) * 0.45)
+    this.moonGroup.position.set(mx, my, -240)
     const mdx = localCam.x - this.moonGroup.position.x
     const mdy = localCam.y - this.moonGroup.position.y
     const mdz = localCam.z - this.moonGroup.position.z

@@ -123,9 +123,9 @@ export function dotMaterial(o: DotOpts) {
           col += vec3(1.0, 0.62, 0.28) * glint;
           a = min(1.0, a + glint * 0.5);
           // reflexo prateado do luar nas cristas ao fundo, proporcional à fração iluminada da lua
-          float mx = (p.x - 16.0) / (uWS * 20.0);
-          float mz = (p.z + 52.0) / (uWS * 46.0);
-          float mGlint = exp(-(mx * mx + mz * mz)) * smoothstep(-4.0, -18.0, p.z) * crest * crest * (0.15 + 0.85 * uMoon.w) * 0.75;
+          float mx = (p.x - 18.0) / (uWS * 18.0);
+          float mz = (p.z + 58.0) / (uWS * 46.0);
+          float mGlint = exp(-(mx * mx + mz * mz)) * smoothstep(-4.0, -18.0, p.z) * crest * crest * (0.15 + 0.85 * uMoon.w) * 0.55;
           col += vec3(0.78, 0.93, 1.0) * mGlint;
           a = min(1.0, a + mGlint * 0.4);
         #endif
